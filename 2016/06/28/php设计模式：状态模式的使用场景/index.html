@@ -3,17 +3,41 @@
 <head>
   <meta charset="utf-8">
   
-  <title>大愚的博客｜与你把酒言诗</title>
+  <title>php设计模式：状态模式的使用场景 | 大愚的博客｜与你把酒言诗</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="大愚的博客｜与你把酒言诗">
-<meta property="og:url" content="https://helei112g.github.io/index.html">
+  <meta name="description" content="在这儿给大家说点事儿。我的博客搬家到github主页上了。我的博客。以后首发都在github上了。csdn也会继续更新。可能就是稍微慢一下。
+另外最近搞了一个支付的开源项目。这是项目地址  目前已经支持：
+
+支付宝的 即时到帐、移动支付、加密退款接口。
+微信的目前已经支持：app支付、扫码支付、H5支付
+
+项目还存在些bug，正在不断结合公司业务进行修改。后期可能会支持的越来越全面。
+状态模式废话">
+<meta property="og:type" content="article">
+<meta property="og:title" content="php设计模式：状态模式的使用场景">
+<meta property="og:url" content="https://helei112g.github.io/2016/06/28/php设计模式：状态模式的使用场景/index.html">
 <meta property="og:site_name" content="大愚的博客｜与你把酒言诗">
-<meta property="og:description">
+<meta property="og:description" content="在这儿给大家说点事儿。我的博客搬家到github主页上了。我的博客。以后首发都在github上了。csdn也会继续更新。可能就是稍微慢一下。
+另外最近搞了一个支付的开源项目。这是项目地址  目前已经支持：
+
+支付宝的 即时到帐、移动支付、加密退款接口。
+微信的目前已经支持：app支付、扫码支付、H5支付
+
+项目还存在些bug，正在不断结合公司业务进行修改。后期可能会支持的越来越全面。
+状态模式废话">
+<meta property="og:image" content="http://design-patterns.readthedocs.io/zh_CN/latest/_images/State.jpg">
+<meta property="og:updated_time" content="2016-06-28T15:50:56.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="大愚的博客｜与你把酒言诗">
-<meta name="twitter:description">
+<meta name="twitter:title" content="php设计模式：状态模式的使用场景">
+<meta name="twitter:description" content="在这儿给大家说点事儿。我的博客搬家到github主页上了。我的博客。以后首发都在github上了。csdn也会继续更新。可能就是稍微慢一下。
+另外最近搞了一个支付的开源项目。这是项目地址  目前已经支持：
+
+支付宝的 即时到帐、移动支付、加密退款接口。
+微信的目前已经支持：app支付、扫码支付、H5支付
+
+项目还存在些bug，正在不断结合公司业务进行修改。后期可能会支持的越来越全面。
+状态模式废话">
+<meta name="twitter:image" content="http://design-patterns.readthedocs.io/zh_CN/latest/_images/State.jpg">
   
     <link rel="alternative" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
   
@@ -42,17 +66,15 @@ ga('send', 'pageview');
   <div id="container">
     <div id="wrap">
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-php设计模式：状态模式的使用场景" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-php设计模式：状态模式的使用场景" class="article article-type-post" itemscope itemprop="blogPost">
   
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/28/php设计模式：状态模式的使用场景/">php设计模式：状态模式的使用场景</a>
+    <h1 class="article-title" itemprop="name">
+      php设计模式：状态模式的使用场景
     </h1>
   
 
@@ -110,11 +132,29 @@ ga('send', 'pageview');
     </div>
   </div>
   
+    
+  
 </article>
 
 
-  
-  
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'helei112g'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+</section>
 </section>
         <aside id="sidebar">
   <nav class="menus">
@@ -158,11 +198,13 @@ ga('send', 'pageview');
 <script>
   var disqus_shortname = 'helei112g';
   
+  var disqus_url = 'https://helei112g.github.io/2016/06/28/php设计模式：状态模式的使用场景/';
+  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>
