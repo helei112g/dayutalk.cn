@@ -60,70 +60,75 @@ ga('send', 'pageview');
     
     <div class="article-meta">
       <a href="/2016/07/12/1-APP后端开发系列：登陆系统设计中的注意问题/" class="article-date">
-  <time datetime="2016-07-12T10:53:10.000Z" itemprop="datePublished">2016-07-12</time>
+  <time datetime="2016-07-12T11:18:18.000Z" itemprop="datePublished">2016-07-12</time>
 </a>
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>想写这个系列很久了，因为之前做这个东西花费了大量的精力，有必要分享出来与大家共享。以前也写了一些关于 APP后端开发的系列文章 由于当初功力不够，很多问题描述不清楚或者解决方案过于复杂、不严谨等。</p>
+        <p>想写这个系列很久了，因为之前做这个东西花费了大量的精力，有必要分享出来与大家共享。以前也写了一些关于 <a href="http://blog.csdn.net/hel12he/article/details/47721209" target="_blank" rel="external">APP后端开发的系列文章</a> 由于当初功力不够，很多问题描述不清楚或者解决方案过于复杂、不严谨等。</p>
 <p>这一次查了很多资料，问了很多相关人士。准备再结合自己实际工作中的问题再次进行一些补充。就先从登陆的设计开始吧！</p>
-<p>越想越糊涂<br>之前再做这一部分的时候，总想着复杂的技术，说出去多调炸天呀。一般来说登陆的流程是：</p>
-<p>image</p>
+<h1 id="越想越糊涂"><a href="#越想越糊涂" class="headerlink" title="越想越糊涂"></a>越想越糊涂</h1><p>之前再做这一部分的时候，总想着复杂的技术，说出去多调炸天呀。一般来说登陆的流程是：</p>
+<p><img src="http://note.youdao.com/yws/public/resource/82ee87138ba987799b398e12b6c79c95/9048DB7675454DA6B904A2315E97B9C7" alt="image"></p>
 <p>当时对于安全性过度痴迷，确走偏了道路。首先提交的时候爬信息被人劫持，因此客户端在上传时，进行AES加密，服务端解密出结果。服务端返回的信息也会AES加密，然后客户端解密。</p>
 <p>然后这里又带来另外一个问题：加密信息放在了客户端，那么一但客户端被反编译，hacker拿到秘钥，那么对于服务端来说加密就没有任何意义了。又为了不在客户端保存这么敏感的信息，就像秘钥由服务端下发。这样子服务端可随时对秘钥进行变更。</p>
 <p>到这里又带来了一个新的问题，感脚一切又回到了起点：下发秘钥要走http，那么依然可能被人劫持。这时候该是加密还是怎么弄呢？如果加密，客户端又放了一个秘钥过去。那这个秘钥依然可能被人反编译。不能再从服务端获取这个秘钥吧？为了确保上个秘钥的安全，生产下一个秘钥……</p>
 <p>当时就是陷入了这样的死循环，不可自拔。现在想想真是too young too simple!</p>
-<p>简单、有效<br>首先在这里还是先说一下：如果你的产品刚刚起步，不要过于纠结性能、安全</p>
-<p>先说性能：你的产品才推出的时候，冷启动的用户数一般来说不会超过1000人（这已经是很不得了的冷启动人数了）。然后你的并发也不会超过100。这种级别的访问，相信机器硬件就可以帮助你解决。如果你的条件远远超出以上规模，那么你的实力绝对足以应付即将发生的事情。 谈谈安全：安全这个事情，从一开始就要考虑，但是不能过于纠结（我之后可以讲讲我在做短信验证码这一部分的遇到的一个经理）。过早介入，会导致系统开发速度降低，过早做了一些不需要的事情（hacker来搞你也是需要成本的，在你没价值的时候，没人愿意来搞你）。所以早期应该重视开发成本，抓紧时间，早日上线。</p>
+<h1 id="简单、有效"><a href="#简单、有效" class="headerlink" title="简单、有效"></a>简单、有效</h1><p>首先在这里还是先说一下：如果你的产品刚刚起步，不要过于纠结性能、安全</p>
+<p>先说性能：你的产品才推出的时候，冷启动的用户数一般来说不会超过1000人（这已经是很不得了的冷启动人数了）。然后你的并发也不会超过100。这种级别的访问，相信机器硬件就可以帮助你解决。如果你的条件远远超出以上规模，那么你的实力绝对足以应付即将发生的事情。<br>谈谈安全：安全这个事情，从一开始就要考虑，但是不能过于纠结（我之后可以讲讲我在做短信验证码这一部分的遇到的一个经理）。过早介入，会导致系统开发速度降低，过早做了一些不需要的事情（hacker来搞你也是需要成本的，在你没价值的时候，没人愿意来搞你）。所以早期应该重视开发成本，抓紧时间，早日上线。</p>
 <p>另外，安全与性能有时候也是鱼与熊掌。</p>
-<p>演化之路<br>这一部分会有一些代码与图来进行说明。在安全方面逐步演进。前面说前期开发只要快就好，但是这里也要注意一个问题，就是后续升级能够弥补前面的错，要给未来升级留下余地。因为否则你的系统始终留下了一个隐患。</p>
-<p>实现功能就好</p>
-<p>这是最开始的阶段，重点考虑功能实现。用户提交username + pwd 服务端验证通过后，返回一个令牌token。</p>
+<h1 id="演化之路"><a href="#演化之路" class="headerlink" title="演化之路"></a>演化之路</h1><p>这一部分会有一些代码与图来进行说明。在安全方面逐步演进。前面说前期开发只要快就好，但是这里也要注意一个问题，就是后续升级能够弥补前面的错，要给未来升级留下余地。因为否则你的系统始终留下了一个隐患。</p>
+<h2 id="实现功能就好"><a href="#实现功能就好" class="headerlink" title="实现功能就好"></a>实现功能就好</h2><p>这是最开始的阶段，重点考虑功能实现。用户提交username + pwd 服务端验证通过后，返回一个令牌token。</p>
 <p>这里需要注意的几个部分是要为未来的升级做好准备。我经常遇到的几个初期设计是：</p>
-<p>验证通过后，把用户uid+username+salt等md5后，作为token返回到客户端。<br>对token加入时间戳，过期后客户端重新提交username + pwd验证后再发一个token到客户端<br>服务端生成一个token后下发到客户端，客户端按照约定的规则加密后请求服务端。<br>先说第一种带来的问题：生成的token永久不变，那么别人获取到一个token就可以无限制的进行请求。直到你关闭了这个接口为止。为后续安全设计增加了成本。</p>
+<blockquote>
+<ol>
+<li>验证通过后，把用户uid+username+salt等md5后，作为token返回到客户端。</li>
+<li>对token加入时间戳，过期后客户端重新提交username + pwd验证后再发一个token到客户端</li>
+<li>服务端生成一个token后下发到客户端，客户端按照约定的规则加密后请求服务端。</li>
+</ol>
+</blockquote>
+<p>先说第一种带来的问题：生成的token永久不变，那么别人获取到一个token就可以无限制的进行请求。直到你关闭了这个接口为止。为后续安全设计增加了成本。</p>
 <p>第二种问题就有点老火了，虽然看似token只在一定时间范围内有效了，但是其实更不安全了。首先客户端需要保存用户的用户名与密码，如果用户手机平时不注重安全，很容易被人窃取。</p>
 <p>第三种设计方案，这是我原先干过的一件事，是这三种方案中最垃圾的设计。得出的教训就是：绝不能把任何加密的事情交给客户端。这样子灵活性大打折扣。举例：还是升级接口了，现在本来token生成只是服务端的事情，服务端随时可动态改变规则，现在由于客户端也参与进来了，这事儿就麻烦了，你一改，客户端也要跟着改。没有任何灵活性可言。切记：客户端就接收，然后转发回服务端就好了。别再客户端进行加密！！！</p>
 <p>经过这些坑的历练，参考oauth2.0，我现在采用以下方案：</p>
 <p>用户提交username + pwd后，服务端返回以下信息：</p>
-<p>{<br>    “access_token”:”2YotnFZFEjr1zCsicMWpAA”,<br>    “expires_in”:3600,<br>    “refresh_token”:”tGzv3JOkF0XG5Qx2TlKWIA”<br>}<br>access_token 是用来进行访问的接口的，expires_in 是他的过期时间，到达过期时间后，需要用 refresh_token 来请求服务端刷新 access_token。</p>
-<p>这里几个重点是：refresh_token 仅能使用一次，使用一次后，将被废弃。另外这个 access_token 只在 expires_in 有效期内有效。</p>
-<p>注意： 这里的 expires_in 仅返回秒数就好了。别返回时间戳。因为各个平台计算s的时间戳，不一致，这样子做更方便处理。</p>
-<p>访问频率控制</p>
-<p>上面我们简单实现了功能，现在app的流量上来了，有些功能也很复杂，如果某个接口访问量太大，会导致服务器崩溃，需要分别对每个接口每次访问设置频率（也可以统一设置每个接口访问的频率）。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"access_token"</span>:<span class="string">"2YotnFZFEjr1zCsicMWpAA"</span>,</span><br><span class="line">    <span class="attr">"expires_in"</span>:<span class="number">3600</span>,</span><br><span class="line">    <span class="attr">"refresh_token"</span>:<span class="string">"tGzv3JOkF0XG5Qx2TlKWIA"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>access_token</strong> 是用来进行访问的接口的，<strong>expires_in</strong> 是他的过期时间，到达过期时间后，需要用 <strong>refresh_token</strong>  来请求服务端刷新 <strong>access_token</strong>。</p>
+<p>这里几个重点是：<strong>refresh_token</strong> 仅能使用一次，使用一次后，将被废弃。另外这个 <strong>access_token</strong> 只在 <strong>expires_in</strong> 有效期内有效。</p>
+<p><strong>注意：</strong> 这里的 expires_in 仅返回秒数就好了。别返回时间戳。因为各个平台计算s的时间戳，不一致，这样子做更方便处理。</p>
+<h2 id="访问频率控制"><a href="#访问频率控制" class="headerlink" title="访问频率控制"></a>访问频率控制</h2><p>上面我们简单实现了功能，现在app的流量上来了，有些功能也很复杂，如果某个接口访问量太大，会导致服务器崩溃，需要分别对每个接口每次访问设置频率（也可以统一设置每个接口访问的频率）。</p>
 <p>一般我的做法是加入一个中间件。每一个接口的访问频率做好一个对应的配置文件。比如：</p>
-<p>a接口 5s内可访问1次<br>b接口 10s内可访问1次（可能非常耗时，如果同时过多请求会导致服务器崩溃）<br>那么就把 access_token 与这些关联起来。这里需要用到redis。当用户A进来访问了 a接口 那么设置这个token 5s内不能再次访问。</p>
-<p>if ($redis-&gt;get($key)) {<br>        // 无法访问，还未到时间</p>
-<pre><code>    return ;
-}
-
-// 设置频率控制key
-$redis-&gt;setex($key, $expires, $value);
-
-// 访问接口
-</code></pre><p>这里需要考虑几个问题：</p>
+<ul>
+<li>a接口 5s内可访问1次</li>
+<li>b接口 10s内可访问1次（可能非常耗时，如果同时过多请求会导致服务器崩溃）</li>
+</ul>
+<p>那么就把 <strong>access_token</strong> 与这些关联起来。这里需要用到redis。当用户A进来访问了 a接口 那么设置这个token 5s内不能再次访问。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ($redis-&gt;get($key)) &#123;</span><br><span class="line">    <span class="comment">// 无法访问，还未到时间</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置频率控制key</span></span><br><span class="line">$redis-&gt;setex($key, $expires, $value);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 访问接口</span></span><br></pre></td></tr></table></figure>
+<p>这里需要考虑几个问题：</p>
 <p>设置的访问时间要合理。举例：客户端一般启动的时候会请求多个接口，那么当这些请求到达后，服务端可能拒绝其中一部分访问（因为在频率控制内）</p>
 <p>一般来说不需要对所有的接口都进行频率控制，仅仅针对重要的内容以及性能上有要求的接口进行频率控制。</p>
-<p>账号安全考虑</p>
-<p>现在又进一步了，需要考虑用户账号安全的问题。比如：QQ，有时候会提醒我们你的账号在香港登陆了。如果不是自己所为，赶快修改密码之类的。</p>
+<h2 id="账号安全考虑"><a href="#账号安全考虑" class="headerlink" title="账号安全考虑"></a>账号安全考虑</h2><p>现在又进一步了，需要考虑用户账号安全的问题。比如：QQ，有时候会提醒我们你的账号在香港登陆了。如果不是自己所为，赶快修改密码之类的。</p>
 <p>实现这个功能，你需要记录每次登陆、启动时每个token对应的ip地址。如果ip地址与上次的ip不在同一个范围（这个规则由自己定，因为有的运营商ip经常变化，比如：长城）。就提醒用户是不是他自己所为，如果不是，就赶快修改密码。</p>
 <p>现在很多app在开发之初，都是可以多个设备同时登陆。这样带来的安全问题也很多。如果要做成单个设备登陆，需要每个token对应一个deviceToken。</p>
 <p>这一部分就不继续深入讨论下去了。</p>
-<p>防DNS劫持</p>
-<p>安全工作做得再好，如果有人能够获得大量合法用户的token，来请求你的借口，你也无法识别，因为从行为来看，这一切都是合法用户再进行。</p>
+<h2 id="防DNS劫持"><a href="#防DNS劫持" class="headerlink" title="防DNS劫持"></a>防DNS劫持</h2><p>安全工作做得再好，如果有人能够获得大量合法用户的token，来请求你的借口，你也无法识别，因为从行为来看，这一切都是合法用户再进行。</p>
 <p>以前为了防止别人获取到合法的信息，我才弄出了很狗血的客户端加密方法。导致后期升级的时候，诸多问题。这个东西其实很简单，使用https来进行请求（可以个人关键接口使用）</p>
-<p>token<br>才开始做app服务端的时候，总想着token的设计。怎么才能生成一个好的token呢？现在想想真不知道当初怎么想的。</p>
-<p>token的生成</p>
-<p>首先搞明白这个token的作用就是一个令牌，用来标记一个用户的身份。那么首先他要唯一。其次他从客户端上传后，服务端能够验证这个token是由服务端生成的。</p>
+<h1 id="token"><a href="#token" class="headerlink" title="token"></a>token</h1><p>才开始做app服务端的时候，总想着token的设计。怎么才能生成一个好的token呢？现在想想真不知道当初怎么想的。</p>
+<h2 id="token的生成"><a href="#token的生成" class="headerlink" title="token的生成"></a>token的生成</h2><p>首先搞明白这个token的作用就是一个令牌，用来标记一个用户的身份。那么首先他要唯一。其次他从客户端上传后，服务端能够验证这个token是由服务端生成的。</p>
 <p>所以token生成只要满足以上目的，你随意就好了。当然别把敏感信息暴露出去了。</p>
 <p>常用的一种生成方式：</p>
-<p>该用户的uid，如：8888<br>该用户的口令，如： 123123<br>用户对应的salt，如：abcd<br>过期时间戳，如：1468293948<br>把上面几部分拼接起来：888:123123🔡1468293948</p>
-<p>token = md5(‘888:123123🔡1468293948’);</p>
-<p>token的验证</p>
-<p>对于token也有两种方法进行验证。一是：服务端生成后，将token保存起来（redis或者mysql中）。客户端穿上来之后，检查是否有该token，如果有取出对应的信息，比如uid，验证是否匹配。</p>
+<ol>
+<li>该用户的uid，如：8888</li>
+<li>该用户的口令，如： 123123</li>
+<li>用户对应的salt，如：abcd</li>
+<li>过期时间戳，如：1468293948</li>
+</ol>
+<p>把上面几部分拼接起来：888:123123:abcd:1468293948</p>
+<p>token = md5(‘888:123123:abcd:1468293948’);</p>
+<h2 id="token的验证"><a href="#token的验证" class="headerlink" title="token的验证"></a>token的验证</h2><p>对于token也有两种方法进行验证。一是：服务端生成后，将token保存起来（redis或者mysql中）。客户端穿上来之后，检查是否有该token，如果有取出对应的信息，比如uid，验证是否匹配。</p>
 <p>另一种方法是：根据上传的uid，生成对应的token，然后进行比较token结果是否一致（要保障该算法如果给定的值一定，结果必须唯一。常用md5）。</p>
 <p>对于个人而言更倾向于第二种方案。第一种方案效率更高（可使用redis存储这个token），但是如果redis一但雪崩，就会造成所有用户登录失效，一定时间内不可登陆。初期越简单、越可靠更好。</p>
-<p>总结<br>这一部分没有太多代码，主要是思路。还有涉及到H5的登陆问题也没有说到。下篇文章会把APP中登陆后，如果搞定H5登陆的问题进行阐述。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这一部分没有太多代码，主要是思路。还有涉及到H5的登陆问题也没有说到。下篇文章会把APP中登陆后，如果搞定H5登陆的问题进行阐述。</p>
 
       
 
