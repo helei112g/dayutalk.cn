@@ -44,6 +44,265 @@ ga('send', 'pageview');
       <div class="outer">
         <section id="main">
   
+    <article id="使用payment完成支付宝-支付宝：即时到账接口接入" class="article article-type-使用payment完成支付宝" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/18/支付宝：即时到账接口接入/">支付宝：即时到账接口接入</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/07/18/支付宝：即时到账接口接入/" class="article-date">
+  <time datetime="2016-07-18T11:48:31.000Z" itemprop="datePublished">2016-07-18</time>
+</a>
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>特别声明：</strong></p>
+<blockquote>
+<p>以下文档均针对 payment 2.0 以上版本，并且PHP需要5.5以上(含)。<br>代码中所有编码均使用 utf-8 。</p>
+</blockquote>
+<p>通过几天的时间，终于把payment 2.0的基本结构搭好了。今天刚完成支付宝 <strong>即时到帐</strong> 接口的开发。赶紧把使用文档给补上。请大家一定仔细查看文档，实在还不行就来问我吧！（我期待你问我，反正我收钱的，哈哈）</p>
+<h1 id="即时到帐-接口签约"><a href="#即时到帐-接口签约" class="headerlink" title="即时到帐 接口签约"></a>即时到帐 接口签约</h1><p>在你使用这个接口时，请先确认你是否在支付宝商户中心签约了该接口。</p>
+<p><img src="https://helei112g.github.io/images/2.png" alt="image"></p>
+<p>在商户中心，看到 <strong>即时到帐（已添加）</strong>，说明你已签约该接口，可正常使用。如果还不知道如何签约，请 <a href="https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.FkBnFB&amp;treeId=62&amp;articleId=104749&amp;docType=1" target="_blank" rel="external">查看支付宝即时到帐签约教程</a></p>
+<p>OK！完成签约后，</p>
+<p>需要把 <a href="https://github.com/helei112g/payment/tree/paymentv2" target="_blank" rel="external">payment项目导入自己的项目中</a> 安装方法，请参考<a href="http://note.youdao.com/yws/public/redirect/share?id=5f8373d4cdfeb06dbcbe21b942efc53e&amp;type=false" target="_blank" rel="external">Payment项目简介</a>。</p>
+<h1 id="调用示例"><a href="#调用示例" class="headerlink" title="调用示例"></a>调用示例</h1><p>在项目的 <code>examples</code> 文件夹中，我已提供完整的示例。为了便于大家理解，这里对代码再进行说明。</p>
+<h2 id="支付宝的配置文件"><a href="#支付宝的配置文件" class="headerlink" title="支付宝的配置文件"></a>支付宝的配置文件</h2><p>在1.x版本中，配置文件被固定写在了sdk中，这种做法太流氓了。为了不继续流氓下去，在2.x版本中，将配置信息独立出来，让大家可以根据自己的实际情况自定义，灵活程度大大增加。</p>
+<p>调用时，仅需要提供给我如下的一个数组，至于配置信息写在哪里，完全由你自己决定。</p>
+<p>我在示例中，是将配置信息写在 <code>examples/aliconfig.php</code> 中，然后使用 <code>require_once</code> 包含进来。你完全可以写cache中、db中。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> [</span><br><span class="line">    <span class="string">'partner'</span>   =&gt; <span class="string">'2088xxxxxxxxxxx'</span>,</span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'xxxxxxxxxxxxxxxxxx'</span>,</span><br><span class="line">    <span class="string">'rsa_private_key'</span>   =&gt; <span class="string">'./rsa_private_key.pem'</span>,</span><br><span class="line">    <span class="string">"notify_url"</span>	=&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">"return_url"</span>	=&gt; <span class="string">'http://test.helei.com/return-url.html'</span>,</span><br><span class="line">    <span class="string">"time_expire"</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<hr>
+<p><strong>参数介绍</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>partner</td>
+<td>合作者身份ID</td>
+<td>签约的支付宝账号对应的支付宝唯一用户号。以2088开头的16位纯数字组成。</td>
+<td>必须</td>
+</tr>
+<tr>
+<td>md5_key</td>
+<td>MD5密钥</td>
+<td><a href="https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.qt91b7&amp;treeId=62&amp;articleId=104740&amp;docType=1#s1" target="_blank" rel="external">点击这里</a></td>
+<td>必须</td>
+</tr>
+<tr>
+<td>rsa_private_key</td>
+<td>RSA私钥</td>
+<td><a href="https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.qt91b7&amp;treeId=62&amp;articleId=104740&amp;docType=1#s0" target="_blank" rel="external">点击这里</a></td>
+<td>必须</td>
+</tr>
+<tr>
+<td>notify_url</td>
+<td>服务器异步通知URI</td>
+<td>支付宝服务器主动通知商户网站里指定的页面http路径。(建议使用https)</td>
+<td>可选</td>
+</tr>
+<tr>
+<td>return_url</td>
+<td>页面跳转同步通知页面路径</td>
+<td>支付宝处理完请求后，当前页面自动跳转到商户网站里指定页面的http路径。</td>
+<td>可选</td>
+</tr>
+<tr>
+<td>time_expire</td>
+<td>超时时间</td>
+<td>设置未付款交易的超时时间，一旦超时，该笔交易就会自动被关闭。单位默认为分钟</td>
+<td>可选</td>
+</tr>
+</tbody>
+</table>
+<p><strong>特别说明：</strong></p>
+<ul>
+<li>如果上述配置文件必须的key的值为空，会抛出 <code>PayException</code> 异常</li>
+<li>如果 <code>notify_url</code> 为空，虽然可支付成功，但是客户端将无法收到支付宝的回调结果。</li>
+<li>建议采用https协议</li>
+</ul>
+<h2 id="调用支付"><a href="#调用支付" class="headerlink" title="调用支付"></a>调用支付</h2><p>项目中的示例代码，参见 <code>examples/charge.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  生成订单号 便于测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPayid</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> date(<span class="string">'Ymdhis'</span>, time())</span><br><span class="line">            .substr(floor(microtime()*<span class="number">1000</span>),<span class="number">0</span>,<span class="number">1</span>)</span><br><span class="line">            .rand(<span class="number">0</span>,<span class="number">9</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订单信息</span></span><br><span class="line">$orderData = [</span><br><span class="line">    <span class="string">"orderTradeNo"</span>	=&gt; createPayid(),</span><br><span class="line">    <span class="string">"totalFee"</span>	=&gt; <span class="string">'1'</span>,</span><br><span class="line">    <span class="string">"clientIp"</span>	=&gt; <span class="string">'127.0.0.1'</span>,</span><br><span class="line">    <span class="string">"subject"</span>	=&gt; <span class="string">'我是即时到帐'</span>,</span><br><span class="line">    <span class="string">"body"</span>	=&gt; <span class="string">'支付测试即时到帐接口'</span>,</span><br><span class="line">    <span class="string">"extraCommonParam"</span>	=&gt; <span class="string">''</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">$aliconfig = <span class="keyword">require_once</span> <span class="keyword">__DIR__</span> . <span class="string">'/aliconfig.php'</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例化支付环境类，进行支付创建</span></span><br><span class="line">$charge = <span class="keyword">new</span> ChargeContext();</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    $charge-&gt;initCharge(Config::ALI_CHANNEL_WEB, $aliconfig);</span><br><span class="line">    $url = $charge-&gt;charge($payData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 请求alipay</span></span><br><span class="line">header(<span class="string">"Location:&#123;$url&#125;"</span>);</span><br></pre></td></tr></table></figure>
+<p>以上代码就完成了即时到帐的全部调用，下面分步骤来说明下代码含义：</p>
+<h3 id="订单信息"><a href="#订单信息" class="headerlink" title="订单信息"></a>订单信息</h3><p>此部分的key部分，必须采用以下值，否则SDK无法识别。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// createPayid(); 函数是为了演示方便，随手写的一个生成订单号的函数</span></span><br><span class="line"></span><br><span class="line">$orderData = [</span><br><span class="line">    <span class="string">"order_no"</span>	=&gt; createPayid(),</span><br><span class="line">    <span class="string">"amount"</span>	=&gt; <span class="string">'1'</span>,<span class="comment">// 单位为元</span></span><br><span class="line">    <span class="string">"client_ip"</span>	=&gt; <span class="string">'127.0.0.1'</span>,</span><br><span class="line">    <span class="string">"subject"</span>	=&gt; <span class="string">'测试支付'</span>,</span><br><span class="line">    <span class="string">"body"</span>	=&gt; <span class="string">'支付接口测试'</span>,</span><br><span class="line">    <span class="string">"extra_param"</span>	=&gt; <span class="string">''</span>,</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<p><strong>参数说明</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>order_no</td>
+<td>订单号</td>
+<td>平台根据规则生成的订单号，最长64位，要在商户数据库中唯一</td>
+<td>必须</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>交易总金额</td>
+<td>该笔订单的资金总额，单位为RMB-Yuan。取值范围为[0.01，100000000.00]，精确到小数点后两位。</td>
+<td>必须</td>
+</tr>
+<tr>
+<td>client_ip</td>
+<td>客户端IP</td>
+<td>用户在创建交易时，该用户当前所使用机器的IP。</td>
+<td>必须</td>
+</tr>
+<tr>
+<td>subject</td>
+<td>商品名称</td>
+<td>商品的标题/交易标题/订单标题/订单关键字等。该参数最长为128个汉字。</td>
+<td>必须</td>
+</tr>
+<tr>
+<td>body</td>
+<td>商品描述</td>
+<td>对一笔交易的具体描述信息。如果是多种商品，请将商品描述字符串累加传给body。</td>
+<td>必须</td>
+</tr>
+<tr>
+<td>extra_param</td>
+<td>公用回传参数</td>
+<td>如果用户请求时传递了该参数，则返回给商户时会回传该参数。</td>
+<td>可选</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="签名数据"><a href="#签名数据" class="headerlink" title="签名数据"></a>签名数据</h3><p>以下是真正实现数据签名的地方，返回的数据可直接用于发起支付宝支付。大家可以对比下支付宝自身信息，是不是已经大大简化了？<br>当然简化带来的另外一个意思就是：放弃了很多我们正常情况下用不到的功能，比如：花呗分期</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实例化支付环境类，进行支付创建</span></span><br><span class="line">$charge = <span class="keyword">new</span> ChargeContext();</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    $charge-&gt;initCharge(Config::ALI_CHANNEL_WEB, $aliconfig);</span><br><span class="line">    $url = $charge-&gt;charge($payData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里对于调用者，仅仅需要知道 <code>ChargeContext</code> 这一个类，这里使用了 <strong>策略模式 + 简单工厂模式</strong> 两种方法来进行调用的简化。这种方式也非常方便后期进行扩展，对于客户端与复杂的逻辑进行了隔离。</p>
+<h3 id="跳转支付宝"><a href="#跳转支付宝" class="headerlink" title="跳转支付宝"></a>跳转支付宝</h3><p>通过上一步返回的是请求支付宝的url。由于在页面上可能需要通过js调用支付宝或者还有其他逻辑，因为我并没有直接重定向到支付宝，而把控制权交到了客户端手中。</p>
+<p>以下代码，示例的是简单的利用返回的url，重定向到支付宝，完成支付。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">header(<span class="string">"Location:&#123;$url&#125;"</span>);</span><br></pre></td></tr></table></figure>
+<p>本次支付宝的即时到帐接口到这里就完成了调用。下一节把回调通知部分完成，这样一个基本的支付流程就完成了。</p>
+<h1 id="技术支持"><a href="#技术支持" class="headerlink" title="技术支持"></a>技术支持</h1><blockquote>
+<p>如果需要协助集成到项目，可付费获得我的服务！</p>
+</blockquote>
+<ul>
+<li>微信：<strong>helei543345</strong></li>
+<li><p>邮箱: <strong>dayugog@gmail.com</strong></p>
+</li>
+<li><p>支持我：</p>
+</li>
+</ul>
+<p><img src="https://helei112g.github.io/images/3.png" alt="image"></p>
+
+      
+
+      
+        
+    </div>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-支付宝、微信支付接入集成" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/18/支付宝、微信支付接入集成/">支付宝、微信支付接入集成</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/07/18/支付宝、微信支付接入集成/" class="article-date">
+  <time datetime="2016-07-18T11:42:51.000Z" itemprop="datePublished">2016-07-18</time>
+</a>
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>从开始写代码以来，一直就与支付打交道。终于到今天，我忍无可忍啦！每次都要重新写，重新调（主要换工作后，不能把前东家的代码给拷贝走）。好吧，写一份放到github上，以后啥时候用都有了，还方便做外包（哈哈哈……）</p>
+<p>之前看了 ping++ 集成的各路支付接口，觉得挺爽的，但是要收费，而且公司也不放心，怕什么时候 ping++ 坚持不住了，那到时候怎么办？我倒是觉得可能大部分公司坚持不住了，ping++ 还在呢！ 因此不自量力的自己也来集成一个吧！</p>
+<h1 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h1><p><strong>说明：</strong></p>
+<ul>
+<li>PHP 5.5 以上版本，包含5.5</li>
+<li>采用PSR-4标准编码，可通过composer实现自动加载。</li>
+<li>如果项目无法使用composer，请通过包含项目中的 <code>autoload.php</code> 来实现自动加载</li>
+<li>客户端传入的参数均使用 <strong>下划线风格</strong></li>
+</ul>
+<h2 id="composer安装Payment"><a href="#composer安装Payment" class="headerlink" title="composer安装Payment"></a>composer安装Payment</h2><p>如果你励志要做php，强烈建议你学习下composer。</p>
+<p><em>composer学习地址： <a href="http://www.phpcomposer.com/" target="_blank" rel="external">http://www.phpcomposer.com/</a></em></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 安装时请自行指定版本。否则将安装稳定版，当前稳定版是1.x</span></span><br><span class="line">composer <span class="keyword">require</span> riverslei/payment</span><br></pre></td></tr></table></figure>
+<p>通过composer安装后，无需任何操作，可在项目中直接使用。</p>
+<h2 id="直接下载"><a href="#直接下载" class="headerlink" title="直接下载"></a>直接下载</h2><p>当然如果由于历史原因（如果没有历史原因，强烈推荐composer安装，方便后续更新），无法通过composer安装，那么请自行下载（下载地址见下方 功能介绍），并在使用时，包含 <code>autoload.php</code> 文件。这种方式就不过多介绍了。</p>
+<h1 id="功能介绍"><a href="#功能介绍" class="headerlink" title="功能介绍"></a>功能介绍</h1><p>说这么多废话没什么卵用，还是先介绍下本SDK支持的支付接口</p>
+<ol>
+<li>支付宝支付<ul>
+<li>即时到帐接口</li>
+<li>移动支付接口</li>
+<li>手机网站支付接口</li>
+<li>有密退款接口</li>
+<li>订单查询接口</li>
+</ul>
+</li>
+</ol>
+<ol>
+<li>微信支付<ul>
+<li>app支付接口</li>
+<li>扫码支付接口（一般网站上用的）</li>
+<li>公众号支付接口</li>
+<li>退款接口</li>
+<li>订单查询接口</li>
+</ul>
+</li>
+</ol>
+<p>以上功能在重构的2.0版本中还未完全支持，正在持续集成。</p>
+<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 1.x版本</a></p>
+<p><a href="https://github.com/helei112g/payment/tree/paymentv2" target="_blank" rel="external">payment 2.0版本</a> (还处于开发阶段)</p>
+<p>当然有很多朋友问我支不支持paypal 银联等等。我也想呀，可惜这个得慢慢来。我这基础功能还搞完呢！哈哈，当然也欢迎大家push代码给我</p>
+<h1 id="技术支持"><a href="#技术支持" class="headerlink" title="技术支持"></a>技术支持</h1><p>本来我想有完整的示例代码，大家应该在使用中不会遇到什么问题，但是还有有朋友遇到诸多问题。那么有关于项目本身的bug或建议，大家可以通过以下方式联系我：</p>
+<ul>
+<li>微信：<strong>helei543345</strong></li>
+<li>邮箱: <strong>dayugog@gmail.com</strong></li>
+</ul>
+<blockquote>
+<p>此外如果需要协助集成到项目，可付费获得我的服务！</p>
+</blockquote>
+
+      
+
+      
+        
+    </div>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-1-APP后端开发系列：登陆系统设计中的注意问题" class="article article-type-post" itemscope itemprop="blogPost">
   
   <div class="article-inner">
@@ -69,7 +328,7 @@ ga('send', 'pageview');
         <p>想写这个系列很久了，因为之前做这个东西花费了大量的精力，有必要分享出来与大家共享。以前也写了一些关于 <a href="http://blog.csdn.net/hel12he/article/details/47721209" target="_blank" rel="external">APP后端开发的系列文章</a> 由于当初功力不够，很多问题描述不清楚或者解决方案过于复杂、不严谨等。</p>
 <p>这一次查了很多资料，问了很多相关人士。准备再结合自己实际工作中的问题再次进行一些补充。就先从登陆的设计开始吧！</p>
 <h1 id="越想越糊涂"><a href="#越想越糊涂" class="headerlink" title="越想越糊涂"></a>越想越糊涂</h1><p>之前再做这一部分的时候，总想着复杂的技术，说出去多调炸天呀。一般来说登陆的流程是：</p>
-<p><img src="http://note.youdao.com/yws/public/resource/82ee87138ba987799b398e12b6c79c95/9048DB7675454DA6B904A2315E97B9C7" alt="image"></p>
+<p><img src="https://helei112g.github.io/images/1.png" alt="image"></p>
 <p>当时对于安全性过度痴迷，确走偏了道路。首先提交的时候爬信息被人劫持，因此客户端在上传时，进行AES加密，服务端解密出结果。服务端返回的信息也会AES加密，然后客户端解密。</p>
 <p>然后这里又带来另外一个问题：加密信息放在了客户端，那么一但客户端被反编译，hacker拿到秘钥，那么对于服务端来说加密就没有任何意义了。又为了不在客户端保存这么敏感的信息，就像秘钥由服务端下发。这样子服务端可随时对秘钥进行变更。</p>
 <p>到这里又带来了一个新的问题，感脚一切又回到了起点：下发秘钥要走http，那么依然可能被人劫持。这时候该是加密还是怎么弄呢？如果加密，客户端又放了一个秘钥过去。那这个秘钥依然可能被人反编译。不能再从服务端获取这个秘钥吧？为了确保上个秘钥的安全，生产下一个秘钥……</p>

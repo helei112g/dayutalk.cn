@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>支付宝、微信支付接入集成 | 大愚的博客｜与你把酒言诗</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="从开始写代码以来，一直就与支付打交道。终于到今天，我忍无可忍啦！每次都要重新写，重新调（主要换工作后，不能把前东家的代码给拷贝走）。好吧，写一份放到github上，以后啥时候用都有了，还方便做外包（哈哈哈……）
+之前看了 ping++ 集成的各路支付接口，觉得挺爽的，但是要收费，而且公司也不放心，怕什么时候 ping++ 坚持不住了，那到时候怎么办？我倒是觉得可能大部分公司坚持不住了，ping++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="支付宝、微信支付接入集成">
+<meta property="og:url" content="https://helei112g.github.io/2016/07/18/支付宝、微信支付接入集成/index.html">
+<meta property="og:site_name" content="大愚的博客｜与你把酒言诗">
+<meta property="og:description" content="从开始写代码以来，一直就与支付打交道。终于到今天，我忍无可忍啦！每次都要重新写，重新调（主要换工作后，不能把前东家的代码给拷贝走）。好吧，写一份放到github上，以后啥时候用都有了，还方便做外包（哈哈哈……）
+之前看了 ping++ 集成的各路支付接口，觉得挺爽的，但是要收费，而且公司也不放心，怕什么时候 ping++ 坚持不住了，那到时候怎么办？我倒是觉得可能大部分公司坚持不住了，ping++">
+<meta property="og:updated_time" content="2016-07-18T11:47:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="支付宝、微信支付接入集成">
+<meta name="twitter:description" content="从开始写代码以来，一直就与支付打交道。终于到今天，我忍无可忍啦！每次都要重新写，重新调（主要换工作后，不能把前东家的代码给拷贝走）。好吧，写一份放到github上，以后啥时候用都有了，还方便做外包（哈哈哈……）
+之前看了 ping++ 集成的各路支付接口，觉得挺爽的，但是要收费，而且公司也不放心，怕什么时候 ping++ 坚持不住了，那到时候怎么办？我倒是觉得可能大部分公司坚持不住了，ping++">
+  
+    <link rel="alternative" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-79844617-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <section id="main"><article id="post-支付宝、微信支付接入集成" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      支付宝、微信支付接入集成
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/07/18/支付宝、微信支付接入集成/" class="article-date">
+  <time datetime="2016-07-18T11:42:51.000Z" itemprop="datePublished">2016-07-18</time>
+</a>
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>从开始写代码以来，一直就与支付打交道。终于到今天，我忍无可忍啦！每次都要重新写，重新调（主要换工作后，不能把前东家的代码给拷贝走）。好吧，写一份放到github上，以后啥时候用都有了，还方便做外包（哈哈哈……）</p>
+<p>之前看了 ping++ 集成的各路支付接口，觉得挺爽的，但是要收费，而且公司也不放心，怕什么时候 ping++ 坚持不住了，那到时候怎么办？我倒是觉得可能大部分公司坚持不住了，ping++ 还在呢！ 因此不自量力的自己也来集成一个吧！</p>
+<h1 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h1><p><strong>说明：</strong></p>
+<ul>
+<li>PHP 5.5 以上版本，包含5.5</li>
+<li>采用PSR-4标准编码，可通过composer实现自动加载。</li>
+<li>如果项目无法使用composer，请通过包含项目中的 <code>autoload.php</code> 来实现自动加载</li>
+<li>客户端传入的参数均使用 <strong>下划线风格</strong></li>
+</ul>
+<h2 id="composer安装Payment"><a href="#composer安装Payment" class="headerlink" title="composer安装Payment"></a>composer安装Payment</h2><p>如果你励志要做php，强烈建议你学习下composer。</p>
+<p><em>composer学习地址： <a href="http://www.phpcomposer.com/" target="_blank" rel="external">http://www.phpcomposer.com/</a></em></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 安装时请自行指定版本。否则将安装稳定版，当前稳定版是1.x</span></span><br><span class="line">composer <span class="keyword">require</span> riverslei/payment</span><br></pre></td></tr></table></figure>
+<p>通过composer安装后，无需任何操作，可在项目中直接使用。</p>
+<h2 id="直接下载"><a href="#直接下载" class="headerlink" title="直接下载"></a>直接下载</h2><p>当然如果由于历史原因（如果没有历史原因，强烈推荐composer安装，方便后续更新），无法通过composer安装，那么请自行下载（下载地址见下方 功能介绍），并在使用时，包含 <code>autoload.php</code> 文件。这种方式就不过多介绍了。</p>
+<h1 id="功能介绍"><a href="#功能介绍" class="headerlink" title="功能介绍"></a>功能介绍</h1><p>说这么多废话没什么卵用，还是先介绍下本SDK支持的支付接口</p>
+<ol>
+<li>支付宝支付<ul>
+<li>即时到帐接口</li>
+<li>移动支付接口</li>
+<li>手机网站支付接口</li>
+<li>有密退款接口</li>
+<li>订单查询接口</li>
+</ul>
+</li>
+</ol>
+<ol>
+<li>微信支付<ul>
+<li>app支付接口</li>
+<li>扫码支付接口（一般网站上用的）</li>
+<li>公众号支付接口</li>
+<li>退款接口</li>
+<li>订单查询接口</li>
+</ul>
+</li>
+</ol>
+<p>以上功能在重构的2.0版本中还未完全支持，正在持续集成。</p>
+<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 1.x版本</a></p>
+<p><a href="https://github.com/helei112g/payment/tree/paymentv2" target="_blank" rel="external">payment 2.0版本</a> (还处于开发阶段)</p>
+<p>当然有很多朋友问我支不支持paypal 银联等等。我也想呀，可惜这个得慢慢来。我这基础功能还搞完呢！哈哈，当然也欢迎大家push代码给我</p>
+<h1 id="技术支持"><a href="#技术支持" class="headerlink" title="技术支持"></a>技术支持</h1><p>本来我想有完整的示例代码，大家应该在使用中不会遇到什么问题，但是还有有朋友遇到诸多问题。那么有关于项目本身的bug或建议，大家可以通过以下方式联系我：</p>
+<ul>
+<li>微信：<strong>helei543345</strong></li>
+<li>邮箱: <strong>dayugog@gmail.com</strong></li>
+</ul>
+<blockquote>
+<p>此外如果需要协助集成到项目，可付费获得我的服务！</p>
+</blockquote>
+
+      
+
+      
+        
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/18/支付宝：即时到账接口接入/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          支付宝：即时到账接口接入
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/12/1-APP后端开发系列：登陆系统设计中的注意问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">1.APP后端开发系列：登陆系统设计中的注意问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'helei112g'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+</section>
+</section>
+        <aside id="sidebar">
+  <nav class="menus">
+  	<ul>
+  		<li><a href="/"><i class="icon icon-home"></i></a></li>
+  		
+			<li><a href="/archives"><i class="icon icon-fenlei"></i></a></li>
+  		
+  		
+			<li><a href="/tags"><i class="icon icon-tag"></i></a></li>
+  		
+  		
+  			<li><a href="https://github.com/helei112g" target="_blank"><i class="icon icon-github"></i></a></li>
+  		
+  	</ul>
+  </nav>
+  <a id="go-top" href="#"><i class="icon icon-up"></i></a>
+</aside>
+      </div>
+      <footer id="footer">
+  
+	<div id="footer-info" class="inner">
+	  &copy; 2016 He Lei 
+	  - Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	  - Theme <a href="https://github.com/Alex-fun/hexo-theme-jane/" target="_blank">Jane</a>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tag</a>
+  
+    <a href="https://github.com/helei112g" class="mobile-nav-link">Github</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'helei112g';
+  
+  var disqus_url = 'https://helei112g.github.io/2016/07/18/支付宝、微信支付接入集成/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
