@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="google-site-verification" content="" />
+  
+  <title>大愚的博客｜与你把酒言诗</title>
+  <meta name="author" content="He Lei">
+   <meta name="description" content="非特殊情况不再更新extensions for theme Pln
+本项目的目的在于分享个人博客中的「关于我」和「友链」页面。
+由于并没有用到 hexo-theme-pln 的模板生成，所以这两个页面并不属于 Pln 主题的一部分。
+相反的，这里的每一个html文件都包含了它所需的所有内容，并没有对">
+  
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+ <meta property="og:image" content="undefined"/>
+  
+  <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/m.min.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+  <div id="main">
+    <div class="behind">
+      <div class="back">
+        <a href="/" class="black-color"><i class="fa fa-times" aria-hidden="true"></i></a>
+      </div>
+      <div class="description">
+        &nbsp;代码是吃饭的家伙
+      </div>
+    </div>
+    <div class="container">
+      
+
+  <article class="standard page">
+    <div class="title">
+      
+  
+    <h1 class="page-title center">
+        
+    </h1>
+  
+
+
+    </div>
+    <div class="meta center">
+      
+<time datetime="2016-07-23T01:16:03.000Z">
+  <i class="fa fa-calendar"></i>&nbsp;
+  2016-07-23
+</time>
+
+
+
+
+
+
+
+    </div>
+    <hr>
+    <div class="picture-container">
+      
+    </div>
+    <h1 id="非特殊情况不再更新"><a href="#非特殊情况不再更新" class="headerlink" title="非特殊情况不再更新"></a><em>非特殊情况不再更新</em></h1><h1 id="extensions-for-theme-Pln"><a href="#extensions-for-theme-Pln" class="headerlink" title="extensions for theme Pln"></a>extensions for theme Pln</h1><hr>
+<p>本项目的目的在于分享<a href="http://gaoryrt.com/" target="_blank" rel="external">个人博客</a>中的「<a href="http://gaoryrt.com/CV/" target="_blank" rel="external">关于我</a>」和「<a href="http://gaoryrt.com/links.html" target="_blank" rel="external">友链</a>」页面。</p>
+<p>由于并没有用到 <a href="https://github.com/gaoryrt/hexo-theme-pln" target="_blank" rel="external">hexo-theme-pln</a> 的模板生成，所以这两个页面并不属于 Pln 主题的一部分。</p>
+<p>相反的，这里的每一个html文件都包含了它所需的所有内容，并没有对外部css/js的请求。</p>
+<hr>
+<h1 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h1><ol>
+<li>将所需的html文件放到<code>hexo/source</code>文件夹下。</li>
+<li>执行<code>hexo g</code>，得到对应的页面。</li>
+<li>得到的页面链接应为<code>yoursitedomain/CV.html</code>或<code>yoursitedomain/links.html</code>。</li>
+</ol>
+<hr>
+<h1 id="Customize"><a href="#Customize" class="headerlink" title="Customize"></a>Customize</h1><h2 id="CV-html"><a href="#CV-html" class="headerlink" title="CV.html"></a>CV.html</h2><p>以 129 - 140 行为例，该段代码在浏览器中展示如下：<br><img src="/img/1.png" alt="1.png"><br><code>class=&quot;line blueback&quot;</code> 蓝底黑字 路径<br><code>class=&quot;Arr blueRightArr&quot;</code> 黑底蓝色箭头<br><code>class=&quot;line blackback&quot;</code> 黑底绿字 git分支<br><code>class=&quot;line blackback1&quot;</code> 黑底蓝字 git状态<br><code>class=&quot;line blackback2&quot;</code> 黑底黄字 git状态<br><code>class=&quot;Arr blackRightArr&quot;</code> 透明底黑色箭头<br><code>class=&quot;line opeText&quot;</code> 透明底绿字 命令<br><code>class=&quot;line plainText&quot;</code> 透明底白字 命令行的白字<br><code>class=&quot;line plainOut&quot;</code> 透明底白字 输出  </p>
+<p>通过以上class自定义页面的效果</p>
+<h2 id="page-html"><a href="#page-html" class="headerlink" title="page.html"></a>page.html</h2><p>以 49 - 51 行为例，每一个<code>class=&quot;link&quot;</code>表示一个友链按钮<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;link&quot;&gt;</span><br><span class="line">    &lt;a href=&quot;https://www.logcg.com&quot; title=&quot;落格博客&quot;&gt;落格博客&lt;/a&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h1 id="Issues"><a href="#Issues" class="headerlink" title="Issues"></a>Issues</h1><p><a href="https://github.com/gaoryrt/extensions-for-theme-Pln/issues" target="_blank" rel="external">Issues</a> are always welcome.<br>欢迎您对本项目提供和意见和建议。<br>(请直接提issue，或在<a href="http://weibo.com/R1T1AN" target="_blank" rel="external">微博</a>上私信，一般回复时间不超过12小时)</p>
+<hr>
+<h1 id="license"><a href="#license" class="headerlink" title="license"></a>license</h1><p><a rel="external" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"></a><br>This work is licensed under a <a rel="external" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p>
+
+
+  </article>
+  </script>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  <div class="busuanzi center">
+    页阅读量:&nbsp;<span id="busuanzi_value_page_pv"></span>&nbsp;・&nbsp;
+    站访问量:&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;・&nbsp;
+    站访客数:&nbsp;<span id="busuanzi_value_site_uv"></span>
+  </div>
+
+
+
+
+    </div>
+  </div>
+  <footer class="page-footer"><div class="clearfix">
+</div>
+<div class="right-foot container">
+    <div class="firstrow">
+        <a href="#top" >
+        <i class="fa fa-arrow-right"></i>
+        </a>
+        © helei 2016-2016
+    </div>
+    <div class="secondrow">
+        <a href="https://github.com/gaoryrt/hexo-theme-pln">
+        Theme Pln
+        </a>
+    </div>
+</div>
+<div class="clearfix">
+</div>
+</footer>
+  <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+
+// comments below to disable loading animation
+function revealOnScroll() {
+  var scrolled = $(window).scrollTop();
+  $(".excerpt, .index-title, .index-meta, p").each(function() {
+    var current = $(this),
+      height = $(window).outerHeight(),
+      offsetTop = current.offset().top;
+    (scrolled + height + 50 > offsetTop) ? current.addClass("animation"):'';
+  });
+}
+$(window).on("scroll", revealOnScroll);
+$(document).ready(revealOnScroll)
+
+// disqus scripts
+
+var disqus_shortname = 'helei112g';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('body')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+
+
+// dropdown scripts
+$(".dropdown").click(function(event) {
+  var current = $(this);
+  event.stopPropagation();
+  $(current).children(".dropdown-content")[($(current).children(".dropdown-content").hasClass("open"))?'removeClass':'addClass']("open")
+});
+$(document).click(function(){
+    $(".dropdown-content").removeClass("open");
+})
+
+// back to top scripts
+$("a[href='#top']").click(function() {
+  $("html, body").animate({ scrollTop: 0 }, 500);
+  return false;
+});
+
+
+var path = "/search.xml";
+searchFunc(path, 'local-search-input', 'local-search-result');
+
+</script>
+
+</body>
+</html>

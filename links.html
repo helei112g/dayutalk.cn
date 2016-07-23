@@ -7,11 +7,21 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="google-site-verification" content="" />
   
-  <title>app登陆设计</title>
+  <title>友链</title>
   <meta name="author" content="He Lei">
+   <meta name="description" content=".meta {
+    display: none;
+}
+.page {
+    text-align: center;
+    padding-bottom: 20px;
+}
+.links-container {
+    display: flex;
+    flex-flow: row wrap">
   
 
-  
+  <meta property="og:title" content="友链"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
  <meta property="og:image" content="undefined"/>
@@ -34,86 +44,105 @@
       </div>
     </div>
     <div class="container">
-      <nav class="navigator"><nav class="navbar navbar-default navbar-fixed-top">
-  <div class="nav-container">
+      
 
-
+  <article class="standard page">
+    <div class="title">
+      
   
-  <div id="site_search" class="">
-  <input type="text" id="local-search-input" name="q" results="0" placeholder="搜索" class="form-control"/>
+    <h1 class="page-title center">
+        友链
+    </h1>
+  
+
+
+    </div>
+    <div class="meta center">
+      
+<time datetime="2016-07-23T01:36:52.000Z">
+  <i class="fa fa-calendar"></i>&nbsp;
+  2016-07-23
+</time>
+
+
+
+
+
+
+
+    </div>
+    <hr>
+    <div class="picture-container">
+      
+    </div>
+    <style>
+.meta {
+    display: none;
+}
+.page {
+    text-align: center;
+    padding-bottom: 20px;
+}
+.links-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.link {
+    border: 3px solid #323232;
+    font-size: 1.1em;
+    padding: 1em 0;
+    margin: 1em;
+    background-color: transparent;
+    text-align: center;
+    transition: transform .1s;
+}
+.link:hover {
+    transform: scale(1.2, 1.2);
+    background-color: #323232;
+}
+.link a {
+    color: #323232;
+    letter-spacing: .4em;
+    font-weight: 900;
+    padding: 1.35em 3em 1.35em 3.4em;
+}
+.link a:hover {
+    text-decoration: none;
+    font-weight: 300;
+    color: white;
+}
+@media screen and (max-width:440px){
+        .links-container {
+            justify-content: space-around;
+        }
+    }
+</style>
+<h4><i>不错的博客</i></h4>
+<div class="links-container">
+    <div class="link">
+        <a href="http://blog.csdn.net/hel12he" title="我是大愚" target="_blank" rel="external">大愚之路</a>
+    </div>    
+    <div class="link">
+        <a href="https://tmy.me/" title="TmyBlog" target="_blank" rel="external">TmyBlog</a>
+    </div>
 </div>
-<div id="local-search-result"></div>
 
 
-  <ul class="nav navbar-nav navbar-right">
-    <li class="dropdown">
-      <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-      <i class="fa fa-link fa-lg"></i>
-      </a>
-      <ul class="dropdown-content">
-        
-          <li>
-            <a href="/links.html">
-        友情链接
-      </a>
-    </li>
-     
-          <li>
-            <a href="https://github.com/helei112g">
-        Github
-      </a>
-    </li>
-     
-    </ul>
-    </li>
-    <li class="archives"><a href="/archives">
-      <i class="fa fa-archive fa-lg"></i>
-    </a></li>
-  </ul>
+
+
+  </article>
+  </script>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  <div class="busuanzi center">
+    页阅读量:&nbsp;<span id="busuanzi_value_page_pv"></span>&nbsp;・&nbsp;
+    站访问量:&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;・&nbsp;
+    站访客数:&nbsp;<span id="busuanzi_value_site_uv"></span>
   </div>
-</nav></nav>
 
 
-<h1 class="archive-title  tag">
-  
-  <i class="fa fa-tag"></i>
-  
-  app登陆设计
-</h1>
-<div class="archive-num">
-  该分类共 1 篇文章
-</div>
-<div class="archive">
-  
-    
-      
-
-      
-
-        
-
-        
-
-        
-
-        </ul></section>
-        <section data-link="year-2016" class="section-year">
-            <h2>2016</h2>
-            <ul class="archive-list">
-                <div class="archive-item">
-                    <div class="archive-time">
-                      07-12
-                    </div>
-                    <div class="archive-detail">
-                      <a href="/2016/07/12/1-APP后端开发系列：登陆系统设计中的注意问题/" class="archive-link">
-                        1.APP后端开发系列：登陆系统设计中的注意问题
-                      </a>
-                    </div>
-                </div>
-                <hr>
-                
-    
-</div>
 
 
     </div>
@@ -160,7 +189,7 @@ var disqus_shortname = 'helei112g';
   var dsq = document.createElement('script');
   dsq.type = 'text/javascript';
   dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
   (document.getElementsByTagName('body')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 }());
 

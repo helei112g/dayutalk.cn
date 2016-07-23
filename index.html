@@ -1,541 +1,356 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="google-site-verification" content="" />
   
   <title>大愚的博客｜与你把酒言诗</title>
+  <meta name="author" content="He Lei">
+  
+
+  
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="大愚的博客｜与你把酒言诗">
-<meta property="og:url" content="https://helei112g.github.io/index.html">
-<meta property="og:site_name" content="大愚的博客｜与你把酒言诗">
-<meta property="og:description">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="大愚的博客｜与你把酒言诗">
-<meta name="twitter:description">
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+ <meta property="og:image" content="undefined"/>
   
-    <link rel="alternative" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
-  
-<!-- Google Analytics -->
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-79844617-1', 'auto');
-ga('send', 'pageview');
-
-</script>
-<!-- End Google Analytics -->
-
-
+  <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/m.min.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <div class="outer">
-        <section id="main">
-  
-    <article id="使用payment完成支付宝-支付宝：即时到账接口接入" class="article article-type-使用payment完成支付宝" itemscope itemprop="blogPost">
-  
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/18/支付宝：即时到账接口接入/">支付宝：即时到账接口接入</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/07/18/支付宝：即时到账接口接入/" class="article-date">
-  <time datetime="2016-07-18T11:48:31.000Z" itemprop="datePublished">2016-07-18</time>
-</a>
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>特别声明：</strong></p>
-<blockquote>
-<p>以下文档均针对 payment 2.0 以上版本，并且PHP需要5.5以上(含)。<br>代码中所有编码均使用 utf-8 。</p>
-</blockquote>
-<p>通过几天的时间，终于把payment 2.0的基本结构搭好了。今天刚完成支付宝 <strong>即时到帐</strong> 接口的开发。赶紧把使用文档给补上。请大家一定仔细查看文档，实在还不行就来问我吧！（我期待你问我，反正我收钱的，哈哈）</p>
-<h1 id="即时到帐-接口签约"><a href="#即时到帐-接口签约" class="headerlink" title="即时到帐 接口签约"></a>即时到帐 接口签约</h1><p>在你使用这个接口时，请先确认你是否在支付宝商户中心签约了该接口。</p>
-<p><img src="https://helei112g.github.io/images/2.png" alt="image"></p>
-<p>在商户中心，看到 <strong>即时到帐（已添加）</strong>，说明你已签约该接口，可正常使用。如果还不知道如何签约，请 <a href="https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.FkBnFB&amp;treeId=62&amp;articleId=104749&amp;docType=1" target="_blank" rel="external">查看支付宝即时到帐签约教程</a></p>
-<p>OK！完成签约后，</p>
-<p>需要把 <a href="https://github.com/helei112g/payment/tree/paymentv2" target="_blank" rel="external">payment项目导入自己的项目中</a> 安装方法，请参考<a href="http://note.youdao.com/yws/public/redirect/share?id=5f8373d4cdfeb06dbcbe21b942efc53e&amp;type=false" target="_blank" rel="external">Payment项目简介</a>。</p>
-<h1 id="调用示例"><a href="#调用示例" class="headerlink" title="调用示例"></a>调用示例</h1><p>在项目的 <code>examples</code> 文件夹中，我已提供完整的示例。为了便于大家理解，这里对代码再进行说明。</p>
-<h2 id="支付宝的配置文件"><a href="#支付宝的配置文件" class="headerlink" title="支付宝的配置文件"></a>支付宝的配置文件</h2><p>在1.x版本中，配置文件被固定写在了sdk中，这种做法太流氓了。为了不继续流氓下去，在2.x版本中，将配置信息独立出来，让大家可以根据自己的实际情况自定义，灵活程度大大增加。</p>
-<p>调用时，仅需要提供给我如下的一个数组，至于配置信息写在哪里，完全由你自己决定。</p>
-<p>我在示例中，是将配置信息写在 <code>examples/aliconfig.php</code> 中，然后使用 <code>require_once</code> 包含进来。你完全可以写cache中、db中。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> [</span><br><span class="line">    <span class="string">'partner'</span>   =&gt; <span class="string">'2088xxxxxxxxxxx'</span>,</span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'xxxxxxxxxxxxxxxxxx'</span>,</span><br><span class="line">    <span class="string">'rsa_private_key'</span>   =&gt; <span class="string">'./rsa_private_key.pem'</span>,</span><br><span class="line">    <span class="string">"notify_url"</span>	=&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">"return_url"</span>	=&gt; <span class="string">'http://test.helei.com/return-url.html'</span>,</span><br><span class="line">    <span class="string">"time_expire"</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
-<hr>
-<p><strong>参数介绍</strong></p>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>参数名</th>
-<th>参数说明</th>
-<th>是否必须</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>partner</td>
-<td>合作者身份ID</td>
-<td>签约的支付宝账号对应的支付宝唯一用户号。以2088开头的16位纯数字组成。</td>
-<td>必须</td>
-</tr>
-<tr>
-<td>md5_key</td>
-<td>MD5密钥</td>
-<td><a href="https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.qt91b7&amp;treeId=62&amp;articleId=104740&amp;docType=1#s1" target="_blank" rel="external">点击这里</a></td>
-<td>必须</td>
-</tr>
-<tr>
-<td>rsa_private_key</td>
-<td>RSA私钥</td>
-<td><a href="https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.qt91b7&amp;treeId=62&amp;articleId=104740&amp;docType=1#s0" target="_blank" rel="external">点击这里</a></td>
-<td>必须</td>
-</tr>
-<tr>
-<td>notify_url</td>
-<td>服务器异步通知URI</td>
-<td>支付宝服务器主动通知商户网站里指定的页面http路径。(建议使用https)</td>
-<td>可选</td>
-</tr>
-<tr>
-<td>return_url</td>
-<td>页面跳转同步通知页面路径</td>
-<td>支付宝处理完请求后，当前页面自动跳转到商户网站里指定页面的http路径。</td>
-<td>可选</td>
-</tr>
-<tr>
-<td>time_expire</td>
-<td>超时时间</td>
-<td>设置未付款交易的超时时间，一旦超时，该笔交易就会自动被关闭。单位默认为分钟</td>
-<td>可选</td>
-</tr>
-</tbody>
-</table>
-<p><strong>特别说明：</strong></p>
-<ul>
-<li>如果上述配置文件必须的key的值为空，会抛出 <code>PayException</code> 异常</li>
-<li>如果 <code>notify_url</code> 为空，虽然可支付成功，但是客户端将无法收到支付宝的回调结果。</li>
-<li>建议采用https协议</li>
-</ul>
-<h2 id="调用支付"><a href="#调用支付" class="headerlink" title="调用支付"></a>调用支付</h2><p>项目中的示例代码，参见 <code>examples/charge.php</code></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  生成订单号 便于测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPayid</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> date(<span class="string">'Ymdhis'</span>, time())</span><br><span class="line">            .substr(floor(microtime()*<span class="number">1000</span>),<span class="number">0</span>,<span class="number">1</span>)</span><br><span class="line">            .rand(<span class="number">0</span>,<span class="number">9</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订单信息</span></span><br><span class="line">$orderData = [</span><br><span class="line">    <span class="string">"orderTradeNo"</span>	=&gt; createPayid(),</span><br><span class="line">    <span class="string">"totalFee"</span>	=&gt; <span class="string">'1'</span>,</span><br><span class="line">    <span class="string">"clientIp"</span>	=&gt; <span class="string">'127.0.0.1'</span>,</span><br><span class="line">    <span class="string">"subject"</span>	=&gt; <span class="string">'我是即时到帐'</span>,</span><br><span class="line">    <span class="string">"body"</span>	=&gt; <span class="string">'支付测试即时到帐接口'</span>,</span><br><span class="line">    <span class="string">"extraCommonParam"</span>	=&gt; <span class="string">''</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">$aliconfig = <span class="keyword">require_once</span> <span class="keyword">__DIR__</span> . <span class="string">'/aliconfig.php'</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例化支付环境类，进行支付创建</span></span><br><span class="line">$charge = <span class="keyword">new</span> ChargeContext();</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    $charge-&gt;initCharge(Config::ALI_CHANNEL_WEB, $aliconfig);</span><br><span class="line">    $url = $charge-&gt;charge($payData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 请求alipay</span></span><br><span class="line">header(<span class="string">"Location:&#123;$url&#125;"</span>);</span><br></pre></td></tr></table></figure>
-<p>以上代码就完成了即时到帐的全部调用，下面分步骤来说明下代码含义：</p>
-<h3 id="订单信息"><a href="#订单信息" class="headerlink" title="订单信息"></a>订单信息</h3><p>此部分的key部分，必须采用以下值，否则SDK无法识别。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// createPayid(); 函数是为了演示方便，随手写的一个生成订单号的函数</span></span><br><span class="line"></span><br><span class="line">$orderData = [</span><br><span class="line">    <span class="string">"order_no"</span>	=&gt; createPayid(),</span><br><span class="line">    <span class="string">"amount"</span>	=&gt; <span class="string">'1'</span>,<span class="comment">// 单位为元</span></span><br><span class="line">    <span class="string">"client_ip"</span>	=&gt; <span class="string">'127.0.0.1'</span>,</span><br><span class="line">    <span class="string">"subject"</span>	=&gt; <span class="string">'测试支付'</span>,</span><br><span class="line">    <span class="string">"body"</span>	=&gt; <span class="string">'支付接口测试'</span>,</span><br><span class="line">    <span class="string">"extra_param"</span>	=&gt; <span class="string">''</span>,</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
-<p><strong>参数说明</strong></p>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>参数名</th>
-<th>参数说明</th>
-<th>是否必须</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>order_no</td>
-<td>订单号</td>
-<td>平台根据规则生成的订单号，最长64位，要在商户数据库中唯一</td>
-<td>必须</td>
-</tr>
-<tr>
-<td>amount</td>
-<td>交易总金额</td>
-<td>该笔订单的资金总额，单位为RMB-Yuan。取值范围为[0.01，100000000.00]，精确到小数点后两位。</td>
-<td>必须</td>
-</tr>
-<tr>
-<td>client_ip</td>
-<td>客户端IP</td>
-<td>用户在创建交易时，该用户当前所使用机器的IP。</td>
-<td>必须</td>
-</tr>
-<tr>
-<td>subject</td>
-<td>商品名称</td>
-<td>商品的标题/交易标题/订单标题/订单关键字等。该参数最长为128个汉字。</td>
-<td>必须</td>
-</tr>
-<tr>
-<td>body</td>
-<td>商品描述</td>
-<td>对一笔交易的具体描述信息。如果是多种商品，请将商品描述字符串累加传给body。</td>
-<td>必须</td>
-</tr>
-<tr>
-<td>extra_param</td>
-<td>公用回传参数</td>
-<td>如果用户请求时传递了该参数，则返回给商户时会回传该参数。</td>
-<td>可选</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h3 id="签名数据"><a href="#签名数据" class="headerlink" title="签名数据"></a>签名数据</h3><p>以下是真正实现数据签名的地方，返回的数据可直接用于发起支付宝支付。大家可以对比下支付宝自身信息，是不是已经大大简化了？<br>当然简化带来的另外一个意思就是：放弃了很多我们正常情况下用不到的功能，比如：花呗分期</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实例化支付环境类，进行支付创建</span></span><br><span class="line">$charge = <span class="keyword">new</span> ChargeContext();</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    $charge-&gt;initCharge(Config::ALI_CHANNEL_WEB, $aliconfig);</span><br><span class="line">    $url = $charge-&gt;charge($payData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里对于调用者，仅仅需要知道 <code>ChargeContext</code> 这一个类，这里使用了 <strong>策略模式 + 简单工厂模式</strong> 两种方法来进行调用的简化。这种方式也非常方便后期进行扩展，对于客户端与复杂的逻辑进行了隔离。</p>
-<h3 id="跳转支付宝"><a href="#跳转支付宝" class="headerlink" title="跳转支付宝"></a>跳转支付宝</h3><p>通过上一步返回的是请求支付宝的url。由于在页面上可能需要通过js调用支付宝或者还有其他逻辑，因为我并没有直接重定向到支付宝，而把控制权交到了客户端手中。</p>
-<p>以下代码，示例的是简单的利用返回的url，重定向到支付宝，完成支付。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">header(<span class="string">"Location:&#123;$url&#125;"</span>);</span><br></pre></td></tr></table></figure>
-<p>本次支付宝的即时到帐接口到这里就完成了调用。下一节把回调通知部分完成，这样一个基本的支付流程就完成了。</p>
-<h1 id="技术支持"><a href="#技术支持" class="headerlink" title="技术支持"></a>技术支持</h1><blockquote>
-<p>如果需要协助集成到项目，可付费获得我的服务！</p>
-</blockquote>
-<ul>
-<li>微信：<strong>helei543345</strong></li>
-<li><p>邮箱: <strong>dayugog@gmail.com</strong></p>
-</li>
-<li><p>支持我：</p>
-</li>
-</ul>
-<p><img src="https://helei112g.github.io/images/3.png" alt="image"></p>
-<blockquote>
-<p><a href="https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%E3%80%81%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E6%8E%A5%E5%85%A5%E9%9B%86%E6%88%90/">项目文档首页</a></p>
-</blockquote>
-
-      
-
-      
-        
-    </div>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-支付宝、微信支付接入集成" class="article article-type-post" itemscope itemprop="blogPost">
-  
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/18/支付宝、微信支付接入集成/">支付宝、微信支付接入集成</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/07/18/支付宝、微信支付接入集成/" class="article-date">
-  <time datetime="2016-07-18T11:42:51.000Z" itemprop="datePublished">2016-07-18</time>
-</a>
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>从开始写代码以来，一直就与支付打交道。终于到今天，我忍无可忍啦！每次都要重新写，重新调（主要换工作后，不能把前东家的代码给拷贝走）。好吧，写一份放到github上，以后啥时候用都有了，还方便做外包（哈哈哈……）</p>
-<p>之前看了 ping++ 集成的各路支付接口，觉得挺爽的，但是要收费，而且公司也不放心，怕什么时候 ping++ 坚持不住了，那到时候怎么办？我倒是觉得可能大部分公司坚持不住了，ping++ 还在呢！ 因此不自量力的自己也来集成一个吧！</p>
-<h1 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h1><p><strong>说明：</strong></p>
-<ul>
-<li>PHP 5.5 以上版本，包含5.5</li>
-<li>采用PSR-4标准编码，可通过composer实现自动加载。</li>
-<li>如果项目无法使用composer，请通过包含项目中的 <code>autoload.php</code> 来实现自动加载</li>
-<li>客户端传入的参数均使用 <strong>下划线风格</strong></li>
-</ul>
-<h2 id="composer安装Payment"><a href="#composer安装Payment" class="headerlink" title="composer安装Payment"></a>composer安装Payment</h2><p>如果你励志要做php，强烈建议你学习下composer。</p>
-<p><em>composer学习地址： <a href="http://www.phpcomposer.com/" target="_blank" rel="external">http://www.phpcomposer.com/</a></em></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 安装时请自行指定版本。否则将安装稳定版，当前稳定版是1.x</span></span><br><span class="line">composer <span class="keyword">require</span> riverslei/payment</span><br></pre></td></tr></table></figure>
-<p>通过composer安装后，无需任何操作，可在项目中直接使用。</p>
-<h2 id="直接下载"><a href="#直接下载" class="headerlink" title="直接下载"></a>直接下载</h2><p>当然如果由于历史原因（如果没有历史原因，强烈推荐composer安装，方便后续更新），无法通过composer安装，那么请自行下载（下载地址见下方 功能介绍），并在使用时，包含 <code>autoload.php</code> 文件。这种方式就不过多介绍了。</p>
-<h1 id="功能介绍"><a href="#功能介绍" class="headerlink" title="功能介绍"></a>功能介绍</h1><p>说这么多废话没什么卵用，还是先介绍下本SDK支持的支付接口</p>
-<ol>
-<li>支付宝支付<ul>
-<li><a href="https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/">即时到帐接口</a></li>
-<li>移动支付接口</li>
-<li>手机网站支付接口</li>
-<li>有密退款接口</li>
-<li>订单查询接口</li>
-</ul>
-</li>
-</ol>
-<ol>
-<li>微信支付<ul>
-<li>app支付接口</li>
-<li>扫码支付接口（一般网站上用的）</li>
-<li>公众号支付接口</li>
-<li>退款接口</li>
-<li>订单查询接口</li>
-</ul>
-</li>
-</ol>
-<p>以上功能在重构的2.0版本中还未完全支持，正在持续集成。</p>
-<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 1.x版本</a></p>
-<p><a href="https://github.com/helei112g/payment/tree/paymentv2" target="_blank" rel="external">payment 2.0版本</a> (还处于开发阶段)</p>
-<p>当然有很多朋友问我支不支持paypal 银联等等。我也想呀，可惜这个得慢慢来。我这基础功能还搞完呢！哈哈，当然也欢迎大家push代码给我</p>
-<h1 id="技术支持"><a href="#技术支持" class="headerlink" title="技术支持"></a>技术支持</h1><p>本来我想有完整的示例代码，大家应该在使用中不会遇到什么问题，但是还有有朋友遇到诸多问题。那么有关于项目本身的bug或建议，大家可以通过以下方式联系我：</p>
-<ul>
-<li>微信：<strong>helei543345</strong></li>
-<li>邮箱: <strong>dayugog@gmail.com</strong></li>
-</ul>
-<blockquote>
-<p>此外如果需要协助集成到项目，可付费获得我的服务！</p>
-</blockquote>
-
-      
-
-      
-        
-    </div>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-1-APP后端开发系列：登陆系统设计中的注意问题" class="article article-type-post" itemscope itemprop="blogPost">
-  
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/12/1-APP后端开发系列：登陆系统设计中的注意问题/">1.APP后端开发系列：登陆系统设计中的注意问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/07/12/1-APP后端开发系列：登陆系统设计中的注意问题/" class="article-date">
-  <time datetime="2016-07-12T11:18:18.000Z" itemprop="datePublished">2016-07-12</time>
-</a>
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>想写这个系列很久了，因为之前做这个东西花费了大量的精力，有必要分享出来与大家共享。以前也写了一些关于 <a href="http://blog.csdn.net/hel12he/article/details/47721209" target="_blank" rel="external">APP后端开发的系列文章</a> 由于当初功力不够，很多问题描述不清楚或者解决方案过于复杂、不严谨等。</p>
-<p>这一次查了很多资料，问了很多相关人士。准备再结合自己实际工作中的问题再次进行一些补充。就先从登陆的设计开始吧！</p>
-<h1 id="越想越糊涂"><a href="#越想越糊涂" class="headerlink" title="越想越糊涂"></a>越想越糊涂</h1><p>之前再做这一部分的时候，总想着复杂的技术，说出去多调炸天呀。一般来说登陆的流程是：</p>
-<p><img src="https://helei112g.github.io/images/1.png" alt="image"></p>
-<p>当时对于安全性过度痴迷，确走偏了道路。首先提交的时候爬信息被人劫持，因此客户端在上传时，进行AES加密，服务端解密出结果。服务端返回的信息也会AES加密，然后客户端解密。</p>
-<p>然后这里又带来另外一个问题：加密信息放在了客户端，那么一但客户端被反编译，hacker拿到秘钥，那么对于服务端来说加密就没有任何意义了。又为了不在客户端保存这么敏感的信息，就像秘钥由服务端下发。这样子服务端可随时对秘钥进行变更。</p>
-<p>到这里又带来了一个新的问题，感脚一切又回到了起点：下发秘钥要走http，那么依然可能被人劫持。这时候该是加密还是怎么弄呢？如果加密，客户端又放了一个秘钥过去。那这个秘钥依然可能被人反编译。不能再从服务端获取这个秘钥吧？为了确保上个秘钥的安全，生产下一个秘钥……</p>
-<p>当时就是陷入了这样的死循环，不可自拔。现在想想真是too young too simple!</p>
-<h1 id="简单、有效"><a href="#简单、有效" class="headerlink" title="简单、有效"></a>简单、有效</h1><p>首先在这里还是先说一下：如果你的产品刚刚起步，不要过于纠结性能、安全</p>
-<p>先说性能：你的产品才推出的时候，冷启动的用户数一般来说不会超过1000人（这已经是很不得了的冷启动人数了）。然后你的并发也不会超过100。这种级别的访问，相信机器硬件就可以帮助你解决。如果你的条件远远超出以上规模，那么你的实力绝对足以应付即将发生的事情。<br>谈谈安全：安全这个事情，从一开始就要考虑，但是不能过于纠结（我之后可以讲讲我在做短信验证码这一部分的遇到的一个经理）。过早介入，会导致系统开发速度降低，过早做了一些不需要的事情（hacker来搞你也是需要成本的，在你没价值的时候，没人愿意来搞你）。所以早期应该重视开发成本，抓紧时间，早日上线。</p>
-<p>另外，安全与性能有时候也是鱼与熊掌。</p>
-<h1 id="演化之路"><a href="#演化之路" class="headerlink" title="演化之路"></a>演化之路</h1><p>这一部分会有一些代码与图来进行说明。在安全方面逐步演进。前面说前期开发只要快就好，但是这里也要注意一个问题，就是后续升级能够弥补前面的错，要给未来升级留下余地。因为否则你的系统始终留下了一个隐患。</p>
-<h2 id="实现功能就好"><a href="#实现功能就好" class="headerlink" title="实现功能就好"></a>实现功能就好</h2><p>这是最开始的阶段，重点考虑功能实现。用户提交username + pwd 服务端验证通过后，返回一个令牌token。</p>
-<p>这里需要注意的几个部分是要为未来的升级做好准备。我经常遇到的几个初期设计是：</p>
-<blockquote>
-<ol>
-<li>验证通过后，把用户uid+username+salt等md5后，作为token返回到客户端。</li>
-<li>对token加入时间戳，过期后客户端重新提交username + pwd验证后再发一个token到客户端</li>
-<li>服务端生成一个token后下发到客户端，客户端按照约定的规则加密后请求服务端。</li>
-</ol>
-</blockquote>
-<p>先说第一种带来的问题：生成的token永久不变，那么别人获取到一个token就可以无限制的进行请求。直到你关闭了这个接口为止。为后续安全设计增加了成本。</p>
-<p>第二种问题就有点老火了，虽然看似token只在一定时间范围内有效了，但是其实更不安全了。首先客户端需要保存用户的用户名与密码，如果用户手机平时不注重安全，很容易被人窃取。</p>
-<p>第三种设计方案，这是我原先干过的一件事，是这三种方案中最垃圾的设计。得出的教训就是：绝不能把任何加密的事情交给客户端。这样子灵活性大打折扣。举例：还是升级接口了，现在本来token生成只是服务端的事情，服务端随时可动态改变规则，现在由于客户端也参与进来了，这事儿就麻烦了，你一改，客户端也要跟着改。没有任何灵活性可言。切记：客户端就接收，然后转发回服务端就好了。别再客户端进行加密！！！</p>
-<p>经过这些坑的历练，参考oauth2.0，我现在采用以下方案：</p>
-<p>用户提交username + pwd后，服务端返回以下信息：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"access_token"</span>:<span class="string">"2YotnFZFEjr1zCsicMWpAA"</span>,</span><br><span class="line">    <span class="attr">"expires_in"</span>:<span class="number">3600</span>,</span><br><span class="line">    <span class="attr">"refresh_token"</span>:<span class="string">"tGzv3JOkF0XG5Qx2TlKWIA"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>access_token</strong> 是用来进行访问的接口的，<strong>expires_in</strong> 是他的过期时间，到达过期时间后，需要用 <strong>refresh_token</strong>  来请求服务端刷新 <strong>access_token</strong>。</p>
-<p>这里几个重点是：<strong>refresh_token</strong> 仅能使用一次，使用一次后，将被废弃。另外这个 <strong>access_token</strong> 只在 <strong>expires_in</strong> 有效期内有效。</p>
-<p><strong>注意：</strong> 这里的 expires_in 仅返回秒数就好了。别返回时间戳。因为各个平台计算s的时间戳，不一致，这样子做更方便处理。</p>
-<h2 id="访问频率控制"><a href="#访问频率控制" class="headerlink" title="访问频率控制"></a>访问频率控制</h2><p>上面我们简单实现了功能，现在app的流量上来了，有些功能也很复杂，如果某个接口访问量太大，会导致服务器崩溃，需要分别对每个接口每次访问设置频率（也可以统一设置每个接口访问的频率）。</p>
-<p>一般我的做法是加入一个中间件。每一个接口的访问频率做好一个对应的配置文件。比如：</p>
-<ul>
-<li>a接口 5s内可访问1次</li>
-<li>b接口 10s内可访问1次（可能非常耗时，如果同时过多请求会导致服务器崩溃）</li>
-</ul>
-<p>那么就把 <strong>access_token</strong> 与这些关联起来。这里需要用到redis。当用户A进来访问了 a接口 那么设置这个token 5s内不能再次访问。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ($redis-&gt;get($key)) &#123;</span><br><span class="line">    <span class="comment">// 无法访问，还未到时间</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置频率控制key</span></span><br><span class="line">$redis-&gt;setex($key, $expires, $value);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 访问接口</span></span><br></pre></td></tr></table></figure>
-<p>这里需要考虑几个问题：</p>
-<p>设置的访问时间要合理。举例：客户端一般启动的时候会请求多个接口，那么当这些请求到达后，服务端可能拒绝其中一部分访问（因为在频率控制内）</p>
-<p>一般来说不需要对所有的接口都进行频率控制，仅仅针对重要的内容以及性能上有要求的接口进行频率控制。</p>
-<h2 id="账号安全考虑"><a href="#账号安全考虑" class="headerlink" title="账号安全考虑"></a>账号安全考虑</h2><p>现在又进一步了，需要考虑用户账号安全的问题。比如：QQ，有时候会提醒我们你的账号在香港登陆了。如果不是自己所为，赶快修改密码之类的。</p>
-<p>实现这个功能，你需要记录每次登陆、启动时每个token对应的ip地址。如果ip地址与上次的ip不在同一个范围（这个规则由自己定，因为有的运营商ip经常变化，比如：长城）。就提醒用户是不是他自己所为，如果不是，就赶快修改密码。</p>
-<p>现在很多app在开发之初，都是可以多个设备同时登陆。这样带来的安全问题也很多。如果要做成单个设备登陆，需要每个token对应一个deviceToken。</p>
-<p>这一部分就不继续深入讨论下去了。</p>
-<h2 id="防DNS劫持"><a href="#防DNS劫持" class="headerlink" title="防DNS劫持"></a>防DNS劫持</h2><p>安全工作做得再好，如果有人能够获得大量合法用户的token，来请求你的借口，你也无法识别，因为从行为来看，这一切都是合法用户再进行。</p>
-<p>以前为了防止别人获取到合法的信息，我才弄出了很狗血的客户端加密方法。导致后期升级的时候，诸多问题。这个东西其实很简单，使用https来进行请求（可以个人关键接口使用）</p>
-<h1 id="token"><a href="#token" class="headerlink" title="token"></a>token</h1><p>才开始做app服务端的时候，总想着token的设计。怎么才能生成一个好的token呢？现在想想真不知道当初怎么想的。</p>
-<h2 id="token的生成"><a href="#token的生成" class="headerlink" title="token的生成"></a>token的生成</h2><p>首先搞明白这个token的作用就是一个令牌，用来标记一个用户的身份。那么首先他要唯一。其次他从客户端上传后，服务端能够验证这个token是由服务端生成的。</p>
-<p>所以token生成只要满足以上目的，你随意就好了。当然别把敏感信息暴露出去了。</p>
-<p>常用的一种生成方式：</p>
-<ol>
-<li>该用户的uid，如：8888</li>
-<li>该用户的口令，如： 123123</li>
-<li>用户对应的salt，如：abcd</li>
-<li>过期时间戳，如：1468293948</li>
-</ol>
-<p>把上面几部分拼接起来：888:123123:abcd:1468293948</p>
-<p>token = md5(‘888:123123:abcd:1468293948’);</p>
-<h2 id="token的验证"><a href="#token的验证" class="headerlink" title="token的验证"></a>token的验证</h2><p>对于token也有两种方法进行验证。一是：服务端生成后，将token保存起来（redis或者mysql中）。客户端穿上来之后，检查是否有该token，如果有取出对应的信息，比如uid，验证是否匹配。</p>
-<p>另一种方法是：根据上传的uid，生成对应的token，然后进行比较token结果是否一致（要保障该算法如果给定的值一定，结果必须唯一。常用md5）。</p>
-<p>对于个人而言更倾向于第二种方案。第一种方案效率更高（可使用redis存储这个token），但是如果redis一但雪崩，就会造成所有用户登录失效，一定时间内不可登陆。初期越简单、越可靠更好。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这一部分没有太多代码，主要是思路。还有涉及到H5的登陆问题也没有说到。下篇文章会把APP中登陆后，如果搞定H5登陆的问题进行阐述。</p>
-
-      
-
-      
-        
-    </div>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-php设计模式：状态模式的使用场景" class="article article-type-post" itemscope itemprop="blogPost">
-  
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/28/php设计模式：状态模式的使用场景/">php设计模式：状态模式的使用场景</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/06/28/php设计模式：状态模式的使用场景/" class="article-date">
-  <time datetime="2016-06-28T15:48:44.000Z" itemprop="datePublished">2016-06-28</time>
-</a>
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在这儿给大家说点事儿。我的博客搬家到github主页上了。<a href="https://helei112g.github.io">我的博客</a>。以后首发都在github上了。csdn也会继续更新。可能就是稍微慢一下。</p>
-<p>另外最近搞了一个支付的开源项目。<a href="https://github.com/helei112g/payment" target="_blank" rel="external">这是项目地址</a>  目前已经支持：</p>
-<ul>
-<li>支付宝的 即时到帐、移动支付、加密退款接口。</li>
-<li>微信的目前已经支持：app支付、扫码支付、H5支付</li>
-</ul>
-<p>项目还存在些bug，正在不断结合公司业务进行修改。后期可能会支持的越来越全面。</p>
-<h1 id="状态模式"><a href="#状态模式" class="headerlink" title="状态模式"></a>状态模式</h1><p>废话不多说了，回到本文主题： 状态模式</p>
-<blockquote>
-<p>允许一个对象在其内部状态改变时改变它的行为。对象看起来似乎修改了它的类。</p>
-</blockquote>
-<p>说实话，这定义真JB不是怎么读的懂。不过咱要试着去理解其中的精髓。谁让咱们有颗向上的心呢？</p>
-<p>一句句来。</p>
-<p>先说这一句： <strong>允许一个对象在其内部状态改变时改变它的行为</strong></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Context</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> $state;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($state)</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;state = $state;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">change</span><span class="params">()</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;state == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'我是好人'</span>;</span><br><span class="line">        &#125; <span class="keyword">elseif</span> (<span class="keyword">$this</span>-&gt;state == <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'我要当坏人'</span>;</span><br><span class="line">        &#125; <span class="keyword">elseif</span> (...) &#123;</span><br><span class="line">            <span class="comment">// 其他状态</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'爱好和平!'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以下我要开始自己的理解了，这个理解不一定是上面定义的本意，但是绝对讲人话，有帮助，可实战。</p>
-<p>如果 <code>state</code> 传入的值不同，则会得到不同的行为。那么这就是我理解的这一句话的意思。再说白话一点，根据不同的条件，执行不同的逻辑。</p>
-<p><strong>对象看起来似乎修改了它的类</strong>  这一句更扯淡，真不知道这些人怎么想的，就不能说的通俗些？我觉得嘛，这个概念能懂就懂，不懂呢，你就这么办：那就是对于每一个条件中的逻辑，移入到不同的类中，这些类要实现一个统一的接口。还不懂？上代码</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">interface State()</span><br><span class="line">&#123;</span><br><span class="line">    // 注意这里的Context 我在后面会讲到。不等同于上面的 Context 类哦</span><br><span class="line">    public function handle(Context $context);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 状态A</span><br><span class="line">class StateA implements State</span><br><span class="line">&#123;</span><br><span class="line">    public function handle(Context $context)</span><br><span class="line">    &#123;</span><br><span class="line">        if ($context-&gt;term = 1) &#123;</span><br><span class="line">            // 处理逻辑，并终止程序</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            $context.setState(new StateB());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 状态B</span><br><span class="line">class StateB implements State</span><br><span class="line">&#123;</span><br><span class="line">    public function handle(Context $context)</span><br><span class="line">    &#123;</span><br><span class="line">        if ($context-&gt;term = 2) &#123;</span><br><span class="line">            // 处理逻辑，并终止程序</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            $context.setState(new StateC());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 状态C</span><br><span class="line">class StateC implements State</span><br><span class="line">&#123;</span><br><span class="line">    public function handle(Context $context)</span><br><span class="line">    &#123;</span><br><span class="line">        // 如果还有其他状态，则继续往下走。如果没有，就在次终止程序</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 新的Context类的实现</span><br><span class="line">class Context</span><br><span class="line">&#123;</span><br><span class="line">    private $state;// 用来保存 State 对象</span><br><span class="line">    </span><br><span class="line">    public function setState(State $state)</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;state = $state;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public function request()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;state-&gt;handle($this);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面的代码基本上就已经演示了 <strong>状态模式</strong> 。有看官急了，写的什么狗屎？怎么用，哪儿可以用？别急，等我把这个逼装完。</p>
-<h2 id="模式类图"><a href="#模式类图" class="headerlink" title="模式类图"></a>模式类图</h2><p>继续装逼，上类图。</p>
-<p><img src="http://design-patterns.readthedocs.io/zh_CN/latest/_images/State.jpg" alt="类图"></p>
-<p>从这个图中可以看出，纯种的状态模式，包括了以下三个角色：</p>
-<ul>
-<li>Context: 环境类。它呢需要在代码中传给具体的 State 类，这样State类才能改变它。记得这句 <strong>对象看起来似乎修改了它的类</strong> 吗？就着这句话再去理解下这个类。他保存有当前的状态。</li>
-<li>State: 抽象的状态接口 。让具体的状态都要实现这个接口，Context依赖接口进行编程。</li>
-<li>ConcreteState： 具体的状态类。专门用于处理某一个状态，如果处理不了就转发出去。</li>
-</ul>
-<h1 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h1><p>上面讲那么多，不能真刀真枪的用到项目中，都是耍流氓。在我们的项目中其实有特别多的地方可以用到状态模式。</p>
-<ul>
-<li>如果项目中存在太多的 <code>if {...} elseif {...} else {...}</code> 。那么你应该考虑状态模式。<em>我觉得这个是重点考虑对象</em></li>
-<li>如果每个状态中处理的业务逻辑特别复杂·那么建议考虑这种方式。</li>
-<li>最后一点，如果代码中的状态相对固定。比如一个电商中购买商品的流程：未支付、已过期、待发货（已支付）、已发货、已收货。那么这种状态基本上定下来不会有太大变化，状态发生在内部中，顺序固定，不需要客户端进行处理。</li>
-</ul>
-<p>以上三种情况是我建议的方式。如果大家还有总结的经验，欢迎分享。</p>
-<p>这里有个问题，待我写完 <strong>职责链模式</strong> 之后再来分享。因为这二者有相当多的共同之处。大家一定认真阅读我写的 <strong>使用场景</strong> 的最后一点。</p>
-
-      
-
-      
-        
-    </div>
-  </div>
-  
-</article>
-
-
-  
-  
-</section>
-        <aside id="sidebar">
-  <nav class="menus">
-  	<ul>
-  		<li><a href="/"><i class="icon icon-home"></i></a></li>
-  		
-			<li><a href="/archives"><i class="icon icon-fenlei"></i></a></li>
-  		
-  		
-			<li><a href="/tags"><i class="icon icon-tag"></i></a></li>
-  		
-  		
-  			<li><a href="https://github.com/helei112g" target="_blank"><i class="icon icon-github"></i></a></li>
-  		
-  	</ul>
-  </nav>
-  <a id="go-top" href="#"><i class="icon icon-up"></i></a>
-</aside>
+  <div id="main">
+    <div class="behind">
+      <div class="back">
+        <a href="/" class="black-color"><i class="fa fa-times" aria-hidden="true"></i></a>
       </div>
-      <footer id="footer">
-  
-	<div id="footer-info" class="inner">
-	  &copy; 2016 He Lei 
-	  - Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-	  - Theme <a href="https://github.com/Alex-fun/hexo-theme-jane/" target="_blank">Jane</a>
-	</div>
-</footer>
+      <div class="description">
+        &nbsp;代码是吃饭的家伙
+      </div>
     </div>
-    <nav id="mobile-nav">
+    <div class="container">
+      <nav class="navigator"><nav class="navbar navbar-default navbar-fixed-top">
+  <div class="nav-container">
+
+
   
-    <a href="/" class="mobile-nav-link">Home</a>
+  <div id="site_search" class="">
+  <input type="text" id="local-search-input" name="q" results="0" placeholder="搜索" class="form-control"/>
+</div>
+<div id="local-search-result"></div>
+
+
+  <ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+      <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+      <i class="fa fa-link fa-lg"></i>
+      </a>
+      <ul class="dropdown-content">
+        
+          <li>
+            <a href="/links.html">
+        友情链接
+      </a>
+    </li>
+     
+          <li>
+            <a href="https://github.com/helei112g">
+        Github
+      </a>
+    </li>
+     
+    </ul>
+    </li>
+    <li class="archives"><a href="/archives">
+      <i class="fa fa-archive fa-lg"></i>
+    </a></li>
+  </ul>
+  </div>
+</nav></nav>
+<ul class="posts">
   
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/tags" class="mobile-nav-link">Tag</a>
-  
-    <a href="https://github.com/helei112g" class="mobile-nav-link">Github</a>
-  
-</nav>
     
-<script>
-  var disqus_shortname = 'helei112g';
+<div>
+<li class="post-item">
   
-  (function(){
-    var dsq = document.createElement('script');
-    dsq.type = 'text/javascript';
-    dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
+  
+    <h1 class="index-title">
+        <a href="/2016/07/18/支付宝：即时到账接口接入/">
+            支付宝：即时到账接口接入
+        </a>
+    </h1>
+  
+
+
+  <div class="excerpt">
+  
+    特别声明：
+
+以下文档均针对 payment 2.0 以上版本，并且PHP需要5.5以上(含)。代码中所有编码均使用 utf-8 。
+
+通过几天的时间，终于把payment 2.0的基本结构搭好了。今天刚完成支付宝 即时到帐 接口的开发。赶
+  
+  <a href="/2016/07/18/支付宝：即时到账接口接入/">
+    更多
+  </a>
+  </div>
+  <div class="index-meta">
+    
+<time datetime="2016-07-18T11:48:31.000Z" itemprop="datePublished">
+  <i class="fa fa-calendar"></i>&nbsp;
+  07-18
+</time>
+
+
+
+
+
+
+    
+    &nbsp;
+    <i class="fa fa-tag"></i>&nbsp;
+    <a href="/tags/支付宝/">支付宝</a>·<a href="/tags/即时到账/">即时到账</a>
+
+
+  </div>
+</li>
+</div>
+<hr>
+
+
+
+
+  
+    
+<div>
+<li class="post-item">
+  
+  
+    <h1 class="index-title">
+        <a href="/2016/07/18/支付宝、微信支付接入集成/">
+            支付宝、微信支付接入集成
+        </a>
+    </h1>
+  
+
+
+  <div class="excerpt">
+  
+    从开始写代码以来，一直就与支付打交道。终于到今天，我忍无可忍啦！每次都要重新写，重新调（主要换工作后，不能把前东家的代码给拷贝走）。好吧，写一份放到github上，以后啥时候用都有了，还方便做外包（哈哈哈……）
+之前看了 ping++ 集成
+  
+  <a href="/2016/07/18/支付宝、微信支付接入集成/">
+    更多
+  </a>
+  </div>
+  <div class="index-meta">
+    
+<time datetime="2016-07-18T11:42:51.000Z" itemprop="datePublished">
+  <i class="fa fa-calendar"></i>&nbsp;
+  07-18
+</time>
+
+
+
+
+
+
+    
+    &nbsp;
+    <i class="fa fa-tag"></i>&nbsp;
+    <a href="/tags/支付宝/">支付宝</a>·<a href="/tags/微信支付/">微信支付</a>·<a href="/tags/支付接入/">支付接入</a>
+
+
+  </div>
+</li>
+</div>
+<hr>
+
+
+
+
+  
+    
+<div>
+<li class="post-item">
+  
+  
+    <h1 class="index-title">
+        <a href="/2016/07/12/1-APP后端开发系列：登陆系统设计中的注意问题/">
+            1.APP后端开发系列：登陆系统设计中的注意问题
+        </a>
+    </h1>
+  
+
+
+  <div class="excerpt">
+  
+    想写这个系列很久了，因为之前做这个东西花费了大量的精力，有必要分享出来与大家共享。以前也写了一些关于 APP后端开发的系列文章 由于当初功力不够，很多问题描述不清楚或者解决方案过于复杂、不严谨等。
+这一次查了很多资料，问了很多相关人士。准备
+  
+  <a href="/2016/07/12/1-APP后端开发系列：登陆系统设计中的注意问题/">
+    更多
+  </a>
+  </div>
+  <div class="index-meta">
+    
+<time datetime="2016-07-12T11:18:18.000Z" itemprop="datePublished">
+  <i class="fa fa-calendar"></i>&nbsp;
+  07-12
+</time>
+
+
+
+
+
+
+    
+    &nbsp;
+    <i class="fa fa-tag"></i>&nbsp;
+    <a href="/tags/app登陆设计/">app登陆设计</a>·<a href="/tags/后端开发/">后端开发</a>
+
+
+  </div>
+</li>
+</div>
+<hr>
+
+
+
+
+  
+    
+<div>
+<li class="post-item">
+  
+  
+    <h1 class="index-title">
+        <a href="/2016/06/28/php设计模式：状态模式的使用场景/">
+            php设计模式：状态模式的使用场景
+        </a>
+    </h1>
+  
+
+
+  <div class="excerpt">
+  
+    在这儿给大家说点事儿。我的博客搬家到github主页上了。我的博客。以后首发都在github上了。csdn也会继续更新。可能就是稍微慢一下。
+另外最近搞了一个支付的开源项目。这是项目地址  目前已经支持：
+
+支付宝的 即时到帐、移动支付、加
+  
+  <a href="/2016/06/28/php设计模式：状态模式的使用场景/">
+    更多
+  </a>
+  </div>
+  <div class="index-meta">
+    
+<time datetime="2016-06-28T15:48:44.000Z" itemprop="datePublished">
+  <i class="fa fa-calendar"></i>&nbsp;
+  06-28
+</time>
+
+
+
+
+
+
+    
+    &nbsp;
+    <i class="fa fa-tag"></i>&nbsp;
+    <a href="/tags/PHP设计模式/">PHP设计模式</a>·<a href="/tags/状态模式/">状态模式</a>
+
+
+  </div>
+</li>
+</div>
+<hr>
+
+
+
+
+  
+</ul>
+<ul class="pager">
+    <span class="page-number current">1</span>
+</ul>
+
+
+    </div>
+  </div>
+  <footer class="page-footer"><div class="clearfix">
+</div>
+<div class="right-foot container">
+    <div class="firstrow">
+        <a href="#top" >
+        <i class="fa fa-arrow-right"></i>
+        </a>
+        © helei 2016-2016
+    </div>
+    <div class="secondrow">
+        <a href="https://github.com/gaoryrt/hexo-theme-pln">
+        Theme Pln
+        </a>
+    </div>
+</div>
+<div class="clearfix">
+</div>
+</footer>
+  <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+
+// comments below to disable loading animation
+function revealOnScroll() {
+  var scrolled = $(window).scrollTop();
+  $(".excerpt, .index-title, .index-meta, p").each(function() {
+    var current = $(this),
+      height = $(window).outerHeight(),
+      offsetTop = current.offset().top;
+    (scrolled + height + 50 > offsetTop) ? current.addClass("animation"):'';
+  });
+}
+$(window).on("scroll", revealOnScroll);
+$(document).ready(revealOnScroll)
+
+// disqus scripts
+
+var disqus_shortname = 'helei112g';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('body')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+
+
+// dropdown scripts
+$(".dropdown").click(function(event) {
+  var current = $(this);
+  event.stopPropagation();
+  $(current).children(".dropdown-content")[($(current).children(".dropdown-content").hasClass("open"))?'removeClass':'addClass']("open")
+});
+$(document).click(function(){
+    $(".dropdown-content").removeClass("open");
+})
+
+// back to top scripts
+$("a[href='#top']").click(function() {
+  $("html, body").animate({ scrollTop: 0 }, 500);
+  return false;
+});
+
+
+var path = "/search.xml";
+searchFunc(path, 'local-search-input', 'local-search-result');
+
 </script>
 
-
-<script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/script.js"></script>
-
-  </div>
 </body>
 </html>
