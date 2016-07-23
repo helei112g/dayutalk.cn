@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="google-site-verification" content="" />
+  
+  <title>php设计模式：策略模式的实际应用</title>
+  <meta name="author" content="He Lei">
+   <meta name="description" content="最近写了一个集成各家支付的开源项目（支付宝与微信）。项目地址。让调用支付变得更加简单、统一。目前已经在公司商城推行使用，上海一米市集也采用了这个支付集成项目。
+我可不是打广告哦，只是为了让大家可以有一个只管的了解渠道。可以去看看。
+今天主要聊的不是支付，而是说说其中使用的一个设计模式：策略模式。
+策">
+  
+
+  <meta property="og:title" content="php设计模式：策略模式的实际应用"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+ <meta property="og:image" content="undefined"/>
+  
+  <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/m.min.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+  <div id="main">
+    <div class="behind">
+      <div class="back">
+        <a href="/" class="black-color"><i class="fa fa-times" aria-hidden="true"></i></a>
+      </div>
+      <div class="description">
+        &nbsp;代码是吃饭的家伙
+      </div>
+    </div>
+    <div class="container">
+      
+
+  <article class="standard post">
+    <div class="title">
+      
+  
+    <h1 class="page-title center">
+        php设计模式：策略模式的实际应用
+    </h1>
+  
+
+
+    </div>
+    <div class="meta center">
+      
+<time datetime="2016-07-23T03:47:19.000Z">
+  <i class="fa fa-calendar"></i>&nbsp;
+  2016-07-23
+</time>
+
+
+
+
+
+
+    
+    &nbsp;
+    <i class="fa fa-tag"></i>&nbsp;
+    <a href="/tags/设计模式/">设计模式</a>·<a href="/tags/策略模式/">策略模式</a>
+
+
+    </div>
+    <hr>
+    <div class="picture-container">
+      
+    </div>
+    <p>最近写了一个集成各家支付的开源项目（支付宝与微信）。<a href="https://github.com/helei112g/payment" target="_blank" rel="external">项目地址</a>。让调用支付变得更加简单、统一。目前已经在<a href="http://mall.tiyushe.com/" target="_blank" rel="external">公司商城</a>推行使用，上海<a href="http://yimishiji.com/" target="_blank" rel="external">一米市集</a>也采用了这个支付集成项目。</p>
+<p>我可不是打广告哦，只是为了让大家可以有一个只管的了解渠道。可以去看看。</p>
+<p>今天主要聊的不是支付，而是说说其中使用的一个设计模式：策略模式。</p>
+<h1 id="策略模式的定义解析"><a href="#策略模式的定义解析" class="headerlink" title="策略模式的定义解析"></a>策略模式的定义解析</h1><blockquote>
+<p>策略模式(Strategy Pattern)：定义一系列算法，将每一个算法封装起来，并让它们可以相互替换。策略模式让算法独立于使用它的客户而变化，也称为政策模式(Policy)。</p>
+</blockquote>
+<p>这是书本上给的定义，是不是完全搞不懂？我结合支付，再来给你解释一下，一定就赫然开朗啦！</p>
+<p>首先是这句 <strong>让算法独立于使用它的客户而变化</strong>  （我是倒着在分析哦）。<br>这是什么意思？也就是说实现一个功能，有多个方法，而选择这个方法的控制权不要交给客户端，也就说了，我换了实现方法，客户端是不需要改代码的。</p>
+<p>那么要做到这样子，必然提供给客户端的一个稳定的调用类(称为环境类)，首先调用这个类能够产生一个具体算法的实例，其次这个调用类，还需要公布一个接口，让客户端调用实现具体功能。</p>
+<p>那么做到以上，无论实现多少种双方，客户端的调用都是不变的。控制权都在这个调用类里边，由它来决定到底采用哪种算法。</p>
+<p>下面来接着说算法部分。如果需要 <strong>环境类</strong> 提供一个实现具体功能的接口，那么这些算法必然实现了一个公共接口（称为抽象策略类）。才能确保有相同的方法提供出来。然后具体的算法都要实现这个接口。这也就是上面定义中的 <strong>将每一个算法封装起来</strong> 每一个具体的算法称为：具体策略类</p>
+<p>不知道这个解释大家清楚定义了没有，如果还不清楚，看类图</p>
+<h1 id="类图演示"><a href="#类图演示" class="headerlink" title="类图演示"></a>类图演示</h1><p>策略模式包含的角色如下：</p>
+<ul>
+<li>Context: 环境类</li>
+<li>Strategy: 抽象策略类</li>
+<li>ConcreteStrategy: 具体策略类</li>
+</ul>
+<p><img src="http://design-patterns.readthedocs.io/zh_CN/latest/_images/Strategy.jpg" alt="image"></p>
+<p>这下子是不是很清楚了？策略模式是使用非常广泛的一个设计模式。他很好的提现了：控制反转、依赖注入等思想。有同学说，不想看文字，有本事上代码呀！嗯，我喜欢，新鲜出炉的代码来了</p>
+<h1 id="策略模式PHP代码实现"><a href="#策略模式PHP代码实现" class="headerlink" title="策略模式PHP代码实现"></a>策略模式PHP代码实现</h1><p>在整个模式中，Strategy 起着承上启下的作用。我就先来实现它</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ChargeStrategy</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">charge</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>OK，抽象策略类就完成了，他的主要目的就是规范一个必须要实现的方法，环境类依赖这个接口进行编程。</p>
+<p>下面接着写算法的实现。还是以支付宝支付、微信支付为例。对于用户来说他要实现的功能是支付。那么支付又有多种选择(多种算法)。但是客户端不需要做出选择，他把这个权利让 环境类 去选择。这样子客户端就简单了。所有的算法需要实现 策略类接口。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 支付宝策略类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AliCharge</span> <span class="keyword">implements</span> <span class="title">ChargeStrategy</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">charge</span><span class="params">()</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="comment">// 完成支付宝的相关逻辑</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 微信策略类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WxCharge</span> <span class="keyword">implements</span> <span class="title">ChargeStrategy</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">charge</span><span class="params">()</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="comment">// 完成微信的相关逻辑</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里声明一下，这里为了纯粹的把 策略模式 讲明白，抛开了很多细枝末节，真正的支付中的实现，大家可以去看看<a href="https://github.com/helei112g/payment" target="_blank" rel="external">项目</a>的源代码。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">ChargeContext</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * <span class="doctag">@var</span> ChargeStrategy $charge</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> $charge;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">initInstance</span><span class="params">($channel)</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> ($channel == <span class="string">'ali'</span>) &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;charge = <span class="keyword">new</span> AliCharge;</span><br><span class="line">        &#125; <span class="keyword">elseif</span> ($chananel == <span class="string">'wx'</span>) &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;charge = <span class="keyword">new</span> WxCharge;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;charge = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">charge</span><span class="params">()</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (is_null(<span class="keyword">$this</span>-&gt;charge)) &#123;</span><br><span class="line">            <span class="keyword">exit</span>(<span class="string">'初始化错误'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">$this</span>-&gt;charge-&gt;charge();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上就基本完成了，而对于客户端来说，就非常简单啦。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取用户选择的支付方式</span></span><br><span class="line">$channel = trim($_GET[<span class="string">'channel'</span>]);</span><br><span class="line"></span><br><span class="line">$context = <span class="keyword">new</span> ChargeContext();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化支付实例</span></span><br><span class="line">$context-&gt;initInstance($channel);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用功能</span></span><br><span class="line">$context-&gt;charge();</span><br></pre></td></tr></table></figure>
+<p>代码写完了，不知道大家有没有感受到好处，这个模式很好的实现了开闭原则。比如说：现在新增加了一个PayPal支付方式。那么只需要添加一个PayPal的策略算法。在ChargeContext中把对应的实例初始化加进去，其他地方都不需要动的。</p>
+<h1 id="体会"><a href="#体会" class="headerlink" title="体会"></a>体会</h1><p>最后再说几句，不知道大家注意到没有，在 <code>ChargeContext</code> 这个类中，其实还使用了 <strong>简单工厂</strong> 这个模式。这里想给大家说明的是，其实设计模式只是一些编码的技巧，完全可以自由搭配组合，基本思想就是 <a href="http://blog.csdn.net/hel12he/article/details/51351763" target="_blank" rel="external">设计模式的六大原则</a> </p>
+<p>当然，实际编码中也没有必要非要都实现这六大原则。这个也没有什么规范，只能大家多去实践，然后自己约定出一套适合业务的规范就好。</p>
+
+
+  </article>
+  </script>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  <div class="busuanzi center">
+    页阅读量:&nbsp;<span id="busuanzi_value_page_pv"></span>&nbsp;・&nbsp;
+    站访问量:&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;・&nbsp;
+    站访客数:&nbsp;<span id="busuanzi_value_site_uv"></span>
+  </div>
+
+
+<div id="disqus_thread"></div>
+<script>
+
+var disqus_config = function () {
+this.page.url = 'https://helei112g.github.io/2016/07/23/php设计模式：策略模式的实际应用/index.html';
+this.page.identifier = undefined;
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//helei112g.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+    </div>
+  </div>
+  <footer class="page-footer"><div class="clearfix">
+</div>
+<div class="right-foot container">
+    <div class="firstrow">
+        <a href="#top" >
+        <i class="fa fa-arrow-right"></i>
+        </a>
+        © helei 2016-2016
+    </div>
+    <div class="secondrow">
+        <a href="https://github.com/gaoryrt/hexo-theme-pln">
+        Theme Pln
+        </a>
+    </div>
+</div>
+<div class="clearfix">
+</div>
+</footer>
+  <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+
+// comments below to disable loading animation
+function revealOnScroll() {
+  var scrolled = $(window).scrollTop();
+  $(".excerpt, .index-title, .index-meta, p").each(function() {
+    var current = $(this),
+      height = $(window).outerHeight(),
+      offsetTop = current.offset().top;
+    (scrolled + height + 50 > offsetTop) ? current.addClass("animation"):'';
+  });
+}
+$(window).on("scroll", revealOnScroll);
+$(document).ready(revealOnScroll)
+
+// disqus scripts
+
+var disqus_shortname = 'helei112g';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('body')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+
+
+// dropdown scripts
+$(".dropdown").click(function(event) {
+  var current = $(this);
+  event.stopPropagation();
+  $(current).children(".dropdown-content")[($(current).children(".dropdown-content").hasClass("open"))?'removeClass':'addClass']("open")
+});
+$(document).click(function(){
+    $(".dropdown-content").removeClass("open");
+})
+
+// back to top scripts
+$("a[href='#top']").click(function() {
+  $("html, body").animate({ scrollTop: 0 }, 500);
+  return false;
+});
+
+
+var path = "/search.xml";
+searchFunc(path, 'local-search-input', 'local-search-result');
+
+</script>
+
+</body>
+</html>
