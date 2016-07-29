@@ -1,0 +1,407 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="google-site-verification" content="" />
+  
+  <title>支付的回调统一处理</title>
+  <meta name="author" content="He Lei">
+   <meta name="description" content="经过这一段时间，终于把支付宝支付相关接口完成了。文档将陆续更新。这里先把回调的文档补充完成。这样结合之前 提供的 支付宝即时到帐接口 才能形成一个闭环。完成一次完整的支付流程。
+回调接口介绍
+支付服务商(支付宝、微信、PayPal等)处理完支付数据后。会将处理的结果数据通过服务器主动通知的方式通知给">
+  
+
+  <meta property="og:title" content="支付的回调统一处理"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+ <meta property="og:image" content="undefined"/>
+  
+  <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/m.min.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+  <div id="main">
+    <div class="behind">
+      <div class="back">
+        <a href="/" class="black-color"><i class="fa fa-times" aria-hidden="true"></i></a>
+      </div>
+      <div class="description">
+        &nbsp;代码是吃饭的家伙
+      </div>
+    </div>
+    <div class="container">
+      
+
+  <article class="standard post">
+    <div class="title">
+      
+  
+    <h1 class="page-title center">
+        支付的回调统一处理
+    </h1>
+  
+
+
+    </div>
+    <div class="meta center">
+      
+<time datetime="2016-07-29T14:58:41.000Z">
+  <i class="fa fa-calendar"></i>&nbsp;
+  2016-07-29
+</time>
+
+
+
+
+
+
+    
+    &nbsp;
+    <i class="fa fa-tag"></i>&nbsp;
+    <a href="/tags/支付宝/">支付宝</a>·<a href="/tags/微信支付/">微信支付</a>·<a href="/tags/回调处理/">回调处理</a>
+
+
+    </div>
+    <hr>
+    <div class="picture-container">
+      
+    </div>
+    <p>经过这一段时间，终于把支付宝支付相关接口完成了。文档将陆续更新。这里先把回调的文档补充完成。这样结合之前 提供的 支付宝即时到帐接口 才能形成一个闭环。完成一次完整的支付流程。</p>
+<h1 id="回调接口介绍"><a href="#回调接口介绍" class="headerlink" title="回调接口介绍"></a>回调接口介绍</h1><blockquote>
+<p>支付服务商(支付宝、微信、PayPal等)处理完支付数据后。会将处理的结果数据通过服务器主动通知的方式通知给商户网站。这些处理结果数据就是服务器异步通知参数。</p>
+</blockquote>
+<p>简单来说，就是支付成功后，支付服务商告诉你，钱已经到账了，你应该把别个买的东西给别个了。</p>
+<p>由于本次发布的接口主要都是与支付宝相关，因此本次回调的部分代码也主要先上支付宝的。微信等后期开发完成将更新相关文档。</p>
+<p>针对不同的回调，我提供了统一的调用方式，让客户端专注自己的业务。不在处理支付相关的签名验证、来源验证的问题。下面代码是统一的回调处理代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 支付宝配置文件</span></span><br><span class="line">$aliconfig = <span class="keyword">require_once</span> <span class="keyword">__DIR__</span> . <span class="string">'/aliconfig.php'</span>;</span><br><span class="line"><span class="comment">// 获取异步通知上下文</span></span><br><span class="line">$notify = <span class="keyword">new</span> NotifyContext();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 客户端的业务逻辑类。处理如：订单更新</span></span><br><span class="line">$callback = <span class="keyword">new</span> TestNotify();</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 支付宝回调</span></span><br><span class="line">    $notify-&gt;initNotify(Config::ALI, $aliconfig);</span><br><span class="line">    $notify-&gt;notify($callback);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>客户端类 <code>TestNotify</code> 的注意事项 ，一定要继承 <code>PayNotifyInterface</code> 这个类</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Notify</span>\<span class="title">PayNotifyInterface</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestNotify</span> <span class="keyword">implements</span> <span class="title">PayNotifyInterface</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 客户端的业务逻辑，</span><br><span class="line">     * <span class="doctag">@param</span> array $data</span><br><span class="line">     * <span class="doctag">@return</span> bool  返回值一定是bool值</span><br><span class="line">     * <span class="doctag">@author</span> helei</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">notifyProcess</span><span class="params">(array $data)</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="comment">// 一般支付的处理业务</span></span><br><span class="line">        <span class="number">1.</span> 检查订单是否存在</span><br><span class="line">        <span class="number">2.</span> 检查金额是否正确</span><br><span class="line">        <span class="number">3.</span> 检查订单是否已经处理过（防止重复通知）</span><br><span class="line">        <span class="number">4.</span> 更新订单</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 <code>TestNotify::notifyProcess()</code> 方法中，我注释了常规的订单处理流程。这个地方客户端可根据自己的情况进行适当调整。只是返回结果一定需要 <strong>布尔值</strong></p>
+<p>现在的重点是 <code>TestNotify::notifyProcess()</code> 方法中的参数 $data 中具体包含的值。根据不同的回调业务，返回的值也不一样。具体请往下看。</p>
+<h1 id="支付宝回调"><a href="#支付宝回调" class="headerlink" title="支付宝回调"></a>支付宝回调</h1><p>支付宝的回调，与支付相关的对应三种类型。</p>
+<ul>
+<li>trade_status_sync  支付行为相关的异步通知</li>
+<li>batch_refund_notify   有密批量退款的异步通知</li>
+<li>batch_trans_notify   有密批量付款到支付宝账号的通知</li>
+</ul>
+<h2 id="trade-status-sync-异步通知返回数据"><a href="#trade-status-sync-异步通知返回数据" class="headerlink" title="trade_status_sync 异步通知返回数据"></a>trade_status_sync 异步通知返回数据</h2><p>该回调发生在：移动支付、即时到帐、手机网站支付接口调用后，如果支付成功，支付宝会发起回调接口。</p>
+<p>返回的对应数据如下表</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>subject</td>
+<td>商品名称</td>
+<td>订单的关键字</td>
+<td>是</td>
+</tr>
+<tr>
+<td>body</td>
+<td>商品描述</td>
+<td>提交订单时的body值</td>
+<td>是</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>交易金额</td>
+<td>本次订单总金额</td>
+<td>是</td>
+</tr>
+<tr>
+<td>channel</td>
+<td>支付渠道</td>
+<td>本处取值： ali</td>
+<td>是</td>
+</tr>
+<tr>
+<td>order_no</td>
+<td>商户网站唯一订单号</td>
+<td>商户生成的订单号，必须确保在系统中唯一</td>
+<td>是</td>
+</tr>
+<tr>
+<td>buyer_id</td>
+<td>买家支付宝账户号</td>
+<td>可以是Email或手机号码。</td>
+<td>是</td>
+</tr>
+<tr>
+<td>trade_state</td>
+<td>交易状态</td>
+<td>支付成功与否，可取值：success  not_pay</td>
+<td>是</td>
+</tr>
+<tr>
+<td>transaction_id</td>
+<td>支付宝交易号</td>
+<td>支付宝系统中的交易流水号，可用于查询订单状态</td>
+<td>是</td>
+</tr>
+<tr>
+<td>time_end</td>
+<td>交易付款时间</td>
+<td>格式为2016-07-28 16:01:01</td>
+<td>是</td>
+</tr>
+<tr>
+<td>notify_time</td>
+<td>通知时间</td>
+<td>格式为2016-07-28 16:01:01</td>
+<td>是</td>
+</tr>
+<tr>
+<td>notify_type</td>
+<td>通知类型</td>
+<td>此处为：trade  表示交易</td>
+<td>是</td>
+</tr>
+<tr>
+<td>extra_param</td>
+<td>商户自定义参数</td>
+<td>仅即时到帐支持</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<p>传入到 <code>TestNotify::notifyProcess()</code> 中的数组，包括以上key。可根据以上内容进行业务处理。</p>
+<h2 id="batch-refund-notify-异步通知返回数据"><a href="#batch-refund-notify-异步通知返回数据" class="headerlink" title="batch_refund_notify 异步通知返回数据"></a>batch_refund_notify 异步通知返回数据</h2><p>本类回调发生在操作退款后，支付宝会通知服务器是否退款成功。退款的界面，如下图：</p>
+<p><img src="https://helei112g.github.io/images/4.png" alt="image"></p>
+<p>输入支付密码后，就可完成退款。退款后支付宝会向商户服务器进行异步通知。他返回的数据如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>channel</td>
+<td>渠道</td>
+<td>本处取值： ali</td>
+<td>是</td>
+</tr>
+<tr>
+<td>refund_no</td>
+<td>商户网站唯一退单号</td>
+<td>商户生成的退单号，必须确保在系统中唯一</td>
+<td>是</td>
+</tr>
+<tr>
+<td>success_num</td>
+<td>退款成功总数</td>
+<td>0&lt;= success_num&lt;= 总退款笔数</td>
+<td>是</td>
+</tr>
+<tr>
+<td>notify_time</td>
+<td>通知时间</td>
+<td>格式为2016-07-28 16:01:01</td>
+<td>是</td>
+</tr>
+<tr>
+<td>notify_type</td>
+<td>通知类型</td>
+<td>此处为：trade  表示交易</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<h2 id="batch-trans-notify-异步通知返回数据"><a href="#batch-trans-notify-异步通知返回数据" class="headerlink" title="batch_trans_notify 异步通知返回数据"></a>batch_trans_notify 异步通知返回数据</h2><p>该回调发生在批量付款后。返回的数据如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>channel</td>
+<td>渠道</td>
+<td>本处取值： ali</td>
+<td>是</td>
+</tr>
+<tr>
+<td>trans_no</td>
+<td>商户网站唯一转账单号</td>
+<td>商户生成的转账单号，必须确保在系统中唯一</td>
+<td>是</td>
+</tr>
+<tr>
+<td>pay_name</td>
+<td>付款账号姓名</td>
+<td>如果是个人为昵称，公司则为公司名称</td>
+<td>是</td>
+</tr>
+<tr>
+<td>pay_account</td>
+<td>付款账号</td>
+<td>邮箱或者手机号码</td>
+<td>是</td>
+</tr>
+<tr>
+<td>notify_time</td>
+<td>通知时间</td>
+<td>格式为2016-07-28 16:01:01</td>
+<td>是</td>
+</tr>
+<tr>
+<td>notify_type</td>
+<td>通知类型</td>
+<td>此处为：trade  表示交易</td>
+<td>是</td>
+</tr>
+<tr>
+<td>success</td>
+<td>转账成功的详细信息</td>
+<td>返回的是一个数组</td>
+<td>是</td>
+</tr>
+<tr>
+<td>fail</td>
+<td>转账失败的详细信息</td>
+<td>返回的是一个数组</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注：</strong></p>
+<ul>
+<li>success返回的数组中，单条记录格式如下：</li>
+</ul>
+<blockquote>
+<p>流水号^收款方账号^收款账号姓名^付款金额^成功标识(S)^成功原因(null)^支付宝内部流水号^完成时间。</p>
+</blockquote>
+<ul>
+<li>fail返回数据中的单条记录格式如下：</li>
+</ul>
+<blockquote>
+<p>流水号^收款方账号^收款账号姓名^付款金额^失败标识(F)^失败原因^支付宝内部流水号^完成时间。</p>
+</blockquote>
+<p>OK。到此支付宝相关的回调通知数据，已经全部处理完成。这里需要大家注意一个问题，上面的数据并不是完整的支付宝返回数据。大部分经过了我的简化，如果有需要的参数，没有返回可执行修改源码或者联系我。</p>
+<p>微信回调文档，待续……</p>
+
+
+  </article>
+  </script>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  <div class="busuanzi center">
+    页阅读量:&nbsp;<span id="busuanzi_value_page_pv"></span>&nbsp;・&nbsp;
+    站访问量:&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;・&nbsp;
+    站访客数:&nbsp;<span id="busuanzi_value_site_uv"></span>
+  </div>
+
+
+<div id="disqus_thread"></div>
+<script>
+
+var disqus_config = function () {
+this.page.url = 'https://helei112g.github.io/2016/07/29/支付的回调统一处理/index.html';
+this.page.identifier = undefined;
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//helei112g.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+    </div>
+  </div>
+  <footer class="page-footer"><div class="clearfix">
+</div>
+<div class="right-foot container">
+    <div class="firstrow">
+        <a href="#top" >
+        <i class="fa fa-arrow-right"></i>
+        </a>
+        © helei 2016-2016
+    </div>
+    <div class="secondrow">
+        <a href="https://github.com/gaoryrt/hexo-theme-pln">
+        Theme Pln
+        </a>
+    </div>
+</div>
+<div class="clearfix">
+</div>
+</footer>
+  <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+
+// comments below to disable loading animation
+function revealOnScroll() {
+  var scrolled = $(window).scrollTop();
+  $(".excerpt, .index-title, .index-meta, p").each(function() {
+    var current = $(this),
+      height = $(window).outerHeight(),
+      offsetTop = current.offset().top;
+    (scrolled + height + 50 > offsetTop) ? current.addClass("animation"):'';
+  });
+}
+$(window).on("scroll", revealOnScroll);
+$(document).ready(revealOnScroll)
+
+// disqus scripts
+
+var disqus_shortname = 'helei112g';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('body')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+
+
+// dropdown scripts
+$(".dropdown").click(function(event) {
+  var current = $(this);
+  event.stopPropagation();
+  $(current).children(".dropdown-content")[($(current).children(".dropdown-content").hasClass("open"))?'removeClass':'addClass']("open")
+});
+$(document).click(function(){
+    $(".dropdown-content").removeClass("open");
+})
+
+// back to top scripts
+$("a[href='#top']").click(function() {
+  $("html, body").animate({ scrollTop: 0 }, 500);
+  return false;
+});
+
+
+var path = "/search.xml";
+searchFunc(path, 'local-search-input', 'local-search-result');
+
+</script>
+
+</body>
+</html>
