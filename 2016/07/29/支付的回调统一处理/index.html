@@ -73,7 +73,7 @@
     <div class="picture-container">
       
     </div>
-    <p>经过这一段时间，终于把支付宝支付相关接口完成了。文档将陆续更新。这里先把回调的文档补充完成。这样结合之前 提供的 支付宝即时到帐接口 才能形成一个闭环。完成一次完整的支付流程。</p>
+    <p>经过这一段时间，终于把支付宝支付相关接口完成了。文档将陆续更新。这里先把回调的文档补充完成。这样结合之前 提供的 <a href="https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/">支付宝即时到帐接口</a> 才能形成一个闭环。完成一次完整的支付流程。</p>
 <h1 id="回调接口介绍"><a href="#回调接口介绍" class="headerlink" title="回调接口介绍"></a>回调接口介绍</h1><blockquote>
 <p>支付服务商(支付宝、微信、PayPal等)处理完支付数据后。会将处理的结果数据通过服务器主动通知的方式通知给商户网站。这些处理结果数据就是服务器异步通知参数。</p>
 </blockquote>
@@ -85,7 +85,7 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Notify</span>\<span class="title">PayNotifyInterface</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestNotify</span> <span class="keyword">implements</span> <span class="title">PayNotifyInterface</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 客户端的业务逻辑，</span><br><span class="line">     * <span class="doctag">@param</span> array $data</span><br><span class="line">     * <span class="doctag">@return</span> bool  返回值一定是bool值</span><br><span class="line">     * <span class="doctag">@author</span> helei</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">notifyProcess</span><span class="params">(array $data)</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="comment">// 一般支付的处理业务</span></span><br><span class="line">        <span class="number">1.</span> 检查订单是否存在</span><br><span class="line">        <span class="number">2.</span> 检查金额是否正确</span><br><span class="line">        <span class="number">3.</span> 检查订单是否已经处理过（防止重复通知）</span><br><span class="line">        <span class="number">4.</span> 更新订单</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在 <code>TestNotify::notifyProcess()</code> 方法中，我注释了常规的订单处理流程。这个地方客户端可根据自己的情况进行适当调整。只是返回结果一定需要 <strong>布尔值</strong></p>
 <p>现在的重点是 <code>TestNotify::notifyProcess()</code> 方法中的参数 $data 中具体包含的值。根据不同的回调业务，返回的值也不一样。具体请往下看。</p>
-<h1 id="支付宝回调"><a href="#支付宝回调" class="headerlink" title="支付宝回调"></a>支付宝回调</h1><p>支付宝的回调，与支付相关的对应三种类型。</p>
+<h1 id="支付宝回调通知类型"><a href="#支付宝回调通知类型" class="headerlink" title="支付宝回调通知类型"></a>支付宝回调通知类型</h1><p>支付宝的回调，与支付相关的对应三种类型。</p>
 <ul>
 <li>trade_status_sync  支付行为相关的异步通知</li>
 <li>batch_refund_notify   有密批量退款的异步通知</li>
@@ -173,7 +173,7 @@
 <td>extra_param</td>
 <td>商户自定义参数</td>
 <td>仅即时到帐支持</td>
-<td>是</td>
+<td>否</td>
 </tr>
 </tbody>
 </table>

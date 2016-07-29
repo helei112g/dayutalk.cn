@@ -6,7 +6,7 @@
     <entry>
       <title><![CDATA[支付的回调统一处理]]></title>
       <url>https://helei112g.github.io/2016/07/29/%E6%94%AF%E4%BB%98%E7%9A%84%E5%9B%9E%E8%B0%83%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86/</url>
-      <content type="html"><![CDATA[<p>经过这一段时间，终于把支付宝支付相关接口完成了。文档将陆续更新。这里先把回调的文档补充完成。这样结合之前 提供的 支付宝即时到帐接口 才能形成一个闭环。完成一次完整的支付流程。</p>
+      <content type="html"><![CDATA[<p>经过这一段时间，终于把支付宝支付相关接口完成了。文档将陆续更新。这里先把回调的文档补充完成。这样结合之前 提供的 <a href="https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/">支付宝即时到帐接口</a> 才能形成一个闭环。完成一次完整的支付流程。</p>
 <h1 id="回调接口介绍"><a href="#回调接口介绍" class="headerlink" title="回调接口介绍"></a>回调接口介绍</h1><blockquote>
 <p>支付服务商(支付宝、微信、PayPal等)处理完支付数据后。会将处理的结果数据通过服务器主动通知的方式通知给商户网站。这些处理结果数据就是服务器异步通知参数。</p>
 </blockquote>
@@ -18,7 +18,7 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Notify</span>\<span class="title">PayNotifyInterface</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestNotify</span> <span class="keyword">implements</span> <span class="title">PayNotifyInterface</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 客户端的业务逻辑，</span><br><span class="line">     * <span class="doctag">@param</span> array $data</span><br><span class="line">     * <span class="doctag">@return</span> bool  返回值一定是bool值</span><br><span class="line">     * <span class="doctag">@author</span> helei</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">notifyProcess</span><span class="params">(array $data)</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="comment">// 一般支付的处理业务</span></span><br><span class="line">        <span class="number">1.</span> 检查订单是否存在</span><br><span class="line">        <span class="number">2.</span> 检查金额是否正确</span><br><span class="line">        <span class="number">3.</span> 检查订单是否已经处理过（防止重复通知）</span><br><span class="line">        <span class="number">4.</span> 更新订单</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在 <code>TestNotify::notifyProcess()</code> 方法中，我注释了常规的订单处理流程。这个地方客户端可根据自己的情况进行适当调整。只是返回结果一定需要 <strong>布尔值</strong></p>
 <p>现在的重点是 <code>TestNotify::notifyProcess()</code> 方法中的参数 $data 中具体包含的值。根据不同的回调业务，返回的值也不一样。具体请往下看。</p>
-<h1 id="支付宝回调"><a href="#支付宝回调" class="headerlink" title="支付宝回调"></a>支付宝回调</h1><p>支付宝的回调，与支付相关的对应三种类型。</p>
+<h1 id="支付宝回调通知类型"><a href="#支付宝回调通知类型" class="headerlink" title="支付宝回调通知类型"></a>支付宝回调通知类型</h1><p>支付宝的回调，与支付相关的对应三种类型。</p>
 <ul>
 <li>trade_status_sync  支付行为相关的异步通知</li>
 <li>batch_refund_notify   有密批量退款的异步通知</li>
@@ -106,7 +106,7 @@
 <td>extra_param</td>
 <td>商户自定义参数</td>
 <td>仅即时到帐支持</td>
-<td>是</td>
+<td>否</td>
 </tr>
 </tbody>
 </table>
@@ -241,7 +241,7 @@
       <content type="html"><![CDATA[<p>前面已经说完了 PHP接入支付宝 即时到帐接口</p>
 <p>回调接口也已经完成。这篇主要讲 <strong>手机网站支付</strong> 、 <strong>移动支付</strong> 接口的调用。调用方式与即时到帐 基本一样。</p>
 <p>关于代码部分的详细解释，请 参看 <a href="https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/">PHP接入支付宝 即时到帐接口</a></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 订单数组</span></span><br><span class="line">$orderData = [</span><br><span class="line">    <span class="string">"order_no"</span>	=&gt; createPayid(),</span><br><span class="line">    <span class="string">"amount"</span>	=&gt; <span class="string">'0.01'</span>,<span class="comment">// 单位为元 ,最小为0.01</span></span><br><span class="line">    <span class="string">"client_ip"</span>	=&gt; <span class="string">'127.0.0.1'</span>,</span><br><span class="line">    <span class="string">"subject"</span>	=&gt; <span class="string">'      测试支付'</span>,</span><br><span class="line">    <span class="string">"body"</span>	=&gt; <span class="string">'支付接口测试'</span>,</span><br><span class="line">    <span class="string">"show_url"</span>  =&gt; <span class="string">'http://mall.tiyushe.com/goods/23.html'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 支付宝配置信息</span></span><br><span class="line">$aliconfig = [</span><br><span class="line">    <span class="string">'partner'</span>   =&gt; <span class="string">'2088xxxxx'</span>,</span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'xxxxxxxxxxxx'</span>,</span><br><span class="line">    <span class="string">'rsa_private_key'</span>   =&gt; dirname(<span class="keyword">__FILE__</span>) . <span class="string">'/rsa_private_key.pem'</span>,</span><br><span class="line">    <span class="string">"notify_url"</span>	=&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">"return_url"</span>	=&gt; <span class="string">'http://test.helei.com/return-url.html'</span>,</span><br><span class="line">    <span class="string">"time_expire"</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例化环境类</span></span><br><span class="line"></span><br><span class="line">$charge = <span class="keyword">new</span> ChargeContext();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 支付宝即时到帐接口</span></span><br><span class="line">    <span class="comment">/*$type = Config::ALI_CHANNEL_WEB;</span><br><span class="line">    $charge-&gt;initCharge($type, $aliconfig);*/</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 支付宝 手机网站支接口</span></span><br><span class="line">    $type = Config::ALI_CHANNEL_WAP;</span><br><span class="line">    $charge-&gt;initCharge($type, $aliconfig);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 支付宝 移动支付接口</span></span><br><span class="line">    <span class="comment">/*$type = Config::ALI_CHANNEL_APP;</span><br><span class="line">    $charge-&gt;initCharge($type, $aliconfig);*/</span></span><br><span class="line">    $ret = $charge-&gt;charge($payData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ($type === Config::ALI_CHANNEL_APP) &#123;</span><br><span class="line">    var_dump($ret);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 跳转支付宝</span></span><br><span class="line">    header(<span class="string">"Location:&#123;$ret&#125;"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 订单数组</span></span><br><span class="line">$orderData = [</span><br><span class="line">    <span class="string">"order_no"</span>	=&gt; createPayid(),</span><br><span class="line">    <span class="string">"amount"</span>	=&gt; <span class="string">'0.01'</span>,<span class="comment">// 单位为元 ,最小为0.01</span></span><br><span class="line">    <span class="string">"client_ip"</span>	=&gt; <span class="string">'127.0.0.1'</span>,</span><br><span class="line">    <span class="string">"subject"</span>	=&gt; <span class="string">'      测试支付'</span>,</span><br><span class="line">    <span class="string">"body"</span>	=&gt; <span class="string">'支付接口测试'</span>,</span><br><span class="line">    <span class="string">"show_url"</span>  =&gt; <span class="string">'http://mall.tiyushe.com/goods/23.html'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 支付宝配置信息</span></span><br><span class="line">$aliconfig = [</span><br><span class="line">    <span class="string">'partner'</span>   =&gt; <span class="string">'2088xxxxx'</span>,</span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'xxxxxxxxxxxx'</span>,</span><br><span class="line">    <span class="string">'rsa_private_key'</span>   =&gt; dirname(<span class="keyword">__FILE__</span>) . <span class="string">'/rsa_private_key.pem'</span>,</span><br><span class="line">    <span class="string">"notify_url"</span>	=&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">"return_url"</span>	=&gt; <span class="string">'http://test.helei.com/return-url.html'</span>,</span><br><span class="line">    <span class="string">"time_expire"</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例化环境类</span></span><br><span class="line"></span><br><span class="line">$charge = <span class="keyword">new</span> ChargeContext();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 支付宝即时到帐接口</span></span><br><span class="line">    <span class="comment">// $type = Config::ALI_CHANNEL_WEB;</span></span><br><span class="line">    <span class="comment">// $charge-&gt;initCharge($type, $aliconfig);</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 支付宝 手机网站支接口</span></span><br><span class="line">    <span class="comment">// $type = Config::ALI_CHANNEL_WAP;</span></span><br><span class="line">    <span class="comment">// $charge-&gt;initCharge($type, $aliconfig);</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 支付宝 移动支付接口</span></span><br><span class="line">    $type = Config::ALI_CHANNEL_APP;</span><br><span class="line">    $charge-&gt;initCharge($type, $aliconfig);</span><br><span class="line">    $ret = $charge-&gt;charge($payData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ($type === Config::ALI_CHANNEL_APP) &#123;</span><br><span class="line">    var_dump($ret);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 跳转支付宝</span></span><br><span class="line">    header(<span class="string">"Location:&#123;$ret&#125;"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>oK！大家仔细看代码。唯一不同的，仅仅是支付的方式这个常量。<br>目前常量的含义</p>
 <ul>
 <li>Config::ALI_CHANNEL_WEB  及时到账接口，主要用于网站支付</li>
@@ -264,37 +264,37 @@
 <td>partner</td>
 <td>合作者身份ID</td>
 <td>签约的支付宝账号对应的支付宝唯一用户号。以2088开头的16位纯数字组成。</td>
-<td>必须</td>
+<td>是</td>
 </tr>
 <tr>
 <td>md5_key</td>
 <td>MD5密钥</td>
 <td><a href="https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.qt91b7&amp;treeId=62&amp;articleId=104740&amp;docType=1#s1" target="_blank" rel="external">点击这里</a></td>
-<td>必须</td>
+<td>是</td>
 </tr>
 <tr>
 <td>rsa_private_key</td>
 <td>RSA私钥</td>
 <td><a href="https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.qt91b7&amp;treeId=62&amp;articleId=104740&amp;docType=1#s0" target="_blank" rel="external">点击这里</a></td>
-<td>必须</td>
+<td>是</td>
 </tr>
 <tr>
 <td>notify_url</td>
 <td>服务器异步通知URI</td>
 <td>支付宝服务器主动通知商户网站里指定的页面http路径。(建议使用https)</td>
-<td>可选</td>
+<td>否</td>
 </tr>
 <tr>
 <td>return_url</td>
 <td>页面跳转同步通知页面路径</td>
 <td>支付宝处理完请求后，当前页面自动跳转到商户网站里指定页面的url路径。仅在即时到账接口有效</td>
-<td>可选</td>
+<td>否</td>
 </tr>
 <tr>
 <td>time_expire</td>
 <td>超时时间</td>
 <td>设置未付款交易的超时时间，一旦超时，该笔交易就会自动被关闭。单位默认为分钟</td>
-<td>可选</td>
+<td>否</td>
 </tr>
 </tbody>
 </table>
@@ -313,31 +313,31 @@
 <td>order_no</td>
 <td>订单号</td>
 <td>平台根据规则生成的订单号，最长64位，要在商户数据库中唯一</td>
-<td>必须</td>
+<td>是</td>
 </tr>
 <tr>
 <td>amount</td>
 <td>交易总金额</td>
 <td>该笔订单的资金总额，单位为RMB-Yuan。取值范围为[0.01，100000000.00]，精确到小数点后两位。</td>
-<td>必须</td>
+<td>是</td>
 </tr>
 <tr>
 <td>client_ip</td>
 <td>客户端IP</td>
 <td>用户在创建交易时，该用户当前所使用机器的IP。</td>
-<td>必须</td>
+<td>是</td>
 </tr>
 <tr>
 <td>subject</td>
 <td>商品名称</td>
 <td>商品的标题/交易标题/订单标题/订单关键字等。该参数最长为128个汉字。</td>
-<td>必须</td>
+<td>是</td>
 </tr>
 <tr>
 <td>body</td>
 <td>商品描述</td>
 <td>对一笔交易的具体描述信息。如果是多种商品，请将商品描述字符串累加传给body。</td>
-<td>必须</td>
+<td>是</td>
 </tr>
 <tr>
 <td>show_url</td>
@@ -349,7 +349,7 @@
 <td>extra_param</td>
 <td>公用回传参数</td>
 <td>如果用户请求时传递了该参数，则返回给商户时会回传该参数。仅在即时到帐接口有效</td>
-<td>可选</td>
+<td>是</td>
 </tr>
 </tbody>
 </table>
