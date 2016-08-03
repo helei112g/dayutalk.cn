@@ -1,0 +1,250 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="google-site-verification" content="" />
+  
+  <title>PHP接入支付宝有密退款接口</title>
+  <meta name="author" content="He Lei">
+   <meta name="description" content="这个接口主要用于退款操作。之前没有接入该功能时，商城用户如果想要退款，我们需要先查到对应用户的支付流水号，然后写退款申请给财务，财务到支付宝进行查询。完了之后原路退回。然后告诉程序，程序再去修改订单状态。
+这样的流程不仅麻烦。而且充满不安全性。如果程序误操作（或者是心情太差了），操作为其他人员，那么">
+  
+
+  <meta property="og:title" content="PHP接入支付宝有密退款接口"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+ <meta property="og:image" content="undefined"/>
+  
+  <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/m.min.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+  <div id="main">
+    <div class="behind">
+      <div class="back">
+        <a href="/" class="black-color"><i class="fa fa-times" aria-hidden="true"></i></a>
+      </div>
+      <div class="description">
+        &nbsp;代码是吃饭的家伙
+      </div>
+    </div>
+    <div class="container">
+      
+
+  <article class="standard post">
+    <div class="title">
+      
+  
+    <h1 class="page-title center">
+        PHP接入支付宝有密退款接口
+    </h1>
+  
+
+
+    </div>
+    <div class="meta center">
+      
+<time datetime="2016-08-03T11:40:52.000Z">
+  <i class="fa fa-calendar"></i>&nbsp;
+  2016-08-03
+</time>
+
+
+
+
+
+
+    
+    &nbsp;
+    <i class="fa fa-tag"></i>&nbsp;
+    <a href="/tags/支付宝/">支付宝</a>·<a href="/tags/退款接口/">退款接口</a>
+
+
+    </div>
+    <hr>
+    <div class="picture-container">
+      
+    </div>
+    <p>这个接口主要用于退款操作。之前没有接入该功能时，商城用户如果想要退款，我们需要先查到对应用户的支付流水号，然后写退款申请给财务，财务到支付宝进行查询。完了之后原路退回。然后告诉程序，程序再去修改订单状态。</p>
+<p>这样的流程不仅麻烦。而且充满不安全性。如果程序误操作（或者是心情太差了），操作为其他人员，那么这将会为企业带来很大的风险。</p>
+<h1 id="SDK调用"><a href="#SDK调用" class="headerlink" title="SDK调用"></a>SDK调用</h1><p>支付宝支持多笔退款。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 支付宝配置信息</span></span><br><span class="line">$aliconfig = [</span><br><span class="line">    <span class="string">'partner'</span>   =&gt; <span class="string">'2088xxxxx'</span>,</span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'xxxxxxxxxxxx'</span>,</span><br><span class="line">    <span class="string">'rsa_private_key'</span>   =&gt; dirname(<span class="keyword">__FILE__</span>) . <span class="string">'/rsa_private_key.pem'</span>,</span><br><span class="line">    <span class="string">"notify_url"</span>	=&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">"return_url"</span>	=&gt; <span class="string">'http://test.helei.com/return-url.html'</span>,</span><br><span class="line">    <span class="string">"time_expire"</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">//  生成退款单号 便于测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPayid</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> date(<span class="string">'Ymdhis'</span>, time()).substr(floor(microtime()*<span class="number">1000</span>),<span class="number">0</span>,<span class="number">1</span>).rand(<span class="number">0</span>,<span class="number">9</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 退款数据</span></span><br><span class="line">$reundData = [</span><br><span class="line">    <span class="string">'refund_no'</span> =&gt; createPayid(),</span><br><span class="line">    <span class="string">'refund_data'</span>   =&gt; [</span><br><span class="line">        [<span class="string">'transaction_id'</span> =&gt; <span class="string">'2016011421001004330041239366'</span>, <span class="string">'amount'</span>   =&gt; <span class="string">'0.01'</span>, <span class="string">'refund_fee'</span> =&gt; <span class="string">'0.01'</span>, <span class="string">'reason'</span> =&gt; <span class="string">'测试退款1'</span>],</span><br><span class="line">        [<span class="string">'transaction_id'</span> =&gt; <span class="string">'2016031521001004330271745693'</span>, <span class="string">'amount'</span>   =&gt; <span class="string">'0.01'</span>, <span class="string">'refund_fee'</span> =&gt; <span class="string">'0.01'</span>, <span class="string">'reason'</span> =&gt; <span class="string">'测试退款2'</span>],</span><br><span class="line">    ],</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$refund = <span class="keyword">new</span> RefundContext();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    $refund-&gt;initRefund(Config::ALI, $aliconfig);</span><br><span class="line">    $ret = $refund-&gt;refund($reundData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 跳转支付宝</span></span><br><span class="line">header(<span class="string">"Location:&#123;$ret&#125;"</span>);</span><br></pre></td></tr></table></figure>
+<p>以上请求发送完毕后，会跳转到生成的url。界面如下：</p>
+<p><img src="https://helei112g.github.io/images/4.png" alt="image"></p>
+<p>这时候，只需要要输入支付密码。就可完成退款。确认完毕后会自动完成异步通知。异步通知数据内容在 <a href="https://helei112g.github.io/2016/07/29/%E6%94%AF%E4%BB%98%E7%9A%84%E5%9B%9E%E8%B0%83%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86/">支付的回调统一处理</a> 已经说明。</p>
+<p>备注：支付宝支持一次退款多笔。也可单次退款一笔，请自行根据情况进行设置。</p>
+<h1 id="请求参数"><a href="#请求参数" class="headerlink" title="请求参数"></a>请求参数</h1><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>refund_no</td>
+<td>退款单号</td>
+<td>由商家自定义生成，可由字母、数字组成</td>
+<td>是</td>
+</tr>
+<tr>
+<td>refund_data</td>
+<td>退款数据</td>
+<td>详细内容见后表，它是一个数组</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<p><strong>refund_data数据</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>transaction_id</td>
+<td>支付宝流水号</td>
+<td>支付成功时，异步通知时有返回</td>
+<td>是</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>订单总金额</td>
+<td>订单总金额，应该等于支付时的金额</td>
+<td>否</td>
+</tr>
+<tr>
+<td>refund_fee</td>
+<td>退款金额</td>
+<td>退款金额，不能超过支付的总金额</td>
+<td>是</td>
+</tr>
+<tr>
+<td>reason</td>
+<td>退款理由</td>
+<td>退款理由</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<p>一笔订单，可分多次进行退款处理。比如：一笔支付100元的订单。可分为10次，每次退款10元。该思路可扩展一下，就可实现提现功能（原路返回），想要具体了解提现功能，可咨询我！</p>
+
+
+  </article>
+  </script>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  <div class="busuanzi center">
+    页阅读量:&nbsp;<span id="busuanzi_value_page_pv"></span>&nbsp;・&nbsp;
+    站访问量:&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;・&nbsp;
+    站访客数:&nbsp;<span id="busuanzi_value_site_uv"></span>
+  </div>
+
+
+<div id="disqus_thread"></div>
+<script>
+
+var disqus_config = function () {
+this.page.url = 'https://helei112g.github.io/2016/08/03/PHP接入支付宝有密退款接口/index.html';
+this.page.identifier = undefined;
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//helei112g.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+    </div>
+  </div>
+  <footer class="page-footer"><div class="clearfix">
+</div>
+<div class="right-foot container">
+    <div class="firstrow">
+        <a href="#top" >
+        <i class="fa fa-arrow-right"></i>
+        </a>
+        © helei 2016-2016
+    </div>
+    <div class="secondrow">
+        <a href="https://github.com/gaoryrt/hexo-theme-pln">
+        Theme Pln
+        </a>
+    </div>
+</div>
+<div class="clearfix">
+</div>
+</footer>
+  <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+
+// comments below to disable loading animation
+function revealOnScroll() {
+  var scrolled = $(window).scrollTop();
+  $(".excerpt, .index-title, .index-meta, p").each(function() {
+    var current = $(this),
+      height = $(window).outerHeight(),
+      offsetTop = current.offset().top;
+    (scrolled + height + 50 > offsetTop) ? current.addClass("animation"):'';
+  });
+}
+$(window).on("scroll", revealOnScroll);
+$(document).ready(revealOnScroll)
+
+// disqus scripts
+
+var disqus_shortname = 'helei112g';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('body')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+
+
+// dropdown scripts
+$(".dropdown").click(function(event) {
+  var current = $(this);
+  event.stopPropagation();
+  $(current).children(".dropdown-content")[($(current).children(".dropdown-content").hasClass("open"))?'removeClass':'addClass']("open")
+});
+$(document).click(function(){
+    $(".dropdown-content").removeClass("open");
+})
+
+// back to top scripts
+$("a[href='#top']").click(function() {
+  $("html, body").animate({ scrollTop: 0 }, 500);
+  return false;
+});
+
+
+var path = "/search.xml";
+searchFunc(path, 'local-search-input', 'local-search-result');
+
+</script>
+
+</body>
+</html>
