@@ -1,0 +1,435 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="google-site-verification" content="" />
+  
+  <title>微信支付订单、退款订单、转款订单的查询</title>
+  <meta name="author" content="He Lei">
+   <meta name="description" content="微信并未提供一个统一的查询接口。对应每种查询均需要不同的api。为了便于大家在项目中使用，忽略细节。对以上三种进行了封装。通过工厂的方式降低调用成本。
+1234567891011121314151617181920212223242526272829303132333435363738394041$">
+  
+
+  <meta property="og:title" content="微信支付订单、退款订单、转款订单的查询"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+ <meta property="og:image" content="undefined"/>
+  
+  <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/m.min.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+  <div id="main">
+    <div class="behind">
+      <div class="back">
+        <a href="/" class="black-color"><i class="fa fa-times" aria-hidden="true"></i></a>
+      </div>
+      <div class="description">
+        &nbsp;代码是吃饭的家伙
+      </div>
+    </div>
+    <div class="container">
+      
+
+  <article class="standard post">
+    <div class="title">
+      
+  
+    <h1 class="page-title center">
+        微信支付订单、退款订单、转款订单的查询
+    </h1>
+  
+
+
+    </div>
+    <div class="meta center">
+      
+<time datetime="2016-08-10T12:31:33.000Z">
+  <i class="fa fa-calendar"></i>&nbsp;
+  2016-08-10
+</time>
+
+
+
+
+
+
+    
+    &nbsp;
+    <i class="fa fa-tag"></i>&nbsp;
+    <a href="/tags/订单查询/">订单查询</a>·<a href="/tags/微信支付/">微信支付</a>·<a href="/tags/退款订单查询/">退款订单查询</a>·<a href="/tags/转款订单查询/">转款订单查询</a>
+
+
+    </div>
+    <hr>
+    <div class="picture-container">
+      
+    </div>
+    <p>微信并未提供一个统一的查询接口。对应每种查询均需要不同的api。为了便于大家在项目中使用，忽略细节。对以上三种进行了封装。通过工厂的方式降低调用成本。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">$wxconfig = [</span><br><span class="line">    <span class="string">'app_id'</span>    =&gt; <span class="string">'wxxxx'</span>,  <span class="comment">// 公众账号ID</span></span><br><span class="line">    <span class="string">'mch_id'</span>    =&gt; <span class="string">'xxxx'</span>,<span class="comment">// 商户id</span></span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'xxxxxx'</span>,<span class="comment">// md5 秘钥</span></span><br><span class="line"></span><br><span class="line">    <span class="string">'notify_url'</span>    =&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">'time_expire'</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 涉及资金流动时，需要提供该文件</span></span><br><span class="line">    <span class="string">'cert_path'</span> =&gt; dirname(<span class="keyword">__FILE__</span>) . DIRECTORY_SEPARATOR . <span class="string">'wx'</span> . DIRECTORY_SEPARATOR . <span class="string">'apiclient_cert.pem'</span>,</span><br><span class="line">    <span class="string">'key_path'</span>  =&gt; dirname(<span class="keyword">__FILE__</span>) . DIRECTORY_SEPARATOR . <span class="string">'wx'</span> . DIRECTORY_SEPARATOR . <span class="string">'apiclient_key.pem'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">QueryContext</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Common</span>\<span class="title">PayException</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Config</span>;</span><br><span class="line"></span><br><span class="line">$query = <span class="keyword">new</span> QueryContext();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过交易号查询，  推荐</span></span><br><span class="line">$data = [</span><br><span class="line">    <span class="comment">//'order_no'    =&gt; '2016011402433464',// 商户订单号</span></span><br><span class="line">    <span class="string">'transaction_id'</span>    =&gt; <span class="string">'4007572001201607098672633287'</span>,<span class="comment">// 微信订单查询  微信退款单查询</span></span><br><span class="line">    <span class="comment">//'trans_no'  =&gt; '1007570439201601142692427764', // 微信批量转款查询</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 微信订单查询</span></span><br><span class="line">    $query-&gt;initQuery(Config::WEIXIN, $wxconfig);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 微信退款订单状态查询</span></span><br><span class="line">    <span class="comment">//$query-&gt;initQuery(Config::WEIXIN_REFUND, $wxconfig);</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 微信企业付款查询</span></span><br><span class="line">    <span class="comment">//$query-&gt;initQuery(Config::WEIXIN_TRANS, $wxconfig);</span></span><br><span class="line"></span><br><span class="line">    $ret = $query-&gt;query($data);</span><br><span class="line"></span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>订单查询非常简单。对于微信支付订单以及退款订单可以根据微信支付的流水号进行查询。对于微信支付的订单还可根据商户的订单号进行查询。但是强烈建议通过微信自身的流水号进行查询。</p>
+<p>对于批量转款查询。需要提供再转款时，生产的转款单号（此单号是由商家自行生产的）。这里我也蛮迷惑，为什么不提供使用微信返回的转款流水号进行查询呢？</p>
+<p>接下来对返回值进行解释,以下结构为一个顶层结构</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>is_success</td>
+<td>成功标识</td>
+<td>请求是否成功，T:成功，F:失败</td>
+<td>是</td>
+</tr>
+<tr>
+<td>error</td>
+<td>错误提示</td>
+<td>只有is_success=F时才返回</td>
+<td>否</td>
+</tr>
+<tr>
+<td>response</td>
+<td>响应数据</td>
+<td>查询成功后返回的数据，一个数组，is_success=T时返回</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<h2 id="微信支付订单返回值"><a href="#微信支付订单返回值" class="headerlink" title="微信支付订单返回值"></a>微信支付订单返回值</h2><p>支付订单中关于 <code>response</code> 中包含字段的描述</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>amount</td>
+<td>交易金额</td>
+<td>本次订单总金额，单位为元，最多两位小数</td>
+<td>是</td>
+</tr>
+<tr>
+<td>channel</td>
+<td>支付渠道</td>
+<td>本处取值： wx</td>
+<td>是</td>
+</tr>
+<tr>
+<td>order_no</td>
+<td>商户网站唯一订单号</td>
+<td>商户生成的订单号，必须确保在系统中唯一</td>
+<td>是</td>
+</tr>
+<tr>
+<td>buyer_id</td>
+<td>用户标识</td>
+<td>用户在商户appid下的唯一标识</td>
+<td>是</td>
+</tr>
+<tr>
+<td>trade_state</td>
+<td>交易状态</td>
+<td>支付成功与否，可取值：success  not_pay</td>
+<td>是</td>
+</tr>
+<tr>
+<td>transaction_id</td>
+<td>微信交易号</td>
+<td>微信系统中的交易流水号，可用于查询订单状态</td>
+<td>是</td>
+</tr>
+<tr>
+<td>time_end</td>
+<td>交易付款时间</td>
+<td>格式为2016-07-28 16:01:01</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<h2 id="微信退款订单"><a href="#微信退款订单" class="headerlink" title="微信退款订单"></a>微信退款订单</h2><p>退款有以下两点需要注意</p>
+<ul>
+<li>交易时间超过一年的订单无法提交退款；</li>
+<li>微信支付退款支持单笔交易分多次退款，多次退款需要提交原支付订单的商户订单号和设置不同的退款单号。一笔退款失败后重新提交，要采用原来的退款单号。总退款金额不能超过用户实际支付金额。</li>
+</ul>
+<p>由于一笔支付订单，可能存在多笔退单的情况，因此退款记录将返回一个数组</p>
+<p>退款订单中关于 <code>response</code> 中包含字段的描述</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>amount</td>
+<td>交易金额</td>
+<td>本次订单总金额，单位为元，最多两位小数</td>
+<td>是</td>
+</tr>
+<tr>
+<td>order_no</td>
+<td>商户网站唯一订单号</td>
+<td>商户生成的订单号，必须确保在系统中唯一</td>
+<td>是</td>
+</tr>
+<tr>
+<td>transaction_id</td>
+<td>微信交易号</td>
+<td>微信系统中的交易流水号，可用于查询订单状态</td>
+<td>是</td>
+</tr>
+<tr>
+<td>refund_data</td>
+<td>退款数据</td>
+<td>其结构是一个数组，每一个元素包含一个退单信息</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<p><code>refund_data</code> 中包含字段的描述</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>refund_no</td>
+<td>商户退款单号</td>
+<td>商户退款单号</td>
+<td>是</td>
+</tr>
+<tr>
+<td>refund_id</td>
+<td>微信退款单号</td>
+<td>微信退款单号</td>
+<td>是</td>
+</tr>
+<tr>
+<td>refund_channel</td>
+<td>退款渠道</td>
+<td>ORIGINAL—原路退款  BALANCE—退回到余额</td>
+<td>是</td>
+</tr>
+<tr>
+<td>refund_fee</td>
+<td>退款金额</td>
+<td>退款总金额,单位为元,可以做部分退款</td>
+<td>是</td>
+</tr>
+<tr>
+<td>refund_status</td>
+<td>退款状态</td>
+<td>SUCCESS—退款成功  FAIL—退款失败  PROCESSING—退款处理中  NOTSURE—未确定，需要商户原退款单号重新发起  CHANGE—转入代发</td>
+<td>是</td>
+</tr>
+<tr>
+<td>recv_accout</td>
+<td>退款入账账户</td>
+<td>退款入账账户</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<h2 id="转款订单查询结果"><a href="#转款订单查询结果" class="headerlink" title="转款订单查询结果"></a>转款订单查询结果</h2><pre><code>&apos;trans_id&apos;  =&gt; $data[&apos;detail_id&apos;],// 付款单号
+&apos;trans_status&apos;  =&gt; $data[&apos;status&apos;],// 转账状态
+&apos;reason&apos;    =&gt; $data[&apos;reason&apos;],// 失败原因
+&apos;buyer_id&apos;   =&gt; $data[&apos;openid&apos;],
+&apos;trans_name&apos;   =&gt; $data[&apos;transfer_name&apos;],// 收款用户姓名
+&apos;trans_time&apos;   =&gt; $data[&apos;transfer_time&apos;],
+&apos;desc&apos;   =&gt; $data[&apos;desc&apos;],// 付款描述
+</code></pre><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>amount</td>
+<td>付款金额</td>
+<td>付款金额  单位元</td>
+<td>是</td>
+</tr>
+<tr>
+<td>order_no</td>
+<td>商户单号</td>
+<td>商户使用查询API填写的单号的原路返回.</td>
+<td>是</td>
+</tr>
+<tr>
+<td>trans_id</td>
+<td>付款单号</td>
+<td>调用企业付款API时，微信系统内部产生的单号</td>
+<td>是</td>
+</tr>
+<tr>
+<td>trans_status</td>
+<td>转账状态</td>
+<td>SUCCESS:转账成功   FAILED:转账失败  PROCESSING:处理中</td>
+<td>是</td>
+</tr>
+<tr>
+<td>reason</td>
+<td>失败原因</td>
+<td>如果失败则有失败原因</td>
+<td>否</td>
+</tr>
+<tr>
+<td>buyer_id</td>
+<td>收款用户openid</td>
+<td>收款用户openid</td>
+<td>是</td>
+</tr>
+<tr>
+<td>trans_name</td>
+<td>收款用户姓名</td>
+<td>真实姓名，如果是需要实名验证，则会返回</td>
+<td>否</td>
+</tr>
+<tr>
+<td>trans_time</td>
+<td>转账时间</td>
+<td>发起转账的时间  格式：2015-04-21 20:00:00</td>
+<td>是</td>
+</tr>
+<tr>
+<td>desc</td>
+<td>付款描述</td>
+<td>付款时候的描述</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+
+
+  </article>
+  </script>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  <div class="busuanzi center">
+    页阅读量:&nbsp;<span id="busuanzi_value_page_pv"></span>&nbsp;・&nbsp;
+    站访问量:&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;・&nbsp;
+    站访客数:&nbsp;<span id="busuanzi_value_site_uv"></span>
+  </div>
+
+
+<div id="disqus_thread"></div>
+<script>
+
+var disqus_config = function () {
+this.page.url = 'https://helei112g.github.io/2016/08/10/微信支付订单、退款订单、转款订单的查询/index.html';
+this.page.identifier = undefined;
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//helei112g.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+    </div>
+  </div>
+  <footer class="page-footer"><div class="clearfix">
+</div>
+<div class="right-foot container">
+    <div class="firstrow">
+        <a href="#top" >
+        <i class="fa fa-arrow-right"></i>
+        </a>
+        © helei 2016-2016
+    </div>
+    <div class="secondrow">
+        <a href="https://github.com/gaoryrt/hexo-theme-pln">
+        Theme Pln
+        </a>
+    </div>
+</div>
+<div class="clearfix">
+</div>
+</footer>
+  <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+
+// comments below to disable loading animation
+function revealOnScroll() {
+  var scrolled = $(window).scrollTop();
+  $(".excerpt, .index-title, .index-meta, p").each(function() {
+    var current = $(this),
+      height = $(window).outerHeight(),
+      offsetTop = current.offset().top;
+    (scrolled + height + 50 > offsetTop) ? current.addClass("animation"):'';
+  });
+}
+$(window).on("scroll", revealOnScroll);
+$(document).ready(revealOnScroll)
+
+// disqus scripts
+
+var disqus_shortname = 'helei112g';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('body')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+
+
+// dropdown scripts
+$(".dropdown").click(function(event) {
+  var current = $(this);
+  event.stopPropagation();
+  $(current).children(".dropdown-content")[($(current).children(".dropdown-content").hasClass("open"))?'removeClass':'addClass']("open")
+});
+$(document).click(function(){
+    $(".dropdown-content").removeClass("open");
+})
+
+// back to top scripts
+$("a[href='#top']").click(function() {
+  $("html, body").animate({ scrollTop: 0 }, 500);
+  return false;
+});
+
+
+var path = "/search.xml";
+searchFunc(path, 'local-search-input', 'local-search-result');
+
+</script>
+
+</body>
+</html>

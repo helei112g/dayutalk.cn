@@ -1,0 +1,308 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="google-site-verification" content="" />
+  
+  <title>微信的三种支付方式接入：APP支付、公众号支付、扫码支付</title>
+  <meta name="author" content="He Lei">
+   <meta name="description" content="微信的支付逻辑与支付宝的支付有一些差别。为了让客户端忽略这些差别，统一调用。本sdk做了对应处理。
+＃ SDK调用
+微信支付不同接口需要的参数会有差别。请大家在使用接口时，仔细查看文档。
+12345678910111213141516171819202122232425262728293031323">
+  
+
+  <meta property="og:title" content="微信的三种支付方式接入：APP支付、公众号支付、扫码支付"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+ <meta property="og:image" content="undefined"/>
+  
+  <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/m.min.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+  <div id="main">
+    <div class="behind">
+      <div class="back">
+        <a href="/" class="black-color"><i class="fa fa-times" aria-hidden="true"></i></a>
+      </div>
+      <div class="description">
+        &nbsp;代码是吃饭的家伙
+      </div>
+    </div>
+    <div class="container">
+      
+
+  <article class="standard post">
+    <div class="title">
+      
+  
+    <h1 class="page-title center">
+        微信的三种支付方式接入：APP支付、公众号支付、扫码支付
+    </h1>
+  
+
+
+    </div>
+    <div class="meta center">
+      
+<time datetime="2016-08-10T12:25:12.000Z">
+  <i class="fa fa-calendar"></i>&nbsp;
+  2016-08-10
+</time>
+
+
+
+
+
+
+    
+    &nbsp;
+    <i class="fa fa-tag"></i>&nbsp;
+    <a href="/tags/微信支付/">微信支付</a>·<a href="/tags/app支付/">app支付</a>·<a href="/tags/公众号支付/">公众号支付</a>·<a href="/tags/网站支付/">网站支付</a>·<a href="/tags/扫码支付/">扫码支付</a>
+
+
+    </div>
+    <hr>
+    <div class="picture-container">
+      
+    </div>
+    <p>微信的支付逻辑与支付宝的支付有一些差别。为了让客户端忽略这些差别，统一调用。本sdk做了对应处理。</p>
+<p>＃ SDK调用</p>
+<p>微信支付不同接口需要的参数会有差别。请大家在使用接口时，仔细查看文档。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">ChargeContext</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Config</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Common</span>\<span class="title">PayException</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 微信支付，必须设置时区，否则发生错误</span></span><br><span class="line">date_default_timezone_set(<span class="string">'Asia/Shanghai'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//  生成订单号 便于测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPayid</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> date(<span class="string">'Ymdhis'</span>, time()).substr(floor(microtime()*<span class="number">1000</span>),<span class="number">0</span>,<span class="number">1</span>).rand(<span class="number">0</span>,<span class="number">9</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订单信息</span></span><br><span class="line">$payData = [</span><br><span class="line">    <span class="string">"order_no"</span>	=&gt; createPayid(),</span><br><span class="line">    <span class="string">"amount"</span>	=&gt; <span class="string">'0.01'</span>,<span class="comment">// 单位为元 ,最小为0.01</span></span><br><span class="line">    <span class="string">"client_ip"</span>	=&gt; <span class="string">'127.0.0.1'</span>,</span><br><span class="line">    <span class="string">"subject"</span>	=&gt; <span class="string">'测试支付'</span>,</span><br><span class="line">    <span class="string">"body"</span>	=&gt; <span class="string">'支付接口测试'</span>,</span><br><span class="line">    <span class="string">"extra_param"</span>	=&gt; <span class="string">''</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 微信扫码支付，需要设置的参数</span></span><br><span class="line">$payData[<span class="string">'product_id'</span>]  = <span class="string">'123456'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 微信公众号支付，需要的参数</span></span><br><span class="line">$payData[<span class="string">'openid'</span>] = <span class="string">'otijfvr2oMz3tXnaQdKKbQeeBmhM'</span>;<span class="comment">// 需要通过微信提供的api获取该openid</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * 包含客户的配置文件</span><br><span class="line"> * 本次 2.0 版本，主要的改变是将配置文件独立出来，便于客户多个账号的情况</span><br><span class="line"> * 已经使用不同方式读取配置文件，如：db  file   cache等</span><br><span class="line"> */</span></span><br><span class="line">$wxconfig = [</span><br><span class="line">    <span class="string">'app_id'</span>    =&gt; <span class="string">'wxxxx'</span>,  <span class="comment">// 公众账号ID</span></span><br><span class="line">    <span class="string">'mch_id'</span>    =&gt; <span class="string">'xxxx'</span>,<span class="comment">// 商户id</span></span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'xxxxxx'</span>,<span class="comment">// md5 秘钥</span></span><br><span class="line"></span><br><span class="line">    <span class="string">'notify_url'</span>    =&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">'time_expire'</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 涉及资金流动时，需要提供该文件</span></span><br><span class="line">    <span class="string">'cert_path'</span> =&gt; dirname(<span class="keyword">__FILE__</span>) . DIRECTORY_SEPARATOR . <span class="string">'wx'</span> . DIRECTORY_SEPARATOR . <span class="string">'apiclient_cert.pem'</span>,</span><br><span class="line">    <span class="string">'key_path'</span>  =&gt; dirname(<span class="keyword">__FILE__</span>) . DIRECTORY_SEPARATOR . <span class="string">'wx'</span> . DIRECTORY_SEPARATOR . <span class="string">'apiclient_key.pem'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * 实例化支付环境类，进行支付创建</span><br><span class="line"> */</span></span><br><span class="line">$charge = <span class="keyword">new</span> ChargeContext();</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 微信 扫码支付</span></span><br><span class="line">    $type = Config::WX_CHANNEL_QR;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 微信 APP支付</span></span><br><span class="line">    <span class="comment">//$type = Config::WX_CHANNEL_APP;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 微信 公众号支付</span></span><br><span class="line">    <span class="comment">//$type = Config::WX_CHANNEL_PUB;</span></span><br><span class="line">    $charge-&gt;initCharge($type, $wxconfig);</span><br><span class="line">    $ret = $charge-&gt;charge($payData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ($type === Config::WX_CHANNEL_QR) &#123;</span><br><span class="line">    $url = urlencode($ret);</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"&lt;img alt='扫码支付' src='http://paysdk.weixin.qq.com/example/qrcode.php?data=&#123;$url&#125;' style='width:150px;height:150px;'/&gt;"</span>;</span><br><span class="line">&#125; <span class="keyword">elseif</span> ($type === Config::WX_CHANNEL_PUB) &#123;</span><br><span class="line">    $json = $ret;</span><br><span class="line">    var_dump($json);<span class="keyword">exit</span>;</span><br><span class="line">&#125; <span class="keyword">elseif</span> (stripos($type, <span class="string">'wx'</span>) !== <span class="keyword">false</span>) &#123;</span><br><span class="line">    var_dump($ret);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这里扫码支付与公众号支付分别需要提供不同的参数。请一定注意进行区分。否则调用相应端口会抛出异常。</p>
+<h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_id</td>
+<td>公众账号ID/应用id</td>
+<td>微信分配的公众账号ID</td>
+<td>是</td>
+</tr>
+<tr>
+<td>mch_id</td>
+<td>商户号</td>
+<td>微信支付分配的商户号</td>
+<td>是</td>
+</tr>
+<tr>
+<td>md5_key</td>
+<td>加密的key</td>
+<td>在商户中心设置</td>
+<td>是</td>
+</tr>
+<tr>
+<td>notify_url</td>
+<td>通知地址</td>
+<td>接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。</td>
+<td>是</td>
+</tr>
+<tr>
+<td>time_expire</td>
+<td>交易过期时间</td>
+<td>单位为分钟，过期后无法再次支付</td>
+<td>是</td>
+</tr>
+<tr>
+<td>cert_path</td>
+<td>密钥文件</td>
+<td>可在微信商户后台中下载</td>
+<td>否，退款需要</td>
+</tr>
+<tr>
+<td>key_path</td>
+<td>密钥文件</td>
+<td>可在商户中心下载</td>
+<td>否，退款需要</td>
+</tr>
+</tbody>
+</table>
+<p>这里需要注意的是，app_id，由于微信的三个支付接口，需要对应两个不同的app_id。因此再开发中一定要注意。</p>
+<h1 id="请求参数"><a href="#请求参数" class="headerlink" title="请求参数"></a>请求参数</h1><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>order_no</td>
+<td>订单号</td>
+<td>平台根据规则生成的订单号，最长64位，要在商户数据库中唯一</td>
+<td>必须</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>交易总金额</td>
+<td>该笔订单的资金总额，单位为RMB-Yuan。取值范围为[0.01，100000000.00]，精确到小数点后两位。</td>
+<td>必须</td>
+</tr>
+<tr>
+<td>client_ip</td>
+<td>客户端IP</td>
+<td>用户在创建交易时，该用户当前所使用机器的IP。</td>
+<td>必须</td>
+</tr>
+<tr>
+<td>subject</td>
+<td>商品名称</td>
+<td>商品的标题/交易标题/订单标题/订单关键字等。该参数最长为128个汉字。</td>
+<td>必须</td>
+</tr>
+<tr>
+<td>body</td>
+<td>商品描述</td>
+<td>对一笔交易的具体描述信息。如果是多种商品，请将商品描述字符串累加传给body。</td>
+<td>必须</td>
+</tr>
+<tr>
+<td>extra_param</td>
+<td>公用回传参数</td>
+<td>如果用户请求时传递了该参数，则返回给商户时会回传该参数。</td>
+<td>可选</td>
+</tr>
+<tr>
+<td>product_id</td>
+<td>商品ID</td>
+<td>扫码支付，此参数必传。此id为二维码中包含的商品ID，商户自行定义。</td>
+<td>可选</td>
+</tr>
+<tr>
+<td>openid</td>
+<td>用户标识</td>
+<td>公众号支付，此参数必传，用户在商户appid下的唯一标识。</td>
+<td>可选</td>
+</tr>
+</tbody>
+</table>
+<h1 id="返回值描述"><a href="#返回值描述" class="headerlink" title="返回值描述"></a>返回值描述</h1><p>三种支付方式返回值因为处理方式不同，微信方面返回了不同的类型。</p>
+<ul>
+<li>app支付返回了需要调用的数组。调用客户端的方式 <a href="https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_12&amp;index=2" target="_blank" rel="external">查看微信文档</a></li>
+<li>扫码支付返回了一个地址。可生成一个二维码，完成支付。</li>
+<li>公众号支付，返回的是一个json数据。可直接放入微信的sdk完成jsapi调用。</li>
+</ul>
+
+
+  </article>
+  </script>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  <div class="busuanzi center">
+    页阅读量:&nbsp;<span id="busuanzi_value_page_pv"></span>&nbsp;・&nbsp;
+    站访问量:&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;・&nbsp;
+    站访客数:&nbsp;<span id="busuanzi_value_site_uv"></span>
+  </div>
+
+
+<div id="disqus_thread"></div>
+<script>
+
+var disqus_config = function () {
+this.page.url = 'https://helei112g.github.io/2016/08/10/微信的三种支付方式接入：APP支付、公众号支付、扫码支付/index.html';
+this.page.identifier = undefined;
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//helei112g.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+    </div>
+  </div>
+  <footer class="page-footer"><div class="clearfix">
+</div>
+<div class="right-foot container">
+    <div class="firstrow">
+        <a href="#top" >
+        <i class="fa fa-arrow-right"></i>
+        </a>
+        © helei 2016-2016
+    </div>
+    <div class="secondrow">
+        <a href="https://github.com/gaoryrt/hexo-theme-pln">
+        Theme Pln
+        </a>
+    </div>
+</div>
+<div class="clearfix">
+</div>
+</footer>
+  <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+
+// comments below to disable loading animation
+function revealOnScroll() {
+  var scrolled = $(window).scrollTop();
+  $(".excerpt, .index-title, .index-meta, p").each(function() {
+    var current = $(this),
+      height = $(window).outerHeight(),
+      offsetTop = current.offset().top;
+    (scrolled + height + 50 > offsetTop) ? current.addClass("animation"):'';
+  });
+}
+$(window).on("scroll", revealOnScroll);
+$(document).ready(revealOnScroll)
+
+// disqus scripts
+
+var disqus_shortname = 'helei112g';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('body')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+
+
+// dropdown scripts
+$(".dropdown").click(function(event) {
+  var current = $(this);
+  event.stopPropagation();
+  $(current).children(".dropdown-content")[($(current).children(".dropdown-content").hasClass("open"))?'removeClass':'addClass']("open")
+});
+$(document).click(function(){
+    $(".dropdown-content").removeClass("open");
+})
+
+// back to top scripts
+$("a[href='#top']").click(function() {
+  $("html, body").animate({ scrollTop: 0 }, 500);
+  return false;
+});
+
+
+var path = "/search.xml";
+searchFunc(path, 'local-search-input', 'local-search-result');
+
+</script>
+
+</body>
+</html>
