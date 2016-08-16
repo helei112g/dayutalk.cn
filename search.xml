@@ -4,9 +4,274 @@
   
     
     <entry>
+      <title><![CDATA[PHP接入微信企业付款功能]]></title>
+      <url>https://helei112g.github.io/2016/08/16/PHP%E6%8E%A5%E5%85%A5%E5%BE%AE%E4%BF%A1%E4%BC%81%E4%B8%9A%E4%BB%98%E6%AC%BE%E5%8A%9F%E8%83%BD/</url>
+      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.0版本</a></p>
+<p>这个功能与支付宝的批量付款到支付宝帐号功能类似。但是当前支付宝这个接口已经停止审核了。</p>
+<p>当前很多提问平台就用到了这两个平台。比如［来问医生］，你提的问题如果被人看了。医生得0.5元，你得0.5元。然后累积够1元后，［来问医生］就会通过微信的企业付款功能给你的微信余额增加1元。</p>
+<h1 id="代码调用"><a href="#代码调用" class="headerlink" title="代码调用"></a>代码调用</h1><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">TransferContext</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Common</span>\<span class="title">PayException</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Config</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//  生成转款单号 便于测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPayid</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> date(<span class="string">'Ymdhis'</span>, time()).substr(floor(microtime()*<span class="number">1000</span>),<span class="number">0</span>,<span class="number">1</span>).rand(<span class="number">0</span>,<span class="number">9</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$wxconfig = [</span><br><span class="line">    <span class="string">'app_id'</span>    =&gt; <span class="string">'wxa244db59a34996fc'</span>,  <span class="comment">// 公众账号ID</span></span><br><span class="line">    <span class="string">'mch_id'</span>    =&gt; <span class="string">'1331302101'</span>,<span class="comment">// 商户id</span></span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'adslkfjiKQJLAIQLJ393201482333333'</span>,<span class="comment">// md5 秘钥</span></span><br><span class="line"></span><br><span class="line">    <span class="string">'notify_url'</span>    =&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">'time_expire'</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 涉及资金流动时 退款  转款，需要提供该文件</span></span><br><span class="line">    <span class="string">'cert_path'</span> =&gt; dirname(<span class="keyword">__FILE__</span>) . DIRECTORY_SEPARATOR . <span class="string">'wx'</span> . DIRECTORY_SEPARATOR . <span class="string">'apiclient_cert.pem'</span>,</span><br><span class="line">    <span class="string">'key_path'</span>  =&gt; dirname(<span class="keyword">__FILE__</span>) . DIRECTORY_SEPARATOR . <span class="string">'wx'</span> . DIRECTORY_SEPARATOR . <span class="string">'apiclient_key.pem'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 转款数据</span></span><br><span class="line">$transData = [</span><br><span class="line">    <span class="string">'trans_no'</span> =&gt; createPayid(),</span><br><span class="line">    <span class="string">'trans_data'</span>   =&gt; [</span><br><span class="line">        [</span><br><span class="line">            <span class="string">'serial_no'</span> =&gt; createPayid(),</span><br><span class="line">            <span class="string">'user_account'</span> =&gt; <span class="string">'otijfvr2oMz3tXnaQdKKbQeeBmhM'</span>,<span class="comment">// 微信转款时，为用户所关注公众号的openid</span></span><br><span class="line">            <span class="string">'user_name'</span> =&gt; <span class="string">'愚不可及'</span>,</span><br><span class="line">            <span class="string">'trans_fee'</span> =&gt; <span class="string">'1'</span>,</span><br><span class="line">            <span class="string">'desc'</span>  =&gt; <span class="string">'测试批量转款'</span>,</span><br><span class="line">        ]</span><br><span class="line">    ],</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">$refund = <span class="keyword">new</span> TransferContext();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 微信的企业付款， 仅支持单笔</span></span><br><span class="line">    $type = Config::WEIXIN;</span><br><span class="line">    $refund-&gt;initTransfer(Config::WEIXIN, $wxconfig);</span><br><span class="line"></span><br><span class="line">    $ret = $refund-&gt;transfer($transData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var_dump($ret);</span><br></pre></td></tr></table></figure>
+<h1 id="请求参数"><a href="#请求参数" class="headerlink" title="请求参数"></a>请求参数</h1><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>trans_no</td>
+<td>商户订单号</td>
+<td>商户订单号，需保持唯一性</td>
+<td>是</td>
+</tr>
+<tr>
+<td>trans_data</td>
+<td>转账数据</td>
+<td>转账数据详细信息，具体内容如下</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<p><strong>trans_data数据</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>serial_no</td>
+<td>流水号</td>
+<td>对于微信该参数不需要，但请保留，后期可能支持批量退款需要</td>
+<td>否</td>
+</tr>
+<tr>
+<td>user_account</td>
+<td>用户openid</td>
+<td>商户appid下，某用户的openid</td>
+<td>是</td>
+</tr>
+<tr>
+<td>user_name</td>
+<td>收款用户姓名</td>
+<td>收款用户真实姓名。</td>
+<td>是</td>
+</tr>
+<tr>
+<td>trans_fee</td>
+<td>金额</td>
+<td>企业付款金额，单位为元</td>
+<td>是</td>
+</tr>
+<tr>
+<td>desc</td>
+<td>企业付款描述信息</td>
+<td>企业付款操作说明信息。</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<h1 id="返回数据"><a href="#返回数据" class="headerlink" title="返回数据"></a>返回数据</h1><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>is_success</td>
+<td>是否成功</td>
+<td>失败会返回错误原因。T:成功  F:失败</td>
+<td>是</td>
+</tr>
+<tr>
+<td>error</td>
+<td>错误原因</td>
+<td>为T时有返回</td>
+<td>否</td>
+</tr>
+<tr>
+<td>response</td>
+<td>成功时数据</td>
+<td>成功时返回的具体数据</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p><strong>response数据</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>trans_no</td>
+<td>商户订单号</td>
+<td>商户订单号，需保持唯一性</td>
+<td>是</td>
+</tr>
+<tr>
+<td>trans_id</td>
+<td>微信订单号</td>
+<td>企业付款成功，返回的微信订单号</td>
+<td>否</td>
+</tr>
+<tr>
+<td>payment_time</td>
+<td>微信支付成功时间</td>
+<td>企业付款成功时间</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[PHP接入微信退款接口]]></title>
+      <url>https://helei112g.github.io/2016/08/16/PHP%E6%8E%A5%E5%85%A5%E5%BE%AE%E4%BF%A1%E9%80%80%E6%AC%BE%E6%8E%A5%E5%8F%A3/</url>
+      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.0版本</a> </p>
+<p>微信的退款操作，通过封装与前面<a href="https://helei112g.github.io/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%9C%89%E5%AF%86%E9%80%80%E6%AC%BE%E6%8E%A5%E5%8F%A3/">支付宝退款</a>除了配置文件，基本一样。</p>
+<p>退款代码如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">RefundContext</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Common</span>\<span class="title">PayException</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Config</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//  生成退款单号 便于测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPayid</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> date(<span class="string">'Ymdhis'</span>, time()).substr(floor(microtime()*<span class="number">1000</span>),<span class="number">0</span>,<span class="number">1</span>).rand(<span class="number">0</span>,<span class="number">9</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$config = [</span><br><span class="line">    <span class="string">'app_id'</span>    =&gt; <span class="string">'wxa244db59a34996fc'</span>,  <span class="comment">// 公众账号ID</span></span><br><span class="line">    <span class="string">'mch_id'</span>    =&gt; <span class="string">'1331302101'</span>,<span class="comment">// 商户id</span></span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'adslkfjiKQJLAIQLJ393201482333333'</span>,<span class="comment">// md5 秘钥</span></span><br><span class="line"></span><br><span class="line">    <span class="string">'notify_url'</span>    =&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">'time_expire'</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 涉及资金流动时 退款  转款，需要提供该文件</span></span><br><span class="line">    <span class="string">'cert_path'</span> =&gt; dirname(<span class="keyword">__FILE__</span>) . DIRECTORY_SEPARATOR . <span class="string">'wx'</span> . DIRECTORY_SEPARATOR . <span class="string">'apiclient_cert.pem'</span>,</span><br><span class="line">    <span class="string">'key_path'</span>  =&gt; dirname(<span class="keyword">__FILE__</span>) . DIRECTORY_SEPARATOR . <span class="string">'wx'</span> . DIRECTORY_SEPARATOR . <span class="string">'apiclient_key.pem'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 退款数据</span></span><br><span class="line">$reundData = [</span><br><span class="line">    <span class="string">'refund_no'</span> =&gt; createPayid(),</span><br><span class="line">    <span class="string">'refund_data'</span>   =&gt; [</span><br><span class="line">        [<span class="string">'transaction_id'</span> =&gt; <span class="string">'4007572001201607098672633287'</span>, <span class="string">'amount'</span>   =&gt; <span class="string">'5'</span>, <span class="string">'refund_fee'</span> =&gt; <span class="string">'5'</span>, <span class="string">'reason'</span> =&gt; <span class="string">'微信测试金额退款'</span>],</span><br><span class="line">    ],</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">$refund = <span class="keyword">new</span> RefundContext();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 微信退款</span></span><br><span class="line">    $type = Config::WEIXIN;</span><br><span class="line">    $refund-&gt;initRefund(Config::WEIXIN, $wxconfig);</span><br><span class="line"></span><br><span class="line">    $ret = $refund-&gt;refund($reundData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var_dump($ret);</span><br></pre></td></tr></table></figure></p>
+<p>当前sdk支付宝可一次退款多笔数据。微信仅能每次退款1笔（如果想要实现一次退订多笔订单，可在客户端通过循环来处理。）</p>
+<p>接下来解释下相关的配置信息</p>
+<p>微信的配置文件解释参考 <a href="https://helei112g.github.io/2016/08/10/%E5%BE%AE%E4%BF%A1%E7%9A%84%E4%B8%89%E7%A7%8D%E6%94%AF%E4%BB%98%E6%96%B9%E5%BC%8F%E6%8E%A5%E5%85%A5%EF%BC%9AAPP%E6%94%AF%E4%BB%98%E3%80%81%E5%85%AC%E4%BC%97%E5%8F%B7%E6%94%AF%E4%BB%98%E3%80%81%E6%89%AB%E7%A0%81%E6%94%AF%E4%BB%98/">微信的三种支付方式接入：APP支付、公众号支付、扫码支付</a> 中的微信配置信息。</p>
+<h1 id="请求参数"><a href="#请求参数" class="headerlink" title="请求参数"></a>请求参数</h1><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>transaction_id</td>
+<td>微信交易号</td>
+<td>微信系统中的交易流水号，可用于查询订单状态</td>
+<td>是</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>总金额</td>
+<td>微信交易对应的交易总金额</td>
+<td>是</td>
+</tr>
+<tr>
+<td>refund_fee</td>
+<td>退款金额</td>
+<td>本次申请的退款金额，退款金额不能大于总金额</td>
+<td>是</td>
+</tr>
+<tr>
+<td>reason</td>
+<td>退款理由</td>
+<td>退款的理由，可在用户端查看到</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<h1 id="响应数据"><a href="#响应数据" class="headerlink" title="响应数据"></a>响应数据</h1><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>is_success</td>
+<td>成功标识</td>
+<td>请求是否成功，T:成功，F:失败</td>
+<td>是</td>
+</tr>
+<tr>
+<td>error</td>
+<td>错误提示</td>
+<td>只有is_success=F时才返回</td>
+<td>否</td>
+</tr>
+<tr>
+<td>response</td>
+<td>响应数据</td>
+<td>查询成功后返回的数据，一个数组，is_success=T时返回</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p><strong>response</strong> 数据描述</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>transaction_id</td>
+<td>微信订单号</td>
+<td>微信订单号，下单成功后，微信返回</td>
+<td>是</td>
+</tr>
+<tr>
+<td>order_no</td>
+<td>商户订单号</td>
+<td>商户系统内部的订单号</td>
+<td>是</td>
+</tr>
+<tr>
+<td>refund_no</td>
+<td>商户退款单号</td>
+<td>商户退款单号</td>
+<td>是</td>
+</tr>
+<tr>
+<td>refund_id</td>
+<td>微信退款单号</td>
+<td>微信退款单号</td>
+<td>是</td>
+</tr>
+<tr>
+<td>refund_fee</td>
+<td>申请退款金额</td>
+<td>退款总金额,单位为元(已被我处理),可以做部分退款</td>
+<td>否</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>订单金额</td>
+<td>订单总金额，单位为元，最多两位小数</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[微信支付订单、退款订单、转款订单的查询]]></title>
       <url>https://helei112g.github.io/2016/08/10/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E8%AE%A2%E5%8D%95%E3%80%81%E9%80%80%E6%AC%BE%E8%AE%A2%E5%8D%95%E3%80%81%E8%BD%AC%E6%AC%BE%E8%AE%A2%E5%8D%95%E7%9A%84%E6%9F%A5%E8%AF%A2/</url>
-      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment/tree/paymentv2" target="_blank" rel="external">payment 项目2.x版本</a></p>
+      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a></p>
 <p>微信并未提供一个统一的查询接口。对应每种查询均需要不同的api。为了便于大家在项目中使用，忽略细节。对以上三种进行了封装。通过工厂的方式降低调用成本。</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">$wxconfig = [</span><br><span class="line">    <span class="string">'app_id'</span>    =&gt; <span class="string">'wxxxx'</span>,  <span class="comment">// 公众账号ID</span></span><br><span class="line">    <span class="string">'mch_id'</span>    =&gt; <span class="string">'xxxx'</span>,<span class="comment">// 商户id</span></span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'xxxxxx'</span>,<span class="comment">// md5 秘钥</span></span><br><span class="line"></span><br><span class="line">    <span class="string">'notify_url'</span>    =&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">'time_expire'</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 涉及资金流动时，需要提供该文件</span></span><br><span class="line">    <span class="string">'cert_path'</span> =&gt; dirname(<span class="keyword">__FILE__</span>) . DIRECTORY_SEPARATOR . <span class="string">'wx'</span> . DIRECTORY_SEPARATOR . <span class="string">'apiclient_cert.pem'</span>,</span><br><span class="line">    <span class="string">'key_path'</span>  =&gt; dirname(<span class="keyword">__FILE__</span>) . DIRECTORY_SEPARATOR . <span class="string">'wx'</span> . DIRECTORY_SEPARATOR . <span class="string">'apiclient_key.pem'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">QueryContext</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Common</span>\<span class="title">PayException</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Config</span>;</span><br><span class="line"></span><br><span class="line">$query = <span class="keyword">new</span> QueryContext();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过交易号查询，  推荐</span></span><br><span class="line">$data = [</span><br><span class="line">    <span class="comment">//'order_no'    =&gt; '2016011402433464',// 商户订单号</span></span><br><span class="line">    <span class="string">'transaction_id'</span>    =&gt; <span class="string">'4007572001201607098672633287'</span>,<span class="comment">// 微信订单查询  微信退款单查询</span></span><br><span class="line">    <span class="comment">//'trans_no'  =&gt; '1007570439201601142692427764', // 微信批量转款查询</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 微信订单查询</span></span><br><span class="line">    $query-&gt;initQuery(Config::WEIXIN, $wxconfig);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 微信退款订单状态查询</span></span><br><span class="line">    <span class="comment">//$query-&gt;initQuery(Config::WEIXIN_REFUND, $wxconfig);</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 微信企业付款查询</span></span><br><span class="line">    <span class="comment">//$query-&gt;initQuery(Config::WEIXIN_TRANS, $wxconfig);</span></span><br><span class="line"></span><br><span class="line">    $ret = $query-&gt;query($data);</span><br><span class="line"></span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>订单查询非常简单。对于微信支付订单以及退款订单可以根据微信支付的流水号进行查询。对于微信支付的订单还可根据商户的订单号进行查询。但是强烈建议通过微信自身的流水号进行查询。</p>
@@ -268,7 +533,7 @@
     <entry>
       <title><![CDATA[微信的三种支付方式接入：APP支付、公众号支付、扫码支付]]></title>
       <url>https://helei112g.github.io/2016/08/10/%E5%BE%AE%E4%BF%A1%E7%9A%84%E4%B8%89%E7%A7%8D%E6%94%AF%E4%BB%98%E6%96%B9%E5%BC%8F%E6%8E%A5%E5%85%A5%EF%BC%9AAPP%E6%94%AF%E4%BB%98%E3%80%81%E5%85%AC%E4%BC%97%E5%8F%B7%E6%94%AF%E4%BB%98%E3%80%81%E6%89%AB%E7%A0%81%E6%94%AF%E4%BB%98/</url>
-      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment/tree/paymentv2" target="_blank" rel="external">payment 项目2.x版本</a> </p>
+      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p>微信的支付逻辑与支付宝的支付有一些差别。为了让客户端忽略这些差别，统一调用。本sdk做了对应处理。</p>
 <p>＃ SDK调用</p>
 <p>微信支付不同接口需要的参数会有差别。请大家在使用接口时，仔细查看文档。</p>
@@ -401,7 +666,7 @@
     <entry>
       <title><![CDATA[PHP接入支付宝有密批量转款接口]]></title>
       <url>https://helei112g.github.io/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%9C%89%E5%AF%86%E6%89%B9%E9%87%8F%E8%BD%AC%E6%AC%BE%E6%8E%A5%E5%8F%A3/</url>
-      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment/tree/paymentv2" target="_blank" rel="external">payment 项目2.x版本</a> </p>
+      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p>这个接口蛮有用的，不过现阶段支付宝已经停止审核啦！微信的转账功能还可以继续使用。企业可以转账到其他支付宝账户。对于企业活动非常有帮助，比如：购买返现呀！</p>
 <p>虽然现在已经不接收新的审核，但是我还是将该功能进行了集成，因为指不定什么时候又开放了，毕竟微信都有这个功能，支付宝不搞出来，实在说不过去。</p>
 <h1 id="SDK调用"><a href="#SDK调用" class="headerlink" title="SDK调用"></a>SDK调用</h1><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 支付宝配置信息</span></span><br><span class="line">$aliconfig = [</span><br><span class="line">    <span class="string">'partner'</span>   =&gt; <span class="string">'2088xxxxx'</span>,</span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'xxxxxxxxxxxx'</span>,</span><br><span class="line">    <span class="string">'rsa_private_key'</span>   =&gt; dirname(<span class="keyword">__FILE__</span>) . <span class="string">'/rsa_private_key.pem'</span>,</span><br><span class="line">    <span class="string">"notify_url"</span>	=&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">"return_url"</span>	=&gt; <span class="string">'http://test.helei.com/return-url.html'</span>,</span><br><span class="line">    <span class="string">"time_expire"</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 转款接口，必须配置以下两项</span></span><br><span class="line">    <span class="string">'account'</span>   =&gt; <span class="string">'xxxxxxx@126.com'</span>,</span><br><span class="line">    <span class="string">'account_name'</span> =&gt; <span class="string">'xxxxxxxxxxxx'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">//  生成转款单号 便于测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPayid</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> date(<span class="string">'Ymdhis'</span>, time()).substr(floor(microtime()*<span class="number">1000</span>),<span class="number">0</span>,<span class="number">1</span>).rand(<span class="number">0</span>,<span class="number">9</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 转款数据</span></span><br><span class="line">$transData = [</span><br><span class="line">    <span class="string">'trans_no'</span> =&gt; createPayid(),</span><br><span class="line">    <span class="string">'trans_data'</span>   =&gt; [</span><br><span class="line">        [</span><br><span class="line">            <span class="string">'serial_no'</span> =&gt; createPayid(),</span><br><span class="line">            <span class="string">'user_account'</span> =&gt; <span class="string">'dayugog@gmail.com'</span>,</span><br><span class="line">            <span class="string">'user_name'</span> =&gt; <span class="string">'愚不可及'</span>,</span><br><span class="line">            <span class="string">'trans_fee'</span> =&gt; <span class="string">'0.01'</span>,</span><br><span class="line">            <span class="string">'desc'</span>  =&gt; <span class="string">'测试批量转款'</span>,</span><br><span class="line">        ]</span><br><span class="line">    ],</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">$refund = <span class="keyword">new</span> TransferContext();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    $refund-&gt;initTransfer(Config::ALI, $aliconfig);</span><br><span class="line">    $ret = $refund-&gt;transfer($transData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 跳转支付宝</span></span><br><span class="line">header(<span class="string">"Location:&#123;$ret&#125;"</span>);</span><br></pre></td></tr></table></figure>
@@ -480,7 +745,7 @@
     <entry>
       <title><![CDATA[PHP接入支付宝有密退款接口]]></title>
       <url>https://helei112g.github.io/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%9C%89%E5%AF%86%E9%80%80%E6%AC%BE%E6%8E%A5%E5%8F%A3/</url>
-      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment/tree/paymentv2" target="_blank" rel="external">payment 项目2.x版本</a> </p>
+      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p>这个接口主要用于退款操作。之前没有接入该功能时，商城用户如果想要退款，我们需要先查到对应用户的支付流水号，然后写退款申请给财务，财务到支付宝进行查询。完了之后原路退回。然后告诉程序，程序再去修改订单状态。</p>
 <p>这样的流程不仅麻烦。而且充满不安全性。如果程序误操作（或者是心情太差了），操作为其他人员，那么这将会为企业带来很大的风险。</p>
 <h1 id="SDK调用"><a href="#SDK调用" class="headerlink" title="SDK调用"></a>SDK调用</h1><p>支付宝支持多笔退款。</p>
@@ -557,7 +822,7 @@
     <entry>
       <title><![CDATA[PHP接入支付宝单笔订单查询接口]]></title>
       <url>https://helei112g.github.io/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E5%8D%95%E7%AC%94%E8%AE%A2%E5%8D%95%E6%9F%A5%E8%AF%A2%E6%8E%A5%E5%8F%A3/</url>
-      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment/tree/paymentv2" target="_blank" rel="external">payment 项目2.x版本</a> </p>
+      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p>巴西奥运会来了，刚好我又是做体育行业的互联网。哎！这个月又要加班成狗了。最近遇到好多莫名其妙的问题，待我忙完这段，再跟大家分享下。今天还是继续说说 <a href="https://github.com/helei112g/payment" target="_blank" rel="external">Payment项目</a><br>今天主要说说支付宝订单查询接口。</p>
 <h1 id="接口调用"><a href="#接口调用" class="headerlink" title="接口调用"></a>接口调用</h1><p>废话废话不多说。直接上支付宝订单查询的代码。微信的订单查询与此类似。后续也会更新文档。</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 支付宝配置信息</span></span><br><span class="line">$aliconfig = [</span><br><span class="line">    <span class="string">'partner'</span>   =&gt; <span class="string">'2088xxxxx'</span>,</span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'xxxxxxxxxxxx'</span>,</span><br><span class="line">    <span class="string">'rsa_private_key'</span>   =&gt; dirname(<span class="keyword">__FILE__</span>) . <span class="string">'/rsa_private_key.pem'</span>,</span><br><span class="line">    <span class="string">"notify_url"</span>	=&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">"return_url"</span>	=&gt; <span class="string">'http://test.helei.com/return-url.html'</span>,</span><br><span class="line">    <span class="string">"time_expire"</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$data = [</span><br><span class="line">    <span class="comment">// 通过支付宝交易号查询，  推荐  效率更高</span></span><br><span class="line">    <span class="string">'transaction_id'</span>    =&gt; <span class="string">'2016011421001004330041239366'</span>,<span class="comment">// 支付宝</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 通过订单号查询</span></span><br><span class="line">    <span class="string">'order_no'</span>    =&gt; <span class="string">'2016011402433464'</span>,<span class="comment">// 支付宝</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">$query = <span class="keyword">new</span> QueryContext();</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 支付宝查询</span></span><br><span class="line">    $query-&gt;initQuery(Config::ALI, $aliconfig);</span><br><span class="line">    $ret = $query-&gt;query($data);</span><br><span class="line"></span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var_dump($ret);</span><br></pre></td></tr></table></figure>
@@ -696,7 +961,7 @@
     <entry>
       <title><![CDATA[支付的回调统一处理]]></title>
       <url>https://helei112g.github.io/2016/07/29/%E6%94%AF%E4%BB%98%E7%9A%84%E5%9B%9E%E8%B0%83%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86/</url>
-      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment/tree/paymentv2" target="_blank" rel="external">payment 项目2.x版本</a> </p>
+      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p>经过这一段时间，终于把支付宝支付相关接口完成了。文档将陆续更新。这里先把回调的文档补充完成。这样结合之前 提供的 <a href="https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/">支付宝即时到帐接口</a> 才能形成一个闭环。完成一次完整的支付流程。</p>
 <h1 id="回调接口介绍"><a href="#回调接口介绍" class="headerlink" title="回调接口介绍"></a>回调接口介绍</h1><blockquote>
 <p>支付服务商(支付宝、微信、PayPal等)处理完支付数据后。会将处理的结果数据通过服务器主动通知的方式通知给商户网站。这些处理结果数据就是服务器异步通知参数。</p>
@@ -1002,7 +1267,7 @@
     <entry>
       <title><![CDATA[PHP接入支付宝手机网站支付、移动支付接口]]></title>
       <url>https://helei112g.github.io/2016/07/29/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E3%80%81%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%8E%A5%E5%8F%A3/</url>
-      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment/tree/paymentv2" target="_blank" rel="external">payment 项目2.x版本</a> </p>
+      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p>前面已经说完了 PHP接入支付宝 即时到帐接口</p>
 <p>回调接口也已经完成。这篇主要讲 <strong>手机网站支付</strong> 、 <strong>移动支付</strong> 接口的调用。调用方式与即时到帐 基本一样。</p>
 <p>关于代码部分的详细解释，请 参看 <a href="https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/">PHP接入支付宝 即时到帐接口</a></p>
@@ -1162,7 +1427,7 @@
     <entry>
       <title><![CDATA[PHP接入支付宝 即时到帐接口]]></title>
       <url>https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/</url>
-      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment/tree/paymentv2" target="_blank" rel="external">payment 项目2.x版本</a> </p>
+      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p><strong>特别声明：</strong></p>
 <blockquote>
 <p>以下文档均针对 payment 2.0 以上版本，并且PHP需要5.5以上(含)。<br>代码中所有编码均使用 utf-8 。</p>
@@ -1316,7 +1581,7 @@
     <entry>
       <title><![CDATA[支付宝、微信支付接入集成]]></title>
       <url>https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%E3%80%81%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E6%8E%A5%E5%85%A5%E9%9B%86%E6%88%90/</url>
-      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment/tree/paymentv2" target="_blank" rel="external">payment 项目2.x版本</a> </p>
+      <content type="html"><![CDATA[<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p>从开始写代码以来，一直就与支付打交道。终于到今天，我忍无可忍啦！每次都要重新写，重新调（主要换工作后，不能把前东家的代码给拷贝走）。好吧，写一份放到github上，以后啥时候用都有了，还方便做外包（哈哈哈……）</p>
 <p>之前看了 ping++ 集成的各路支付接口，觉得挺爽的，但是要收费，而且公司也不放心，怕什么时候 ping++ 坚持不住了，那到时候怎么办？我倒是觉得可能大部分公司坚持不住了，ping++ 还在呢！ 因此不自量力的自己也来集成一个吧！</p>
 <h1 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h1><p><strong>说明：</strong></p>

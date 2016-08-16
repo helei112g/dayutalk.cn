@@ -1,0 +1,302 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="google-site-verification" content="" />
+  
+  <title>PHP接入微信退款接口</title>
+  <meta name="author" content="He Lei">
+   <meta name="description" content="payment 项目2.0版本 
+微信的退款操作，通过封装与前面支付宝退款除了配置文件，基本一样。
+退款代码如下：12345678910111213141516171819202122232425262728293031323334353637383940414243use Payment\Refu">
+  
+
+  <meta property="og:title" content="PHP接入微信退款接口"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+ <meta property="og:image" content="undefined"/>
+  
+  <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/m.min.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+  <div id="main">
+    <div class="behind">
+      <div class="back">
+        <a href="/" class="black-color"><i class="fa fa-times" aria-hidden="true"></i></a>
+      </div>
+      <div class="description">
+        &nbsp;代码是吃饭的家伙
+      </div>
+    </div>
+    <div class="container">
+      
+
+  <article class="standard post">
+    <div class="title">
+      
+  
+    <h1 class="page-title center">
+        PHP接入微信退款接口
+    </h1>
+  
+
+
+    </div>
+    <div class="meta center">
+      
+<time datetime="2016-08-16T02:38:08.000Z">
+  <i class="fa fa-calendar"></i>&nbsp;
+  2016-08-16
+</time>
+
+
+
+
+
+
+    
+    &nbsp;
+    <i class="fa fa-tag"></i>&nbsp;
+    <a href="/tags/微信支付/">微信支付</a>·<a href="/tags/微信退款/">微信退款</a>
+
+
+    </div>
+    <hr>
+    <div class="picture-container">
+      
+    </div>
+    <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.0版本</a> </p>
+<p>微信的退款操作，通过封装与前面<a href="https://helei112g.github.io/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%9C%89%E5%AF%86%E9%80%80%E6%AC%BE%E6%8E%A5%E5%8F%A3/">支付宝退款</a>除了配置文件，基本一样。</p>
+<p>退款代码如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">RefundContext</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Common</span>\<span class="title">PayException</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Config</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//  生成退款单号 便于测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPayid</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> date(<span class="string">'Ymdhis'</span>, time()).substr(floor(microtime()*<span class="number">1000</span>),<span class="number">0</span>,<span class="number">1</span>).rand(<span class="number">0</span>,<span class="number">9</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$config = [</span><br><span class="line">    <span class="string">'app_id'</span>    =&gt; <span class="string">'wxa244db59a34996fc'</span>,  <span class="comment">// 公众账号ID</span></span><br><span class="line">    <span class="string">'mch_id'</span>    =&gt; <span class="string">'1331302101'</span>,<span class="comment">// 商户id</span></span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'adslkfjiKQJLAIQLJ393201482333333'</span>,<span class="comment">// md5 秘钥</span></span><br><span class="line"></span><br><span class="line">    <span class="string">'notify_url'</span>    =&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">'time_expire'</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 涉及资金流动时 退款  转款，需要提供该文件</span></span><br><span class="line">    <span class="string">'cert_path'</span> =&gt; dirname(<span class="keyword">__FILE__</span>) . DIRECTORY_SEPARATOR . <span class="string">'wx'</span> . DIRECTORY_SEPARATOR . <span class="string">'apiclient_cert.pem'</span>,</span><br><span class="line">    <span class="string">'key_path'</span>  =&gt; dirname(<span class="keyword">__FILE__</span>) . DIRECTORY_SEPARATOR . <span class="string">'wx'</span> . DIRECTORY_SEPARATOR . <span class="string">'apiclient_key.pem'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 退款数据</span></span><br><span class="line">$reundData = [</span><br><span class="line">    <span class="string">'refund_no'</span> =&gt; createPayid(),</span><br><span class="line">    <span class="string">'refund_data'</span>   =&gt; [</span><br><span class="line">        [<span class="string">'transaction_id'</span> =&gt; <span class="string">'4007572001201607098672633287'</span>, <span class="string">'amount'</span>   =&gt; <span class="string">'5'</span>, <span class="string">'refund_fee'</span> =&gt; <span class="string">'5'</span>, <span class="string">'reason'</span> =&gt; <span class="string">'微信测试金额退款'</span>],</span><br><span class="line">    ],</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">$refund = <span class="keyword">new</span> RefundContext();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 微信退款</span></span><br><span class="line">    $type = Config::WEIXIN;</span><br><span class="line">    $refund-&gt;initRefund(Config::WEIXIN, $wxconfig);</span><br><span class="line"></span><br><span class="line">    $ret = $refund-&gt;refund($reundData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var_dump($ret);</span><br></pre></td></tr></table></figure></p>
+<p>当前sdk支付宝可一次退款多笔数据。微信仅能每次退款1笔（如果想要实现一次退订多笔订单，可在客户端通过循环来处理。）</p>
+<p>接下来解释下相关的配置信息</p>
+<p>微信的配置文件解释参考 <a href="https://helei112g.github.io/2016/08/10/%E5%BE%AE%E4%BF%A1%E7%9A%84%E4%B8%89%E7%A7%8D%E6%94%AF%E4%BB%98%E6%96%B9%E5%BC%8F%E6%8E%A5%E5%85%A5%EF%BC%9AAPP%E6%94%AF%E4%BB%98%E3%80%81%E5%85%AC%E4%BC%97%E5%8F%B7%E6%94%AF%E4%BB%98%E3%80%81%E6%89%AB%E7%A0%81%E6%94%AF%E4%BB%98/">微信的三种支付方式接入：APP支付、公众号支付、扫码支付</a> 中的微信配置信息。</p>
+<h1 id="请求参数"><a href="#请求参数" class="headerlink" title="请求参数"></a>请求参数</h1><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>transaction_id</td>
+<td>微信交易号</td>
+<td>微信系统中的交易流水号，可用于查询订单状态</td>
+<td>是</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>总金额</td>
+<td>微信交易对应的交易总金额</td>
+<td>是</td>
+</tr>
+<tr>
+<td>refund_fee</td>
+<td>退款金额</td>
+<td>本次申请的退款金额，退款金额不能大于总金额</td>
+<td>是</td>
+</tr>
+<tr>
+<td>reason</td>
+<td>退款理由</td>
+<td>退款的理由，可在用户端查看到</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<h1 id="响应数据"><a href="#响应数据" class="headerlink" title="响应数据"></a>响应数据</h1><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>is_success</td>
+<td>成功标识</td>
+<td>请求是否成功，T:成功，F:失败</td>
+<td>是</td>
+</tr>
+<tr>
+<td>error</td>
+<td>错误提示</td>
+<td>只有is_success=F时才返回</td>
+<td>否</td>
+</tr>
+<tr>
+<td>response</td>
+<td>响应数据</td>
+<td>查询成功后返回的数据，一个数组，is_success=T时返回</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p><strong>response</strong> 数据描述</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数名</th>
+<th>参数说明</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>transaction_id</td>
+<td>微信订单号</td>
+<td>微信订单号，下单成功后，微信返回</td>
+<td>是</td>
+</tr>
+<tr>
+<td>order_no</td>
+<td>商户订单号</td>
+<td>商户系统内部的订单号</td>
+<td>是</td>
+</tr>
+<tr>
+<td>refund_no</td>
+<td>商户退款单号</td>
+<td>商户退款单号</td>
+<td>是</td>
+</tr>
+<tr>
+<td>refund_id</td>
+<td>微信退款单号</td>
+<td>微信退款单号</td>
+<td>是</td>
+</tr>
+<tr>
+<td>refund_fee</td>
+<td>申请退款金额</td>
+<td>退款总金额,单位为元(已被我处理),可以做部分退款</td>
+<td>否</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>订单金额</td>
+<td>订单总金额，单位为元，最多两位小数</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+
+
+  </article>
+  </script>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  <div class="busuanzi center">
+    页阅读量:&nbsp;<span id="busuanzi_value_page_pv"></span>&nbsp;・&nbsp;
+    站访问量:&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;・&nbsp;
+    站访客数:&nbsp;<span id="busuanzi_value_site_uv"></span>
+  </div>
+
+
+<div id="disqus_thread"></div>
+<script>
+
+var disqus_config = function () {
+this.page.url = 'https://helei112g.github.io/2016/08/16/PHP接入微信退款接口/index.html';
+this.page.identifier = undefined;
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//helei112g.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+    </div>
+  </div>
+  <footer class="page-footer"><div class="clearfix">
+</div>
+<div class="right-foot container">
+    <div class="firstrow">
+        <a href="#top" >
+        <i class="fa fa-arrow-right"></i>
+        </a>
+        © helei 2016-2016
+    </div>
+    <div class="secondrow">
+        <a href="https://github.com/gaoryrt/hexo-theme-pln">
+        Theme Pln
+        </a>
+    </div>
+</div>
+<div class="clearfix">
+</div>
+</footer>
+  <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+
+// comments below to disable loading animation
+function revealOnScroll() {
+  var scrolled = $(window).scrollTop();
+  $(".excerpt, .index-title, .index-meta, p").each(function() {
+    var current = $(this),
+      height = $(window).outerHeight(),
+      offsetTop = current.offset().top;
+    (scrolled + height + 50 > offsetTop) ? current.addClass("animation"):'';
+  });
+}
+$(window).on("scroll", revealOnScroll);
+$(document).ready(revealOnScroll)
+
+// disqus scripts
+
+var disqus_shortname = 'helei112g';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('body')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+
+
+// dropdown scripts
+$(".dropdown").click(function(event) {
+  var current = $(this);
+  event.stopPropagation();
+  $(current).children(".dropdown-content")[($(current).children(".dropdown-content").hasClass("open"))?'removeClass':'addClass']("open")
+});
+$(document).click(function(){
+    $(".dropdown-content").removeClass("open");
+})
+
+// back to top scripts
+$("a[href='#top']").click(function() {
+  $("html, body").animate({ scrollTop: 0 }, 500);
+  return false;
+});
+
+
+var path = "/search.xml";
+searchFunc(path, 'local-search-input', 'local-search-result');
+
+</script>
+
+</body>
+</html>
