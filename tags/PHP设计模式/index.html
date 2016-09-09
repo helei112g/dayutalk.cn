@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="google-site-verification" content="" />
   
-  <title>PHP设计模式</title>
+  <title>php设计模式</title>
   <meta name="author" content="He Lei">
   
 
@@ -78,7 +78,7 @@
   
   <i class="fa fa-tag"></i>
   
-  PHP设计模式
+  php设计模式
 </h1>
 <div class="archive-num">
   该分类共 1 篇文章
@@ -102,11 +102,11 @@
             <ul class="archive-list">
                 <div class="archive-item">
                     <div class="archive-time">
-                      06-28
+                      07-23
                     </div>
                     <div class="archive-detail">
-                      <a href="/2016/06/28/php设计模式：状态模式的使用场景/" class="archive-link">
-                        php设计模式：状态模式的使用场景
+                      <a href="/2016/07/23/php设计模式：策略模式的实际应用/" class="archive-link">
+                        php设计模式：策略模式的实际应用
                       </a>
                     </div>
                 </div>
@@ -168,6 +168,28 @@ var disqus_shortname = 'helei112g';
 // dropdown scripts
 $(".dropdown").click(function(event) {
   var current = $(this);
+  event.stopPropagation();
+  $(current).children(".dropdown-content")[($(current).children(".dropdown-content").hasClass("open"))?'removeClass':'addClass']("open")
+});
+$(document).click(function(){
+    $(".dropdown-content").removeClass("open");
+})
+
+// back to top scripts
+$("a[href='#top']").click(function() {
+  $("html, body").animate({ scrollTop: 0 }, 500);
+  return false;
+});
+
+
+var path = "/search.xml";
+searchFunc(path, 'local-search-input', 'local-search-result');
+
+</script>
+
+</body>
+</html>
+
   event.stopPropagation();
   $(current).children(".dropdown-content")[($(current).children(".dropdown-content").hasClass("open"))?'removeClass':'addClass']("open")
 });
