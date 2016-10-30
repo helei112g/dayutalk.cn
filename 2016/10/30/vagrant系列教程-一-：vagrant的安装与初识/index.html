@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="He Lei">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="vagrant系列教程(一)：vagrant的安装与初识"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://helei112g.github.ioundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>大愚的博客｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">vagrant系列教程(一)：vagrant的安装与初识</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:dayugog@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2016-10-30</span>
+            <span class="time">23:31:20</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/工具学习/">工具学习</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/vagrant/">#vagrant</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>本系列文章之前首发在csdn上。觉得还不错现在迁移过来。本文主要介绍安装与一些简单介绍。后续会有更深入的探讨。<br><a id="more"></a></p>
+<blockquote>
+<p>实际上Vagrant只是一个让你可以方便设置你想要的虚拟机的便携式工具，它底层支持VirtualBox、VMware甚至AWS作为虚拟机系统，本书中我们将使用VirtualBox来进行说明，所以第一步需要先安裝Vagrant和VirtualBox。</p>
+<p>安装环境：mac<br>注：windows环境下，基本一致</p>
+</blockquote>
+<h1 id="安装VirtualBox"><a href="#安装VirtualBox" class="headerlink" title="安装VirtualBox"></a>安装VirtualBox</h1><p>直接来到官网 <a href="https://www.virtualbox.org/wiki/Downloads" target="_blank" rel="external">https://www.virtualbox.org/wiki/Downloads</a> 点击下载最新的virtualbox，双击安装，一路傻瓜化完成。</p>
+<h1 id="安装Vagrant"><a href="#安装Vagrant" class="headerlink" title="安装Vagrant"></a>安装Vagrant</h1><p>网上有说什么使用gem命令来安装的，建议大家别进这个坑了，直接到官网 <a href="https://www.vagrantup.com/downloads.html" target="_blank" rel="external">https://www.vagrantup.com/downloads.html</a> 下载最新的vagrant，然后双击安装，也是一路傻瓜化，就不说。<br>在windows下安装vagrant，为了写入相应配置到环境变量，可能会要求重新启动一下系统。</p>
+<h1 id="如何配置Vagrant"><a href="#如何配置Vagrant" class="headerlink" title="如何配置Vagrant"></a>如何配置Vagrant</h1><hr>
+<h2 id="下载一个合适的box"><a href="#下载一个合适的box" class="headerlink" title="下载一个合适的box"></a>下载一个合适的box</h2><p>进行完以上步骤后，就需要考虑我们的虚拟机需要使用什么操作系统了，我这里会以CentOs7.0为例。在以前使用vm的过程中，我们需要自己去下载镜像，然后进行相关的安装，设置系统等等操作。而vagrant的开源社区，提供了很多已经打包好的操作系统，在vagrant的世界里被称为box。在 <a href="http://www.vagrantbox.es/" target="_blank" rel="external">http://www.vagrantbox.es/</a> 这里你可以找到你想要的操作系统box，当然你也可以自己制作一个。后续教程会讲到，这里就不多说。</p>
+<h2 id="完成一个box的安装"><a href="#完成一个box的安装" class="headerlink" title="完成一个box的安装"></a>完成一个box的安装</h2><p>我的开发机是Mac，所以我建立了如下的开发环境目录：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ /Users/helei/vagrant</span><br><span class="line">$ cd /Users/helei/vagrant</span><br></pre></td></tr></table></figure></p>
+<p>本来，vagrant提供的在线安装，非常便利，但是无奈我国有非常NB的gfw，我为了速度，就先翻墙出去把box下载到本地，然后再进行安装。</p>
+<blockquote>
+<p>box链接：<a href="https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/1.1.0/centos-7.0-x86_64.box" target="_blank" rel="external">https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/1.1.0/centos-7.0-x86_64.box</a></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ vagrant box add &#123;title&#125; &#123;url&#125;</span><br><span class="line">$ vagrant init &#123;title&#125;</span><br><span class="line">$ vagrant up</span><br></pre></td></tr></table></figure>
+<p>vagrant box add 是添加box的命令<br>其中｛title｝可以自行设置，我这里使用的是 <em>centos7</em> ，｛url｝是下载到本地box路径。我的路径是：/Users/helei/vagrant/centos-7.0-x86_64.box</p>
+<p>下面把一些命令执行后的输出进行展示，方便大家比对：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 安装box</span><br><span class="line">$ vagrant box add CentOs7 /Users/helei/vagrant/centos-7.0-x86_64.box</span><br></pre></td></tr></table></figure></p>
+<p>输出内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Downloading or copying the box...</span><br><span class="line">Extracting box...te: 47.5M/s, Estimated time remaining: --:--:--)</span><br><span class="line">Successfully added box &apos;base&apos; with provider &apos;virtualbox&apos;!</span><br></pre></td></tr></table></figure></p>
+<p>box中的镜像文件被放到了：/Users/helei/.vagrant.d/boxes/，如果在window系统中应该是放到了： C:\Users\当前用户名.vagrant.d\boxes\目录下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 如果是才add 的box，就必须执行本步骤，初始化一次后，以后启动系统，就不需要执行本步骤。</span><br><span class="line">$ vagrant init CentOs7</span><br></pre></td></tr></table></figure></p>
+<p>输出内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A `Vagrantfile` has been placed in this directory.</span><br><span class="line">You are now ready to `vagrant up` your first virtual environment!</span><br><span class="line">Please read the comments in the Vagrantfile as well as documentation on `vagrantup.com` for more information on using Vagrant.</span><br></pre></td></tr></table></figure></p>
+<p>这样就会在当前目录生成一个 Vagrantfile的文件，里面有很多配置信息，后面我在慢慢说，默认不做任何配置改动，也是可以启动系统的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 启动系统</span><br><span class="line">$ vagrant up</span><br></pre></td></tr></table></figure></p>
+<p>输出内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Bringing machine &apos;default&apos; up with &apos;virtualbox&apos; provider...</span><br><span class="line">[default] Importing base box &apos;base&apos;...</span><br><span class="line">[default] Matching MAC address for NAT networking...</span><br><span class="line">[default] Setting the name of the VM...</span><br><span class="line">[default] Clearing any previously set forwarded ports...</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<h2 id="ssh链接到安装的虚拟机"><a href="#ssh链接到安装的虚拟机" class="headerlink" title="ssh链接到安装的虚拟机"></a>ssh链接到安装的虚拟机</h2><p>经过以上操作后，完成了虚拟机的安装，现在需要登录上虚拟机，进行操作。链接很简单，可以使用第三方（xshell等）shell工具或系统自带的，进行登录<br>在系统中，如mac，可直接使用 <code>vagrant ssh</code> 来完成链接。或者使用第三方如xshell，ip地址是：localhost，端口，需要观察，映射的22端口是多少。一般是2200 或者2222<br>用户名与密码均是： vagrant</p>
+<h1 id="vagrant的命令详解"><a href="#vagrant的命令详解" class="headerlink" title="vagrant的命令详解"></a>vagrant的命令详解</h1><hr>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vagrant box add</td>
+<td>添加box的操作</td>
+</tr>
+<tr>
+<td>vagrant init</td>
+<td>初始化box的操作，会生成vagrant的配置文件Vagrantfile</td>
+</tr>
+<tr>
+<td>vagrant up</td>
+<td>启动本地环境</td>
+</tr>
+<tr>
+<td>vagrant ssh</td>
+<td>通过 ssh 登录本地环境所在虚拟机</td>
+</tr>
+<tr>
+<td>vagrant halt</td>
+<td>关闭本地环境</td>
+</tr>
+<tr>
+<td>vagrant suspend</td>
+<td>暂停本地环境</td>
+</tr>
+<tr>
+<td>vagrant resume</td>
+<td>恢复本地环境</td>
+</tr>
+<tr>
+<td>vagrant reload</td>
+<td>修改了 Vagrantfile 后，使之生效（相当于先 halt，再 up）</td>
+</tr>
+<tr>
+<td>vagrant destroy</td>
+<td>彻底移除本地环境</td>
+</tr>
+<tr>
+<td>vagrant box list</td>
+<td>显示当前已经添加的box列表</td>
+</tr>
+<tr>
+<td>vagrant box remove</td>
+<td>删除相应的box</td>
+</tr>
+<tr>
+<td>vagrant package</td>
+<td>打包命令，可以把当前的运行的虚拟机环境进行打包</td>
+</tr>
+<tr>
+<td>vagrant plugin</td>
+<td>用于安装卸载插件</td>
+</tr>
+<tr>
+<td>vagrant status</td>
+<td>获取当前虚拟机的状态</td>
+</tr>
+<tr>
+<td>vagrant global-status</td>
+<td>显示当前用户Vagrant的所有环境状态</td>
+</tr>
+</tbody>
+</table>
+<p>下一篇，主要讲vagrant的配置，通过配置文件，实现多台虚拟机的启动.能够很方便的实现多台机器。</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+

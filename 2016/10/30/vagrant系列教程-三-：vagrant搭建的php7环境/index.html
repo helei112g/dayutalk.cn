@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="He Lei">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="vagrant系列教程(三)：vagrant搭建的php7环境"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://helei112g.github.ioundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>大愚的博客｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">vagrant系列教程(三)：vagrant搭建的php7环境</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:dayugog@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2016-10-30</span>
+            <span class="time">23:31:20</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/工具学习/">工具学习</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/vagrant/">#vagrant</a> <a class="tag" href="/tags/php7/">#php7</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>本文实战教你如何搭建自己的开发环境。希望大家通过本文实战后，可以根据自己的情况搭建任意想要的环境。<br><a id="more"></a></p>
+<p>前面已经把vagrant的基础知识已经基本过了一遍 了，相信只要按着教程来，你已经搭建好了自己的基础环境。接下来说一说如何搭建php7的开发环境。</p>
+<blockquote>
+<p>申明一下，这里使用的box，就是前面演示的centos7<br>地址奉上：<br><a href="https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/1.1.0/centos-7.0-x86_64.box" target="_blank" rel="external">https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/1.1.0/centos-7.0-x86_64.box</a></p>
+</blockquote>
+<h1 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h1><p>首先需要跟新一些ngin的相关源。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm</span><br><span class="line"></span><br><span class="line">// 执行安装过程</span><br><span class="line">$ yum install nginx</span><br></pre></td></tr></table></figure></p>
+<p>看到以下界面时，请稍等，如果需要输入的地方，请直接按 <code>y</code> 然后回车。<br><img src="http://img.blog.csdn.net/20160406225356057" alt="这里写图片描述"></p>
+<h2 id="启动nginx并设置为开机启动"><a href="#启动nginx并设置为开机启动" class="headerlink" title="启动nginx并设置为开机启动"></a>启动nginx并设置为开机启动</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl start nginx </span><br><span class="line">$ systemctl enable nginx</span><br></pre></td></tr></table></figure>
+<h1 id="安装epel与remi源"><a href="#安装epel与remi源" class="headerlink" title="安装epel与remi源"></a>安装epel与remi源</h1><p>安装epel，epel是Fedora小组维护的一个软件仓库项目，为RHEL/CentOS提供他们默认不提供的软件包。安装时一定需要注意一下自己系统的版本额。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rpm -ivh http://mirrors.opencas.cn/epel/7/x86_64/e/epel-release-7-5.noarch.rpm</span><br></pre></td></tr></table></figure></p>
+<p>2016-10-22日修改：</p>
+<blockquote>
+<p>最近发上面的源不能用了。请大家自己在这里找对应的版本<br><a href="http://dl.fedoraproject.org/pub/" target="_blank" rel="external">http://dl.fedoraproject.org/pub/</a><br>过不了墙的请用国内镜像<br><a href="http://mirrors.sohu.com/fedora-epel/7/x86_64/e/epel-release-7-8.noarch.rpm" target="_blank" rel="external">http://mirrors.sohu.com/fedora-epel/7/x86_64/e/epel-release-7-8.noarch.rpm</a></p>
+</blockquote>
+<p>remi源种包含最新的php相关信息，如：php7、mysql等，因此为了便捷获取php7的最新信息，也需要安装一下这个源。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm</span><br></pre></td></tr></table></figure></p>
+<h1 id="iptables防火墙"><a href="#iptables防火墙" class="headerlink" title="iptables防火墙"></a>iptables防火墙</h1><p>因为以前经常使用iptables，对centos7自带的firewalld防火墙不熟悉，因此我就将关闭centos7自带的firewalld，启用自己熟悉的iptables吧。</p>
+<p>首先，关闭自带的firewalld防火墙<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl stop firewalld.service </span><br><span class="line">$ systemctl disable firewalld.service #防止开机启动</span><br></pre></td></tr></table></figure></p>
+<h2 id="安装iptables"><a href="#安装iptables" class="headerlink" title="安装iptables"></a>安装iptables</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum install iptables-services</span><br></pre></td></tr></table></figure>
+<p>安装进程如下图所示<br><img src="http://img.blog.csdn.net/20160406225557402" alt="这里写图片描述"></p>
+<p>启动iptables防火墙<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start iptables.service </span><br><span class="line">systemctl enable iptables.service #开机自动启动</span><br></pre></td></tr></table></figure></p>
+<h2 id="编辑防火墙配置文件"><a href="#编辑防火墙配置文件" class="headerlink" title="编辑防火墙配置文件"></a>编辑防火墙配置文件</h2><p>为了我们在自己的主机上能够顺利访问，需要开启以下端口，<br>vim /etc/sysconfig/iptables<br>编辑防火墙，设置80(nginx) 3306(mysql/mariadb) 6379(redis)端口，外网可访问<br><img src="http://img.blog.csdn.net/20160406225918341" alt="这里写图片描述"></p>
+<h1 id="PHP7-0的安装"><a href="#PHP7-0的安装" class="headerlink" title="PHP7.0的安装"></a>PHP7.0的安装</h1><p>查看remi源中可安装的php信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum list --enablerepo=remi --enablerepo=remi-php70 | grep php70</span><br></pre></td></tr></table></figure></p>
+<p>该列表会列出所有可以安装的php模块信息，从中安装自己需要的模块，下面安装模块，是我自己的一个模块选择情况。其中有一部分是必须的，有一部分是可选的。比如php-fpm就是必须的，如果你用的是nginx的话。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum install --enablerepo=remi --enablerepo=remi-php70 php php-opcache php-pecl-apcu php-devel php-mbstring php-mcrypt php-mysqlnd php-pecl-xdebug php-pdo php-pear php-fpm php-cli php-xml php-bcmath php-process php-gd php-common php-json php-imap php-pecl-redis php-pecl-memcached php-pecl-mongodb</span><br></pre></td></tr></table></figure></p>
+<p>安装完成后,输入 <code>php -v</code> 可以查看当前安装的php版本信息。<br><img src="http://img.blog.csdn.net/20160406230204248" alt="这里写图片描述"></p>
+<p>启动php-fpm，因为nginx需要通过它来解析php程序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl start php-fpm</span><br><span class="line">$ systemctl enable php-fpm #设置开机自启动</span><br></pre></td></tr></table></figure></p>
+<h2 id="配置nginx可以访问php"><a href="#配置nginx可以访问php" class="headerlink" title="配置nginx可以访问php"></a>配置nginx可以访问php</h2><p>进入nginx的文件配置中心，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cd /etc/nginx/conf.d/</span><br><span class="line"># 复制默认的配置文件 </span><br><span class="line">$ cp default.conf php.conf</span><br></pre></td></tr></table></figure></p>
+<p>首先先通过vim编辑default文件。将监听端口改为8080， 因为后面我们自己的php.conf会用到80端口。<br><img src="http://img.blog.csdn.net/20160406230633531" alt="这里写图片描述"></p>
+<p>现在来编辑复制的php.conf文件，可以直接复制以下内容，至于配置的含义，后面再开一篇文章来单独讲解吧。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    charset utf-8;</span><br><span class="line">    root /vagrant/www;# 自己的项目目录，也就是php项目所在目录</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">	    # 请注意，一定要加index.php这项</span><br><span class="line">        index  index.php index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    error_page   500 502 503 504  /50x.html;</span><br><span class="line">    location = /50x.html &#123;</span><br><span class="line">        root   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">        fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">        fastcgi_index  index.php;</span><br><span class="line">        # 注意此处变量的不同</span><br><span class="line">        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;</span><br><span class="line">        include        fastcgi_params;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>修改完文件后，必须要重新启动nginx，才会使当前的配置生效。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl reload nginx</span><br></pre></td></tr></table></figure></p>
+<h2 id="测试访问"><a href="#测试访问" class="headerlink" title="测试访问"></a>测试访问</h2><p>在/vagrant/www下新建一个文件index.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    phpinfo();</span><br></pre></td></tr></table></figure>
+<p>在浏览器中打开，访问对应的ip，可以看到输出的php信息<br><img src="http://img.blog.csdn.net/20160406233803608" alt="这里写图片描述"></p>
+<p><em>注：如果在使用过程中，有新增加的php模块，需要重新启动php－fpm</em></p>
+<p><code>systemctl reload php-fpm</code></p>
+<h1 id="Mariadb的安装"><a href="#Mariadb的安装" class="headerlink" title="Mariadb的安装"></a>Mariadb的安装</h1><p>这里很多同学可能第一次听说mariadb，他呢是mysql的一个重要分子，或者可以理解为mysql的替代品，自从mysql被控制后，更新速度已经慢太多了。两者的用法基本没有区别，实际中有哪些坑，大家可以自己去踩一踩。哈哈，别说我不负责任。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 安装</span><br><span class="line">$ yum install mariadb-server</span><br><span class="line"># 启动服务</span><br><span class="line">$ systemctl start mariadb</span><br><span class="line"># 开机启动</span><br><span class="line">$ systemctl enable mariadb</span><br></pre></td></tr></table></figure></p>
+<h2 id="MariaDB的安全配置"><a href="#MariaDB的安全配置" class="headerlink" title="MariaDB的安全配置"></a>MariaDB的安全配置</h2><p>MariaDB默认root密码为空，我们需要设置一下，执行脚本：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo mysql_secure_installation</span><br></pre></td></tr></table></figure></p>
+<p>这个脚本会经过一些列的交互问答来进行MariaDB的安全设置。</p>
+<p>首先提示输入当前的root密码：</p>
+<blockquote>
+<p>Enter current password for root (enter for none):<br>初始root密码为空，我们直接敲回车进行下一步。</p>
+<p>Set root password? [Y/n]<br>设置root密码，默认选项为Yes，我们直接回车，提示输入密码，在这里设置您的MariaDB的root账户密码。</p>
+<p>Remove anonymous users? [Y/n]<br>是否移除匿名用户，默认选项为Yes，建议按默认设置，回车继续。</p>
+<p>Disallow root login remotely? [Y/n]<br>是否禁止root用户远程登录？如果您只在本机内访问MariaDB，建议按默认设置，回车继续。 如果您还有其他云主机需要使用root账号访问该数据库，则需要选择n。</p>
+<p>Remove test database and access to it? [Y/n]<br>是否删除测试用的数据库和权限？ 建议按照默认设置，回车继续。</p>
+<p>Reload privilege tables now? [Y/n]<br>是否重新加载权限表？因为我们上面更新了root的密码，这里需要重新加载，回车。</p>
+</blockquote>
+<p>完成后你会看到Success!的提示，MariaDB的安全设置已经完成。我们可以使用以下命令登录MariaDB：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mysql -uroot -p</span><br></pre></td></tr></table></figure>
+<p>按提示输入root密码，就会进入MariaDB的交互界面，说明已经安装成功。<br><img src="http://img.blog.csdn.net/20160406232302024" alt="这里写图片描述"></p>
+<p>最后我们将MariaDB设置为开机启动。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl enable mariadb</span><br></pre></td></tr></table></figure></p>
+<h2 id="让外网可以进行链接"><a href="#让外网可以进行链接" class="headerlink" title="让外网可以进行链接"></a>让外网可以进行链接</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; grant all on *.* to &apos;root&apos;@&apos;%&apos; identified by &apos;root&apos;;</span><br><span class="line">mysql&gt; flush privileges;</span><br></pre></td></tr></table></figure>
+<h1 id="安装composer"><a href="#安装composer" class="headerlink" title="安装composer"></a>安装composer</h1><p>composer的大名，我就不想介绍了，如果你是一个phper，没用过，我也就不怪你，毕竟但是他现在才刚过1.0版，但是如果听都没听过，请面壁去……</p>
+<p>安装说明<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ php -r “readfile(‘https:<span class="comment">//getcomposer.org/installer‘);” &gt; composer-setup.php</span></span><br><span class="line"></span><br><span class="line">$ php composer-setup.php</span><br><span class="line"></span><br><span class="line">$ php -r “unlink(‘composer-setup.php’);”</span><br></pre></td></tr></table></figure></p>
+<p>上述 3 条命令的作用依次是：</p>
+<blockquote>
+<ol>
+<li>下载安装脚本（composer-setup.php）到当前目录。 </li>
+<li>执行安装过程。 </li>
+<li>删除安装脚本 – composer-setup.php 。</li>
+</ol>
+</blockquote>
+<h2 id="全局安装composer"><a href="#全局安装composer" class="headerlink" title="全局安装composer"></a>全局安装composer</h2><p>全局安装是将 Composer 安装到系统环境变量 PATH 所包含的路径下面，然后就能够在命令行窗口中直接执行 composer 命令了。</p>
+<p>Mac 或 Linux 系统：打开命令行窗口并执行如下命令将前面下载的 composer.phar 文件移动到 /usr/local/bin/ 目录下面：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo mv composer.phar /usr/local/bin/composer</span><br></pre></td></tr></table></figure>
+<p>然后执行：<br><code>composer -v</code><br><img src="http://img.blog.csdn.net/20160406233243543" alt="这里写图片描述"><br>由于composer的包都在国外，这里设置一下composer的配置，让其每次运行时，都使用国内的包<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer config -g repo.packagist composer https:<span class="comment">//packagist.phpcomposer.com</span></span><br></pre></td></tr></table></figure></p>
+<p>查看composer的配置文件<br>vim /root/.composer/config.json<br><img src="http://img.blog.csdn.net/20160406233556529" alt="这里写图片描述"><br>看到以上内容，表示配置成功！</p>
+<hr>
+<p>至此，基本的php7环境搭建已经完成了。然后呢，下一次说一说用vagrant搭建redis吧。当然我不会仅仅只说redis的搭建额。到时候看啊吧！</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
