@@ -4,8 +4,8 @@
   
     
     <entry>
-      <title><![CDATA[vagrant系列教程(五)：Vagrant使用中遇到的坑]]></title>
-      <url>https://helei112g.github.io/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-%E4%BA%94-%EF%BC%9AVagrant%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/</url>
+      <title><![CDATA[vagrant系列五：Vagrant使用中遇到的坑]]></title>
+      <url>https://helei112g.github.io/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E4%BA%94%EF%BC%9AVagrant%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/</url>
       <content type="html"><![CDATA[<p>这篇文章是在windows上使用了vagrant半年后，突然切换到mac上来，遇到了各种坑，今天补了这篇文章。希望对你有帮助。</p>
 <a id="more"></a>
 <h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><p>之前写了一系列的vagrant使用教程，当时写这个教程的时候实在windows的环境下。最近再mac上使用，遇到了一些麻烦。</p>
@@ -36,8 +36,8 @@
     </entry>
     
     <entry>
-      <title><![CDATA[vagrant系列教程(四)：vagrant搭建redis与redis的监控程序redis-stat]]></title>
-      <url>https://helei112g.github.io/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-%E5%9B%9B-%EF%BC%9Avagrant%E6%90%AD%E5%BB%BAredis%E4%B8%8Eredis%E7%9A%84%E7%9B%91%E6%8E%A7%E7%A8%8B%E5%BA%8Fredis-stat/</url>
+      <title><![CDATA[vagrant系列四：Vagrant搭建redis与redis的监控程序redis-stat]]></title>
+      <url>https://helei112g.github.io/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E5%9B%9B%EF%BC%9AVagrant%E6%90%AD%E5%BB%BAredis%E4%B8%8Eredis%E7%9A%84%E7%9B%91%E6%8E%A7%E7%A8%8B%E5%BA%8Fredis-stat/</url>
       <content type="html"><![CDATA[<p>redis经常会被用到<br><a id="more"></a></p>
 <p><strong>重要提示，从3.2版本后，redis需要设置密码才能够被外部网络访问。</strong><br>所以如果你发现可以链接上redis，但是无法写入或者读取那么请检查是否使用了密码方式。</p>
 <h1 id="redis的安装"><a href="#redis的安装" class="headerlink" title="redis的安装"></a>redis的安装</h1><p>哎，写到这儿，说一句，诅咒联通这网络，联通网络一上，打开vpn，照样不能访问外网，联baidu都一卡一卡的。</p>
@@ -91,8 +91,8 @@
     </entry>
     
     <entry>
-      <title><![CDATA[vagrant系列教程(三)：vagrant搭建的php7环境]]></title>
-      <url>https://helei112g.github.io/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-%E4%B8%89-%EF%BC%9Avagrant%E6%90%AD%E5%BB%BA%E7%9A%84php7%E7%8E%AF%E5%A2%83/</url>
+      <title><![CDATA[vagrant系列三：Vagrant搭建的php7环境]]></title>
+      <url>https://helei112g.github.io/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E4%B8%89%EF%BC%9AVagrant%E6%90%AD%E5%BB%BA%E7%9A%84php7%E7%8E%AF%E5%A2%83/</url>
       <content type="html"><![CDATA[<p>本文实战教你如何搭建自己的开发环境。希望大家通过本文实战后，可以根据自己的情况搭建任意想要的环境。<br><a id="more"></a></p>
 <p>前面已经把vagrant的基础知识已经基本过了一遍 了，相信只要按着教程来，你已经搭建好了自己的基础环境。接下来说一说如何搭建php7的开发环境。</p>
 <blockquote>
@@ -164,8 +164,8 @@
     </entry>
     
     <entry>
-      <title><![CDATA[vagrant系列教程(二)：vagrant的配置文件vagrantfile详解]]></title>
-      <url>https://helei112g.github.io/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-%E4%BA%8C-%EF%BC%9Avagrant%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6vagrantfile%E8%AF%A6%E8%A7%A3/</url>
+      <title><![CDATA[vagrant系列二：Vagrant的配置文件vagrantfile详解]]></title>
+      <url>https://helei112g.github.io/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E4%BA%8C%EF%BC%9AVagrant%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6vagrantfile%E8%AF%A6%E8%A7%A3/</url>
       <content type="html"><![CDATA[<p>通过配置文件轻松的完成一台机器的配置，使用过vm然后再来使用这个，你就会惊叹怎会如此方便。</p>
 <a id="more"></a>
 <p>上一篇文章完整的讲叙了如何安装一个vagrant的环境。这里主要说一说vagrant的配置文件Vagrantfile。我在尝试各种技术的时候，常常苦恼于很多时候没有教程把相关的配置信息说明完整。所以在我的博客里，我一定会完整的把这块给补上。</p>
@@ -193,8 +193,8 @@
     </entry>
     
     <entry>
-      <title><![CDATA[vagrant系列教程(一)：vagrant的安装与初识]]></title>
-      <url>https://helei112g.github.io/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-%E4%B8%80-%EF%BC%9Avagrant%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E5%88%9D%E8%AF%86/</url>
+      <title><![CDATA[vagrant系列一：Vagrant的安装与初识]]></title>
+      <url>https://helei112g.github.io/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E4%B8%80%EF%BC%9AVagrant%E7%9A%84%E5%AE%89%E8%A3%85/</url>
       <content type="html"><![CDATA[<p>本系列文章之前首发在csdn上。觉得还不错现在迁移过来。本文主要介绍安装与一些简单介绍。后续会有更深入的探讨。<br><a id="more"></a></p>
 <blockquote>
 <p>实际上Vagrant只是一个让你可以方便设置你想要的虚拟机的便携式工具，它底层支持VirtualBox、VMware甚至AWS作为虚拟机系统，本书中我们将使用VirtualBox来进行说明，所以第一步需要先安裝Vagrant和VirtualBox。</p>

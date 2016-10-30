@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="He Lei">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="vagrant系列二：Vagrant的配置文件vagrantfile详解"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://helei112g.github.ioundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>大愚的博客｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">vagrant系列二：Vagrant的配置文件vagrantfile详解</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:dayugog@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2016-10-30</span>
+            <span class="time">23:45:16</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/工具学习/">工具学习</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/vagrant/">#vagrant</a> <a class="tag" href="/tags/linux/">#linux</a> <a class="tag" href="/tags/Vagrantfile配置/">#Vagrantfile配置</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>通过配置文件轻松的完成一台机器的配置，使用过vm然后再来使用这个，你就会惊叹怎会如此方便。</p>
+<a id="more"></a>
+<p>上一篇文章完整的讲叙了如何安装一个vagrant的环境。这里主要说一说vagrant的配置文件Vagrantfile。我在尝试各种技术的时候，常常苦恼于很多时候没有教程把相关的配置信息说明完整。所以在我的博客里，我一定会完整的把这块给补上。</p>
+<h1 id="配置详解"><a href="#配置详解" class="headerlink" title="配置详解"></a>配置详解</h1><p>在我们的开发目录下有一个文件Vagrantfile，里面包含有大量的配置信息，主要包括三个方面的配置，虚拟机的配置、SSH配置、Vagrant的一些基础配置。Vagrant是使用Ruby开发的，所以它的配置语法也是Ruby的，但是我们没有学过Ruby的人还是可以跟着它的注释知道怎么配置一些基本项的配置。</p>
+<p><strong>box设置</strong><br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.vm.box = <span class="string">"CentOs7"</span></span><br></pre></td></tr></table></figure></p>
+<p>该名称是再使用 vagrant init 中后面跟的名字。</p>
+<p><strong>hostname设置</strong><br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.vm.hostname = <span class="string">"for_work"</span></span><br></pre></td></tr></table></figure></p>
+<p>设置hostname非常重要，因为当我们有很多台虚拟服务器的时候，都是依靠hostname來做识别的。比如，我安装了php7 php56两台虚拟机，再启动时，我可以通过vagrant up php7来指定只启动哪一台。</p>
+<p><strong>虚拟机网络设置</strong><br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">config.vm.network <span class="string">"private_network"</span>, ip: <span class="string">"192.168.33.10"</span></span><br><span class="line"><span class="comment">#config.vm.network "public_network"</span></span><br></pre></td></tr></table></figure></p>
+<p>Vagrant有两种方式来进行网络连接，一种是host-only(主机模式)，意思是主机和虚拟机之间的网络互访，而不是虚拟机访问internet的技术，也就是只有你一個人自High，其他人访问不到你的虚拟机。另一种是Bridge(桥接模式)，该模式下的VM就像是局域网中的一台独立的主机，也就是说需要VM到你的路由器要IP，这样的话局域网里面其他机器就可以访问它了。我一般设置为host－only模式。<br>当然该模式，再指定ip的时候注意不要跟主机所在网段发生冲突。</p>
+<p><strong>同步目录设置</strong><br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.vm.synced_folder  <span class="string">"/Users/helei/www"</span>, <span class="string">"/vagrant"</span></span><br></pre></td></tr></table></figure></p>
+<p>我们上面介绍过/vagrant目录默认就是当前的开发目录，这是在虚拟机开启的时候默认挂载同步的。我们还可以通过配置来设置额外的同步目录。</p>
+<p><strong>端口转发设置</strong><br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.vm.network :forwarded_port, guest: <span class="number">80</span>, host: <span class="number">80</span></span><br></pre></td></tr></table></figure></p>
+<p>上面这句配置可厉害了，这一行的意思是把对host机器上8080端口的访问请求forward到虚拟机的80端口的服务上，例如你在你的虚拟机上使用nginx跑了一个php应用，那么你在host机器上的浏览器中打开<a href="http://localhost时，Vagrant就会把这个请求转发到VM里面跑在80端口的nginx服务上，因此我们可以通过这个设置来帮助我们去设定host和VM之间，或是VM和VM之间的信息交互。" target="_blank" rel="external">http://localhost时，Vagrant就会把这个请求转发到VM里面跑在80端口的nginx服务上，因此我们可以通过这个设置来帮助我们去设定host和VM之间，或是VM和VM之间的信息交互。</a><br>个人不建议使用该方法，经常因为两台机子端口占用的问题，导致不能正常通信。还是使用上面说的两种网络方式进行设置吧。</p>
+<hr>
+<p>上面说的配置方式，均是单机模式，下面说说如何进行集群机器的部署与配置，这是vagrant让我正真激动与兴奋的地方。</p>
+<p>看完下面，你会觉得超级简单</p>
+<p>现在我们来建立多台VM跑起來，並且让他们之间能够相通信，假设一台是应用服务器、一台是redis服务器，那么这个结构在Vagrant中非常简单，其实和单台的配置差不多，你只需要通过config.vm.define来定义不同的角色就可以了，现在我们打开配置文件进行如下设置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Vagrant.configure(&quot;2&quot;) do |config|</span><br><span class="line">  config.vm.define :web do |web|</span><br><span class="line">    web.vm.provider &quot;virtualbox&quot; do |v|</span><br><span class="line">          v.customize [&quot;modifyvm&quot;, :id, &quot;--name&quot;, &quot;web&quot;, &quot;--memory&quot;, &quot;512&quot;]</span><br><span class="line">    end</span><br><span class="line">    web.vm.box = &quot;CentOs7&quot;</span><br><span class="line">    web.vm.hostname = &quot;web&quot;</span><br><span class="line">    web.vm.network :private_network, ip: &quot;192.168.33.10&quot;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  config.vm.define :redis do |redis|</span><br><span class="line">    redis.vm.provider &quot;virtualbox&quot; do |v|</span><br><span class="line">          v.customize [&quot;modifyvm&quot;, :id, &quot;--name&quot;, &quot;redis&quot;, &quot;--memory&quot;, &quot;512&quot;]</span><br><span class="line">    end</span><br><span class="line">    redis.vm.box = &quot;CentOs7&quot;</span><br><span class="line">    redis.vm.hostname = &quot;redis&quot;</span><br><span class="line">    redis.vm.network :private_network, ip: &quot;192.168.33.11&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>这里的的设置与设置单台机器非常的类似，如果还需要机器，只需要再配置文件中拷贝一下，然后重新加载一下这个配置文件就ok啦。是不是非常容易？后面我打算学hadoop的时候，就用这种方式来试试。<br>现在只需要重新启动一下vagrant up机器，你就会在虚拟机中看到两台虚拟机欢快的跑起来了。<br>然后这个时候，在使用vagrant ssh登录时，需要指明一下登录的是哪一台机器就ok啦。</p>
+<hr>
+<p>比如，我要登录到redis中去。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh redis</span><br></pre></td></tr></table></figure></p>
+<p>这么简单就完成登录了。登录成功后，可以使用ping命令，检查一下机器之间是否能够互相通信。</p>
+<p>好吧，本地有了如此利器，你想模拟那样的服务器架构，都可以完成了，只有你的单机足够强大，你可以开20台虚拟机，请随意。</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
