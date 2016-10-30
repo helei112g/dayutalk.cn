@@ -1,79 +1,140 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="google-site-verification" content="" />
-  
-  <title>支付宝、微信支付接入集成</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
   <meta name="author" content="He Lei">
-   <meta name="description" content="payment 项目2.x版本 
-从开始写代码以来，一直就与支付打交道。终于到今天，我忍无可忍啦！每次都要重新写，重新调（主要换工作后，不能把前东家的代码给拷贝走）。好吧，写一份放到github上，以后啥时候用都有了，还方便做外包（哈哈哈……）
-之前看了 ping++ 集成的各路支付接口，觉得挺爽的">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="支付宝、微信支付接入集成"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://helei112g.github.ioundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
   
 
-  <meta property="og:title" content="支付宝、微信支付接入集成"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
- <meta property="og:image" content="undefined"/>
+  <!-- Site Title -->
+  <title>大愚的博客｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
   
-  <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
-  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="/css/m.min.css">
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
 </head>
 
-<body>
-  <div id="main">
-    <div class="behind">
-      <div class="back">
-        <a href="/" class="black-color"><i class="fa fa-times" aria-hidden="true"></i></a>
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">支付宝、微信支付接入集成</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:dayugog@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
       </div>
-      <div class="description">
-        &nbsp;代码是吃饭的家伙
-      </div>
     </div>
-    <div class="container">
-      
-
-  <article class="standard post">
-    <div class="title">
-      
-  
-    <h1 class="page-title center">
-        支付宝、微信支付接入集成
-    </h1>
-  
+  </div>
+</header>
 
 
-    </div>
-    <div class="meta center">
-      
-<time datetime="2016-07-18T11:42:51.000Z">
-  <i class="fa fa-calendar"></i>&nbsp;
-  2016-07-18
-</time>
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2016-07-18</span>
+            <span class="time">17:46:07</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/codeing/">codeing</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/支付宝/">#支付宝</a> <a class="tag" href="/tags/微信支付/">#微信支付</a> <a class="tag" href="/tags/支付接入/">#支付接入</a>
 
 
-
-
-
-
-    
-    &nbsp;
-    <i class="fa fa-tag"></i>&nbsp;
-    <a href="/tags/微信支付/">微信支付</a>·<a href="/tags/支付宝/">支付宝</a>·<a href="/tags/支付接入/">支付接入</a>
-
-
-    </div>
-    <hr>
-    <div class="picture-container">
-      
-    </div>
-    <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>没有摘要，请看正文<br><a id="more"></a></p>
+<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p>从开始写代码以来，一直就与支付打交道。终于到今天，我忍无可忍啦！每次都要重新写，重新调（主要换工作后，不能把前东家的代码给拷贝走）。好吧，写一份放到github上，以后啥时候用都有了，还方便做外包（哈哈哈……）</p>
 <p>之前看了 ping++ 集成的各路支付接口，觉得挺爽的，但是要收费，而且公司也不放心，怕什么时候 ping++ 坚持不住了，那到时候怎么办？我倒是觉得可能大部分公司坚持不住了，ping++ 还在呢！ 因此不自量力的自己也来集成一个吧！</p>
 <h1 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h1><p><strong>说明：</strong></p>
@@ -115,115 +176,48 @@
 <p>当然有很多朋友问我支不支持paypal 银联等等。我也想呀，可惜这个得慢慢来。我这基础功能还搞完呢！哈哈，当然也欢迎大家push代码给我</p>
 <h1 id="技术支持"><a href="#技术支持" class="headerlink" title="技术支持"></a>技术支持</h1><p>本来我想有完整的示例代码，大家应该在使用中不会遇到什么问题，但是还有有朋友遇到诸多问题。那么有关于项目本身的bug或建议，大家可以通过以下方式联系我：</p>
 <ul>
-<li>微信：<strong>helei543345</strong></li>
 <li>邮箱: <strong>dayugog@gmail.com</strong></li>
 </ul>
 <blockquote>
 <p>此外如果需要协助集成到项目，可付费获得我的服务！</p>
 </blockquote>
 
-
-  </article>
-  </script>
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-  </script>
-  <div class="busuanzi center">
-    页阅读量:&nbsp;<span id="busuanzi_value_page_pv"></span>&nbsp;・&nbsp;
-    站访问量:&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;・&nbsp;
-    站访客数:&nbsp;<span id="busuanzi_value_site_uv"></span>
-  </div>
-
-
-<div id="disqus_thread"></div>
-<script>
-
-var disqus_config = function () {
-this.page.url = 'https://helei112g.github.io/2016/07/18/支付宝、微信支付接入集成/index.html';
-this.page.identifier = undefined;
-};
-
-(function() { // DON'T EDIT BELOW THIS LINE
-var d = document, s = d.createElement('script');
-
-s.src = '//helei112g.disqus.com/embed.js';
-
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-})();
-</script>
-
-
-
+        </div>
+      </div>
     </div>
   </div>
-  <footer class="page-footer"><div class="clearfix">
-</div>
-<div class="right-foot container">
-    <div class="firstrow">
-        <a href="#top" >
-        <i class="fa fa-arrow-right"></i>
-        </a>
-        © helei 2016-2016
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
     </div>
-    <div class="secondrow">
-        <a href="https://github.com/gaoryrt/hexo-theme-pln">
-        Theme Pln
-        </a>
-    </div>
-</div>
-<div class="clearfix">
-</div>
+  </div>
 </footer>
-  <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
-<script src="/js/search.js"></script>
-<script type="text/javascript">
 
-// comments below to disable loading animation
-function revealOnScroll() {
-  var scrolled = $(window).scrollTop();
-  $(".excerpt, .index-title, .index-meta, p").each(function() {
-    var current = $(this),
-      height = $(window).outerHeight(),
-      offsetTop = current.offset().top;
-    (scrolled + height + 50 > offsetTop) ? current.addClass("animation"):'';
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
   });
-}
-$(window).on("scroll", revealOnScroll);
-$(document).ready(revealOnScroll)
-
-// disqus scripts
-
-var disqus_shortname = 'helei112g';
-(function(){
-  var dsq = document.createElement('script');
-  dsq.type = 'text/javascript';
-  dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-  (document.getElementsByTagName('body')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-}());
-
-
-// dropdown scripts
-$(".dropdown").click(function(event) {
-  var current = $(this);
-  event.stopPropagation();
-  $(current).children(".dropdown-content")[($(current).children(".dropdown-content").hasClass("open"))?'removeClass':'addClass']("open")
-});
-$(document).click(function(){
-    $(".dropdown-content").removeClass("open");
-})
-
-// back to top scripts
-$("a[href='#top']").click(function() {
-  $("html, body").animate({ scrollTop: 0 }, 500);
-  return false;
-});
-
-
-var path = "/search.xml";
-searchFunc(path, 'local-search-input', 'local-search-result');
-
 </script>
 
-</body>
+  </body>
 </html>
+

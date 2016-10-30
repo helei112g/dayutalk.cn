@@ -1,81 +1,140 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="google-site-verification" content="" />
-  
-  <title>PHP接入支付宝手机网站支付、移动支付接口</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
   <meta name="author" content="He Lei">
-   <meta name="description" content="payment 项目2.x版本 
-前面已经说完了 PHP接入支付宝 即时到帐接口
-回调接口也已经完成。这篇主要讲 手机网站支付 、 移动支付 接口的调用。调用方式与即时到帐 基本一样。
-关于代码部分的详细解释，请 参看 PHP接入支付宝 即时到帐接口
-123456789101112131415161">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="PHP接入支付宝手机网站支付、移动支付接口"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://helei112g.github.ioundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
   
 
-  <meta property="og:title" content="PHP接入支付宝手机网站支付、移动支付接口"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
- <meta property="og:image" content="undefined"/>
+  <!-- Site Title -->
+  <title>大愚的博客｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
   
-  <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
-  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="/css/m.min.css">
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
 </head>
 
-<body>
-  <div id="main">
-    <div class="behind">
-      <div class="back">
-        <a href="/" class="black-color"><i class="fa fa-times" aria-hidden="true"></i></a>
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">PHP接入支付宝手机网站支付、移动支付接口</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:dayugog@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
       </div>
-      <div class="description">
-        &nbsp;代码是吃饭的家伙
-      </div>
     </div>
-    <div class="container">
-      
-
-  <article class="standard post">
-    <div class="title">
-      
-  
-    <h1 class="page-title center">
-        PHP接入支付宝手机网站支付、移动支付接口
-    </h1>
-  
+  </div>
+</header>
 
 
-    </div>
-    <div class="meta center">
-      
-<time datetime="2016-07-29T14:56:51.000Z">
-  <i class="fa fa-calendar"></i>&nbsp;
-  2016-07-29
-</time>
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2016-07-29</span>
+            <span class="time">17:46:07</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/codeing/">codeing</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/支付宝/">#支付宝</a> <a class="tag" href="/tags/手机网站支付/">#手机网站支付</a> <a class="tag" href="/tags/移动支付/">#移动支付</a>
 
 
-
-
-
-
-    
-    &nbsp;
-    <i class="fa fa-tag"></i>&nbsp;
-    <a href="/tags/支付宝/">支付宝</a>·<a href="/tags/手机网站支付/">手机网站支付</a>·<a href="/tags/移动支付/">移动支付</a>
-
-
-    </div>
-    <hr>
-    <div class="picture-container">
-      
-    </div>
-    <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>支付宝手机网站、移动支付（app）接口。统一的接入方式，便于项目管理<br><a id="more"></a></p>
+<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p>前面已经说完了 PHP接入支付宝 即时到帐接口</p>
 <p>回调接口也已经完成。这篇主要讲 <strong>手机网站支付</strong> 、 <strong>移动支付</strong> 接口的调用。调用方式与即时到帐 基本一样。</p>
 <p>关于代码部分的详细解释，请 参看 <a href="https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/">PHP接入支付宝 即时到帐接口</a></p>
@@ -192,108 +251,42 @@
 </tbody>
 </table>
 
-
-  </article>
-  </script>
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-  </script>
-  <div class="busuanzi center">
-    页阅读量:&nbsp;<span id="busuanzi_value_page_pv"></span>&nbsp;・&nbsp;
-    站访问量:&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;・&nbsp;
-    站访客数:&nbsp;<span id="busuanzi_value_site_uv"></span>
-  </div>
-
-
-<div id="disqus_thread"></div>
-<script>
-
-var disqus_config = function () {
-this.page.url = 'https://helei112g.github.io/2016/07/29/PHP接入支付宝手机网站支付、移动支付接口/index.html';
-this.page.identifier = undefined;
-};
-
-(function() { // DON'T EDIT BELOW THIS LINE
-var d = document, s = d.createElement('script');
-
-s.src = '//helei112g.disqus.com/embed.js';
-
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-})();
-</script>
-
-
-
+        </div>
+      </div>
     </div>
   </div>
-  <footer class="page-footer"><div class="clearfix">
-</div>
-<div class="right-foot container">
-    <div class="firstrow">
-        <a href="#top" >
-        <i class="fa fa-arrow-right"></i>
-        </a>
-        © helei 2016-2016
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
     </div>
-    <div class="secondrow">
-        <a href="https://github.com/gaoryrt/hexo-theme-pln">
-        Theme Pln
-        </a>
-    </div>
-</div>
-<div class="clearfix">
-</div>
+  </div>
 </footer>
-  <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
-<script src="/js/search.js"></script>
-<script type="text/javascript">
 
-// comments below to disable loading animation
-function revealOnScroll() {
-  var scrolled = $(window).scrollTop();
-  $(".excerpt, .index-title, .index-meta, p").each(function() {
-    var current = $(this),
-      height = $(window).outerHeight(),
-      offsetTop = current.offset().top;
-    (scrolled + height + 50 > offsetTop) ? current.addClass("animation"):'';
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
   });
-}
-$(window).on("scroll", revealOnScroll);
-$(document).ready(revealOnScroll)
-
-// disqus scripts
-
-var disqus_shortname = 'helei112g';
-(function(){
-  var dsq = document.createElement('script');
-  dsq.type = 'text/javascript';
-  dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-  (document.getElementsByTagName('body')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-}());
-
-
-// dropdown scripts
-$(".dropdown").click(function(event) {
-  var current = $(this);
-  event.stopPropagation();
-  $(current).children(".dropdown-content")[($(current).children(".dropdown-content").hasClass("open"))?'removeClass':'addClass']("open")
-});
-$(document).click(function(){
-    $(".dropdown-content").removeClass("open");
-})
-
-// back to top scripts
-$("a[href='#top']").click(function() {
-  $("html, body").animate({ scrollTop: 0 }, 500);
-  return false;
-});
-
-
-var path = "/search.xml";
-searchFunc(path, 'local-search-input', 'local-search-result');
-
 </script>
 
-</body>
+  </body>
 </html>
+
