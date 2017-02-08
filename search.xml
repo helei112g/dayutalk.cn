@@ -4,6 +4,71 @@
   
     
     <entry>
+      <title><![CDATA[Swoole入门指南：PHP7安装Swoole详细教程（一）]]></title>
+      <url>https://helei112g.github.io/2017/02/08/Swoole%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%EF%BC%9APHP7%E5%AE%89%E8%A3%85Swoole%E8%AF%A6%E7%BB%86%E6%95%99%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p>PHP的异步、并行、高性能网络通信引擎，使用纯C语言编写，提供了PHP语言的异步多线程服务器，<br>异步TCP/UDP网络客户端，异步MySQL，异步Redis，数据库连接池，AsyncTask，消息队列，<br>毫秒定时器，异步文件读写，异步DNS查询。</p>
+<p>本教程一步步深入swoole，通过demo讲解它的学习与使用方法。<br><a id="more"></a></p>
+<p>好久未更新了，不是懒呃，是太忙啦！终于偷得浮生几日闲。<br>这一段时间准备为大家带来swoole的入门教程，感受一下php的nodeJs强悍之处。</p>
+<p>所有的示例代码均放在了github上：<a href="https://github.com/helei112g/learn-swoole" target="_blank" rel="external">learn-swoole</a></p>
+<h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><p>这里不在使用apache做为web server。该用nginx + php-fpm，性能更强大，配置更方便。并且为了跟上php的步伐，也使用了比较新的php版本</p>
+<ul>
+<li>[x] centos7</li>
+<li>[x] php7.0.12</li>
+<li>[x] nginx/1.10.2</li>
+<li>[x] php-fpm</li>
+</ul>
+<h1 id="下载-swoole"><a href="#下载-swoole" class="headerlink" title="下载 swoole"></a>下载 swoole</h1><p>首先下载swoole的源码包，这个操作很简单，没有太多说的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget -c https://github.com/swoole/swoole-src/archive/v2.0.6.tar.gz</span><br><span class="line"></span><br><span class="line">解压: tar -zxvf v2.0.6.tar.gz</span><br><span class="line"></span><br><span class="line">cd swoole-src-2.0.6/</span><br></pre></td></tr></table></figure></p>
+<h1 id="编译-amp-安装"><a href="#编译-amp-安装" class="headerlink" title="编译&amp;安装"></a>编译&amp;安装</h1><p>使用phpize来生成php编译配置</p>
+<p><em>./configure</em> 来做编译配置检测</p>
+<p>make进行编译，make install进行安装</p>
+<p>命令执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@php7 swoole-src-2.0.6]# phpize</span><br><span class="line">[root@php7 swoole-src-2.0.6]# ./configure</span><br><span class="line">[root@php7 swoole-src-2.0.6]# make &amp;&amp; make install</span><br></pre></td></tr></table></figure></p>
+<p>make install后，如果正确，会出现以下内容<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@php7 swoole-src-2.0.6]# make install</span><br><span class="line">Installing shared extensions:     /usr/lib64/php/modules/</span><br></pre></td></tr></table></figure></p>
+<p>这表示，在 <code>/usr/lib64/php/modules/</code> 目录中，成功生成了 <code>swoole.so</code> 文件</p>
+<h1 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h1><p>要能够使用该模块，还需要在 <code>php.ini</code> 文件中添加该模块。</p>
+<p>这里需要注意，php7的模块配置文件均单独分开了。<br>在 <code>php.ini</code> 中可找到如下内容</p>
+<blockquote>
+<p>;;;;<br>; Note: packaged extension modules are now loaded via the .ini files<br>; found in the directory /etc/php.d; these are loaded by default.<br>;;;;</p>
+</blockquote>
+<p>因此，如果你的php安装时，如果未特殊设置，可以在<code>/etc/php.d</code> 目录中，找到添加模块的配置文件。</p>
+<p>进入到  <em>cd /etc/php.d</em> 目录，完成相关的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@php7 swoole-src-2.0.6]# vim swoole.ini</span><br><span class="line"></span><br><span class="line">; Enable swoole extension module</span><br><span class="line">extension=swoole.so</span><br></pre></td></tr></table></figure>
+<h1 id="重启服务"><a href="#重启服务" class="headerlink" title="重启服务"></a>重启服务</h1><p>新增php模块后，需要重新启动服务，才会生效，如果有时候restart后依然无效，请先关闭，再重新启动。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@php7 swoole-src-2.0.6]# systemctl restart nginx</span><br><span class="line">[root@php7 swoole-src-2.0.6]# systemctl restart php-fpm</span><br></pre></td></tr></table></figure>
+<p>通过php -m或phpinfo()来查看是否成功加载了swoole</p>
+<p><img src="https://helei112g.github.io/images/swoole-phpinfo.png" alt="image"></p>
+<h1 id="swoole-代码的自动提示"><a href="#swoole-代码的自动提示" class="headerlink" title="swoole 代码的自动提示"></a>swoole 代码的自动提示</h1><p>安装好扩展后，就是使用的问题。由于没有代码的提示，有时候很不方便，github上有人已经提供了swoole代码提示的 ide-helper 。具体设置办法如下：</p>
+<p>这里以： phpStorme 为例，download 代码到本地<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:eaglewu/swoole-ide-helper.git ide-helper</span><br></pre></td></tr></table></figure></p>
+<p>按照图片内容设置<br><img src="https://helei112g.github.io/images/swoole-setting.png" alt="image"></p>
+<p>经过以上步骤，可以在 phpStorme 中使用swoole了。并且提供代码提示。</p>
+<h1 id="简单测试"><a href="#简单测试" class="headerlink" title="简单测试"></a>简单测试</h1><p>所有的测试代码均放在 <a href="https://github.com/helei112g/learn-swoole" target="_blank" rel="external">这里</a></p>
+<p>请将该代码 <code>clone</code> 到本地，方便观察效果。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:helei112g/learn-swoole.git</span><br></pre></td></tr></table></figure></p>
+<p>本节所提供的代码实例 <a href="https://github.com/helei112g/learn-swoole/blob/master/demo1-serv.php" target="_blank" rel="external">demo1-serv</a></p>
+<p>进入到测试代码目录，</p>
+<p>然后在服务端使用 <code>telnet</code> 进行测试</p>
+<hr>
+<ul>
+<li>首先，运行服务端的监听程序<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php demo1-serv.php</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>执行这个命令后，服务器会显示： </p>
+<blockquote>
+<p><code>Client: Connect.</code> </p>
+</blockquote>
+<ul>
+<li>另外开一个终端，使用 <code>telnet</code> 连接当前服务端监听的端口，并且输入一些文字，观察终端的变化。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@php7 ~]# telnet 127.0.0.1 9999</span><br><span class="line">Hi!</span><br><span class="line">Server: Hi!</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这里只是进行简单的模拟回复。客户端发什么，服务器就回应什么消息。<br>退出telnet，观察服务器会显示什么<br>直接关闭窗口，或者：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@php7 ~]# Ctrl+]</span><br><span class="line">[root@php7 ~]# telnet&gt; quit</span><br></pre></td></tr></table></figure>
+<p>此时，会在服务侧看到：</p>
+<blockquote>
+<p>Client: Close.</p>
+</blockquote>
+<p>PS：如果测试环境没有安装 <code>telnet</code> ，请自行google安装。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[vagrant系列五：Vagrant使用中遇到的坑]]></title>
       <url>https://helei112g.github.io/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E4%BA%94%EF%BC%9AVagrant%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/</url>
       <content type="html"><![CDATA[<p>这篇文章是在windows上使用了vagrant半年后，突然切换到mac上来，遇到了各种坑，今天补了这篇文章。希望对你有帮助。</p>
