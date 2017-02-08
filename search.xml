@@ -6,8 +6,7 @@
     <entry>
       <title><![CDATA[Swoole入门指南：PHP7安装Swoole详细教程（一）]]></title>
       <url>https://helei112g.github.io/2017/02/08/Swoole%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%EF%BC%9APHP7%E5%AE%89%E8%A3%85Swoole%E8%AF%A6%E7%BB%86%E6%95%99%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89/</url>
-      <content type="html"><![CDATA[<p>PHP的异步、并行、高性能网络通信引擎，使用纯C语言编写，提供了PHP语言的异步多线程服务器，<br>异步TCP/UDP网络客户端，异步MySQL，异步Redis，数据库连接池，AsyncTask，消息队列，<br>毫秒定时器，异步文件读写，异步DNS查询。</p>
-<p>本教程一步步深入swoole，通过demo讲解它的学习与使用方法。<br><a id="more"></a></p>
+      <content type="html"><![CDATA[<p>本教程一步步深入swoole，通过demo讲解它的学习与使用方法。<br><a id="more"></a></p>
 <p>好久未更新了，不是懒呃，是太忙啦！终于偷得浮生几日闲。<br>这一段时间准备为大家带来swoole的入门教程，感受一下php的nodeJs强悍之处。</p>
 <p>所有的示例代码均放在了github上：<a href="https://github.com/helei112g/learn-swoole" target="_blank" rel="external">learn-swoole</a></p>
 <h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><p>这里不在使用apache做为web server。该用nginx + php-fpm，性能更强大，配置更方便。并且为了跟上php的步伐，也使用了比较新的php版本</p>
