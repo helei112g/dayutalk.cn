@@ -1853,7 +1853,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[PHP接入支付宝 即时到帐接口]]></title>
+      <title><![CDATA[支付宝：即时到账接口接入]]></title>
       <url>https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/</url>
       <content type="html"><![CDATA[<p>支付宝即时到账接口，简化支付宝本身文档一大堆的配置。让工作变得轻松<br><a id="more"></a></p>
 <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
