@@ -4,6 +4,29 @@
   
     
     <entry>
+      <title><![CDATA[PHP中浮点数位数截取性能大比拼]]></title>
+      <url>https://helei112g.github.io/2017/02/16/PHP%E4%B8%AD%E6%B5%AE%E7%82%B9%E6%95%B0%E4%BD%8D%E6%95%B0%E6%88%AA%E5%8F%96%E6%80%A7%E8%83%BD%E5%A4%A7%E6%AF%94%E6%8B%BC/</url>
+      <content type="html"><![CDATA[<p>本文没什么好说的，点进来看吧… …<br><a id="more"></a></p>
+<p>最近工作中，在处理电商用户下单模块的时候，之前遗留系统保留的是三位小数。这里带来了一个问题：<br>如果用户的订单价格是：6.666元，那么在向支付宝或者微信发起支付时，第三方只会保留两位数，也就是用户实际付款：6.66元。</p>
+<p>那么问题来了，支付成功第三方回调系统接口，在接口中的逻辑需要比对支付的金额，会发现 6.666≠6.66，然后后面的逻辑无法运行，处理失败。</p>
+<p>这里引申出来的一个问题是：我们对浮点数位数保留时，该使用何种方式？</p>
+<p>php中提供了很多种处理浮点数位数的方式。</p>
+<ul>
+<li>number_format — 以千位分隔符方式格式化一个数字</li>
+<li>round — 对浮点数进行四舍五入 (通过传入第三个参数，可以控制舍、入的方式)</li>
+<li>sprintf — Return a formatted string</li>
+<li>bcadd — 2个任意精度数字的加法计算</li>
+</ul>
+<p>还有一种方式就是字符串截取，比如以前三位小数，现在只要两位，就把最后一位截去。</p>
+<p>但是，这种方式千万别用，非常无耻，万一某个数据查询出来是：9999元，你把最后一位搞掉变成：999元，自己赔公司损失吧。</p>
+<p>说完处理的方式，不得不提一下性能问题。这里由于 <code>round</code> 函数如果数字后面全是0的话。不能正确处理小数位数，这里就先不提.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$data = array_fill(0, 1, range(1, 100000, 1.1))[0];</span><br><span class="line"></span><br><span class="line">$start = microtime(true);</span><br><span class="line">foreach ($data as $num) &#123;</span><br><span class="line">    number_format(10000, 2, &apos;.&apos;, &apos;&apos;);</span><br><span class="line">&#125;</span><br><span class="line">$end = microtime(true);</span><br><span class="line">$need = $end - $start;</span><br><span class="line">print(&quot;number_format time: &#123;$need&#125;&quot; . PHP_EOL);</span><br><span class="line"></span><br><span class="line">$start = microtime(true);</span><br><span class="line">foreach ($data as $num) &#123;</span><br><span class="line">    bcadd($num, 0, 2);</span><br><span class="line">&#125;</span><br><span class="line">$end = microtime(true);</span><br><span class="line">$need = $end - $start;</span><br><span class="line">print(&quot;bcadd time: &#123;$need&#125;&quot; . PHP_EOL);</span><br><span class="line"></span><br><span class="line">$start = microtime(true);</span><br><span class="line">foreach ($data as $num) &#123;</span><br><span class="line">    sprintf(&apos;.2%f&apos;, $num);</span><br><span class="line">&#125;</span><br><span class="line">$end = microtime(true);</span><br><span class="line">$need = $end - $start;</span><br><span class="line">print(&quot;sprintf time: &#123;$need&#125;&quot; . PHP_EOL);</span><br></pre></td></tr></table></figure>
+<p>上面的代码运行，会得到以下结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">number_format time: 0.086385011672974</span><br><span class="line">bcadd time: 0.098035097122192</span><br><span class="line">sprintf time: 0.069508075714111</span><br></pre></td></tr></table></figure></p>
+<p>所以通过对比，推荐使用 <code>sprintf</code> 来处理浮点数位数的问题。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Swoole入门指南：PHP7安装Swoole详细教程（一）]]></title>
       <url>https://helei112g.github.io/2017/02/08/Swoole%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%EF%BC%9APHP7%E5%AE%89%E8%A3%85Swoole%E8%AF%A6%E7%BB%86%E6%95%99%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89/</url>
       <content type="html"><![CDATA[<p>本教程一步步深入swoole，通过demo讲解它的学习与使用方法。<br><a id="more"></a></p>
