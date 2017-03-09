@@ -4,6 +4,161 @@
   
     
     <entry>
+      <title><![CDATA[Payment：支付宝支付配置文件设置教程]]></title>
+      <url>https://helei112g.github.io/2017/03/09/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E6%95%99%E7%A8%8B/</url>
+      <content type="html"><![CDATA[<p>终于把3.0版本做好了。从今天开始好好写文档，让大家做支付做的开心点。<br><a id="more"></a></p>
+<p>从2016年6月payment做出来，到这一版本（3.0），坚持了快一年啦。感谢这期间给我支持（打赏与协作）的人。</p>
+<p><a href="https://github.com/helei112g/payment" target="_blank" rel="external"><code>Payment</code></a> 主要针对支付宝支付、微信支付的接口进行了聚合。开发者无需重复集成繁琐的支付接口，使用 <a href="https://github.com/helei112g/payment" target="_blank" rel="external"><code>Payment</code></a> 就能应对所有支付场景，快速接入支付功能。</p>
+<p><code>Payment</code> 针对不同支付服务商的接口，提供了统一的调用方式，并且内部将签名、验签进行了集成，使用者只需要喂数据然后拿到结果进行自己的业务即可。完全屏蔽支付宝与微信内部繁杂的细节。只要按照我的文档操作，10分钟可完成支付流程。</p>
+<p>当前 <a href="https://github.com/helei112g/payment" target="_blank" rel="external"><code>Payment</code></a> 基本接入完支付宝与微信的资金相关接口。到当前为止，<code>Payment SDK</code> 主要支持功能如下：</p>
+<p>支持的支付宝相关接口清单：</p>
+<ul>
+<li>即时到账功能（主要用于pc上支付）</li>
+<li>手机网站支付（WAP支付）</li>
+<li>APP支付（移动支付）</li>
+<li>当面付（扫码支付与条码支付）</li>
+<li>交易查询（支付订单查询接口）</li>
+<li>退款接口（完成支付的订单，可通过该接口完成退款）</li>
+<li>退款查询接口（退款接口需要通过该接口进行查询状态）</li>
+<li>单笔转账到支付宝账户接口（只能转到用户支付宝帐号）</li>
+<li>转账订单查询接口（查询转账订单状态）</li>
+</ul>
+<p><em>ps：</em> 支付宝接口从 payment 3.0 开始，仅支持支付宝新版本接口。</p>
+<p>支持的微信支付相关接口清单：</p>
+<ul>
+<li>手机网站支付（H5支付，特殊商家可用）</li>
+<li>APP支付（移动支付）</li>
+<li>公众号支付</li>
+<li>刷卡支付（类似支付宝的条码支付）</li>
+<li>小程序支付</li>
+<li>交易查询（支付订单查询）</li>
+<li>申请退款接口</li>
+<li>查询退款接口</li>
+<li>企业付款给个人接口</li>
+<li>查询企业付款接口</li>
+</ul>
+<p>微信最糟糕的就是，不同支付接口，需要申请不同的商户号。这里简单总结一下：</p>
+<p><strong>APP支付</strong>  必须到 微信开放平台申请一个应用，然后去申请开通支付功能，申请的商户帐号无法用于 公众号支付与小程序支付。</p>
+<p><strong>公众号支付</strong> 必须首先有一个认证的服务号，然后到公众号后台进行申请开通支付功能。又会获得一个商户号</p>
+<p><strong>小程序支付</strong> 微信分配的小程序ID，所以恭喜你，你又有了一个商户号</p>
+<p>至于其他支付，目前检测好像可用共享。也就只剩下一个刷卡支付了。</p>
+<hr>
+<p>本文主要讲解支付宝的配置文件，配置清单如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> [</span><br><span class="line">    <span class="string">'use_sandbox'</span>           =&gt; <span class="keyword">true</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'partner'</span>               =&gt; <span class="string">'2088102169252684'</span>,</span><br><span class="line">    <span class="string">'app_id'</span>                =&gt; <span class="string">'2016073100130857'</span>,</span><br><span class="line">    <span class="string">'sign_type'</span>             =&gt; <span class="string">'RSA2'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'ali_public_key'</span>        =&gt; <span class="string">'MIIBIjANBgkqhkiG9w0BAQEFAAOCAU3GYXkAaumdWQt7IDAQAB'</span>,</span><br><span class="line">    <span class="string">'rsa_private_key'</span>       =&gt; dirname(<span class="keyword">__FILE__</span>) . DIRECTORY_SEPARATOR . <span class="string">'rsa_private_key.pem'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'limit_pay'</span>             =&gt; [</span><br><span class="line">        <span class="comment">//'balance',</span></span><br><span class="line">        <span class="comment">//'moneyFund',</span></span><br><span class="line">        <span class="comment">// ... ...</span></span><br><span class="line">    ],</span><br><span class="line"></span><br><span class="line">    <span class="string">'notify_url'</span>            =&gt; <span class="string">'https://helei112g.github.io/'</span>,</span><br><span class="line">    <span class="string">'return_url'</span>            =&gt; <span class="string">'https://helei112g.github.io/'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'return_raw'</span>            =&gt; <span class="keyword">false</span>,</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<p>在支付中最麻烦的就是配置密钥。这里逐一为大家说明每一个配置的含义、以及如何进行设置。<br>其中 <strong>是否必须</strong> 列表中如果标记为 <code>是</code>  ，则该项必须设置，否则sdk将无法得到结果。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>use_sandbox</td>
+<td>boolean</td>
+<td>否</td>
+<td>是否开启沙箱模式</td>
+</tr>
+<tr>
+<td>partner</td>
+<td>string</td>
+<td>是</td>
+<td>商户UID，以2088开头</td>
+</tr>
+<tr>
+<td>app_id</td>
+<td>string</td>
+<td>是</td>
+<td>支付宝分配给开发者的应用ID</td>
+</tr>
+<tr>
+<td>sign_type</td>
+<td>string</td>
+<td>是</td>
+<td>签名方式</td>
+</tr>
+<tr>
+<td>ali_public_key</td>
+<td>string</td>
+<td>是</td>
+<td>支付宝公钥</td>
+</tr>
+<tr>
+<td>rsa_private_key</td>
+<td>string</td>
+<td>是</td>
+<td>用户应用私钥</td>
+</tr>
+<tr>
+<td>limit_pay</td>
+<td>string</td>
+<td>否</td>
+<td>限制的支付方式</td>
+</tr>
+<tr>
+<td>notify_url</td>
+<td>string</td>
+<td>是</td>
+<td>支付宝异步通知的服务器地址</td>
+</tr>
+<tr>
+<td>return_url</td>
+<td>string</td>
+<td>否</td>
+<td>支付报支付成功返回地址</td>
+</tr>
+<tr>
+<td>return_raw</td>
+<td>boolean</td>
+<td>否</td>
+<td>是否返回支付宝原始数据</td>
+</tr>
+</tbody>
+</table>
+<p>接下来对每一个参数详细说明，不同的设置带来的不同效果。</p>
+<p><strong><code>use_sandbox</code></strong> 支付宝新版本提供了沙箱模式。如果该选项设置为 <code>true</code> 则使用支付宝的沙箱功能。<br>下面简单介绍沙箱的使用方式。</p>
+<p>首先登陆 <a href="https://open.alipay.com" target="_blank" rel="external">蚂蚁金服开放平台</a> 按照下图找到自己的沙箱应用。</p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/ali-sanbox.jpeg?imageView2/2/w/600" alt="image"></p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/ali-sandbox-info.jpeg?imageView2/2/w/600" alt="image"></p>
+<p>大家注意截图，重要的配置信息均来自这里。</p>
+<p><strong><code>partner</code></strong> 对应图中的 商户UID，如果是正式应用，可用在【我的应用】=》【应用】中找到对应的信息。<br>这部分信息较敏感，就不截图了。</p>
+<p><strong><code>app_id</code></strong> 就是对应的创建的应用的id。图中有很醒目的字标记。</p>
+<p><strong><code>sign_type</code></strong> 请求支付时，数据加密的方式，目前支持RSA2和RSA，推荐使用RSA2。你完全不用管签名的实现，只需要这里做一下配置就好。</p>
+<p>接下来，密钥的配置是重点，70% 的支付无法成功的原因，均是密钥设置问题。<br>关于密钥如何生成与配置，请看</p>
+<p><a href="https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.XduKK8&amp;treeId=291&amp;articleId=106103&amp;docType=1" target="_blank" rel="external">支付宝官方密钥生成与配置教程</a></p>
+<p><strong><code>ali_public_key</code></strong>  注意看这张图的红线部分，只要上传自己应用的公钥后，可用点这里，查看支付宝公钥，可获取到支付宝的公钥。</p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/ali-sandbox-info.jpeg?imageView2/2/w/600" alt="image"></p>
+<p>这里一定要记得是 <strong>支付宝的公钥</strong>，不是你自己本地生成的，而是在开发平台中上传自己的公钥后，拿到的支付宝公钥。</p>
+<p>接下来就是这个配置该如何填写了。这里支持文件的方式，你可以将支付宝公钥复制到一个单独的文件，然后这个字段填写对应文件的路径。例如：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'ali_public_key'</span> =&gt; dirname(<span class="keyword">__FILE__</span>) . DIRECTORY_SEPARATOR . <span class="string">'alipay_public_key_rsa.pem'</span></span><br></pre></td></tr></table></figure></p>
+<p>你也可用直接将支付宝公钥的值，填入这里，例如：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'ali_public_key'</span> =&gt; <span class="string">'MIIBIjANBgkqhkiG9w0BAQEFAAOO1BU3GYXkAaumdWQt7f+khoFoSw+x8yqQIDAQAB'</span>,</span><br></pre></td></tr></table></figure></p>
+<p>这里为了文章排版美观，有删减部分支付宝公钥内容</p>
+<p>无论那种方式，强烈建议在填入时，去掉：</p>
+<blockquote>
+<p>—–BEGIN PUBLIC KEY—–<br>以及  —–END PUBLIC KEY—– 只保留中间部分的内容。</p>
+</blockquote>
+<p><strong><code>rsa_private_key</code></strong> 商户私钥的设置，按照<a href="(https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.XduKK8&amp;treeId=291&amp;articleId=106103&amp;docType=1">上面发的教程</a>)进行操作，然后把获取到的值，复制出来。跟支付宝公钥一样，也可以单独放在一个文件里，然后引用他的路径，或者直接将它的值，设置在这个字段上。</p>
+<p>请记得只保留密钥内容部分。</p>
+<p>这里请一定分清楚 <strong>私钥，是商户自己生成的</strong>。  <strong>公钥，是支付宝开发平台看到的</strong></p>
+<p><strong><code>limit_pay</code></strong> 在让用户使用支付宝支付过程中，可能想禁止用户使用某些渠道，比如：不准使用 信用卡支付  不准使用 花呗支付。都可以在这里进行配置。详细的可取值，请看图片</p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/ali-limit-pay.jpeg?imageView2/2/w/600" alt="image"></p>
+<p><a href="https://doc.open.alipay.com/doc2/detail.htm?treeId=203&amp;articleId=105463&amp;docType=1#qdsm" target="_blank" rel="external">官方链接</a></p>
+<p><strong><code>notify_url</code></strong> 异步通知。当支付宝支付成功后，你想要在服务端收到支付宝支付成功的通知，就必须设置该选项。应该是：http/https 开头的url。</p>
+<p>这里强烈建议以支付宝服务器的通知为依据来判断是否支付成功。关于异步通知的处理，在后面的文章将有专题讲解。</p>
+<p><strong><code>return_url</code></strong>  当前主要是即时到账、手机网站支付两个接口会用到，在支付成功后，跳转到哪一个链接。也必须是以 HTTP/HTTPS 开头的url。可以理解为同步通知，但请不要以它的结果为准。为了安全还是应该以异步为准。</p>
+<p><strong><code>return_raw</code></strong>  之前的版本都没有该参数，是3.0新加入的，它的主要目的是让调用者控制自己拿到什么样的数据。如果设置为true。SDK 则只会向支付宝发出请求，收到数据后进行验签，通过后，会以数组的形式将所有支付宝返回的数据返回给客户端。</p>
+<p>如果设置为false ，则会抛弃支付宝的某些字段。并且会对某些字段名称进行重新映射，这种方式带来的好处是，可用确保支付宝、微信返回的数据是基本一致的，但是可能导致调用者损失部分信息。这里大家根据实际情况进行衡量。</p>
+<p>至此，支付宝的配置全部讲解完毕。如果你有不清楚的地方，请联系我：</p>
+<p><strong>邮箱</strong>：dayugog@gmail.com</p>
+<p>如果你觉得写得很赞，请打赏我：</p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/ali-wx-pay.jpg?imageView2/2/w/500" alt="image"></p>
+<p><strong>ps：</strong> 平时还要工作，如果你觉得自己想要问的太多，请先查查资料，不要来问我。如果有业务合作，请勾搭。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[PHP中浮点数位数截取性能大比拼]]></title>
       <url>https://helei112g.github.io/2017/02/16/PHP%E4%B8%AD%E6%B5%AE%E7%82%B9%E6%95%B0%E4%BD%8D%E6%95%B0%E6%88%AA%E5%8F%96%E6%80%A7%E8%83%BD%E5%A4%A7%E6%AF%94%E6%8B%BC/</url>
       <content type="html"><![CDATA[<p>本文没什么好说的，点进来看吧… …<br><a id="more"></a></p>
