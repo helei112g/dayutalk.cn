@@ -157,7 +157,6 @@
 <p><strong>项目GitHub地址</strong>：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
 <p>支付宝从新版本开始，提供了沙箱方式，方便进行调试。但是，即时到账支付宝没有提供沙箱模式。因此大家在使用过程中，注意设置配置。</p>
 <p>我在项目中提供的初始配置也不能用于测试 <strong>即时到账接口</strong>。</p>
-<p><strong>重要：</strong></p>
 <blockquote>
 <p>即时到账属于老版本接口。不支持 RSA2 的签名方式，请设置为 RSA 签名方式。</p>
 </blockquote>
