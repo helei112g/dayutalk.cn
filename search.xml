@@ -10,6 +10,7 @@
 <a id="more"></a>
 <p><strong><code>Payment 3.0</code></strong> 支付宝的配置设置文档请 <a href="https://helei112g.github.io/2017/03/09/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E6%95%99%E7%A8%8B/">点击这里</a></p>
 <p><strong>项目GitHub地址</strong>：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
+<p>移动支付，适用场景:</p>
 <blockquote>
 <p>适用于商家在App应用中集成支付宝支付功能。<br>商家APP调用支付宝提供的SDK调用支付宝客户端内的支付模块，商家APP会跳转到支付宝中完成支付，支付完后跳回到商家APP内，最后展示支付结果。<br>目前支持手机系统有：iOS（苹果）、Android（安卓）。</p>
 </blockquote>
