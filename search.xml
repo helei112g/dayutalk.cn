@@ -250,7 +250,7 @@
 </tbody>
 </table>
 <blockquote>
-<p>还剩下支付宝的当面付，包括：扫码支付  条码支付  将会在下一篇全部写完。 [点击这里看当面付]</p>
+<p>还剩下支付宝的当面付，包括：扫码支付  条码支付  将会在下一篇全部写完。 <a href="https://helei112g.github.io/2017/03/15/Payment%EF%BC%9A%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E5%BD%93%E9%9D%A2%E4%BB%98%EF%BC%88%E6%89%AB%E7%A0%81%E6%94%AF%E4%BB%98%E4%B8%8E%E6%9D%A1%E7%A0%81%E6%94%AF%E4%BB%98%EF%BC%89%E6%95%99%E7%A8%8B/">点击这里看当面付</a></p>
 </blockquote>
 <hr>
 <p>如果你有不清楚的或者愿意交流的地方，请联系我：</p>
@@ -376,7 +376,7 @@
 </tbody>
 </table>
 <p>另外这里返回的依然是一个url。大家根据自己的业务进行合理的处理。<code>htmlspecialchars()</code> 函数的目的还是为了转义，正式使用时，请注意。</p>
-<p>关于异步通知部分，会有专门的文章讲解，这里暂时略过。请关注后面的文章。</p>
+<p>关于异步通知部分，会有专门的文章讲解，这里暂时略过。请关注后面的文章。接下来会说到最热门的<a href="https://helei112g.github.io/2017/03/14/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%95%99%E7%A8%8B/">移动支付</a></p>
 <hr>
 <p>如果你有不清楚的或者愿意交流的地方，请联系我：</p>
 <p><strong>邮箱</strong>：dayugog@gmail.com</p>
