@@ -4,6 +4,130 @@
   
     
     <entry>
+      <title><![CDATA[Payment：接入支付宝当面付（扫码支付与条码支付）教程]]></title>
+      <url>https://helei112g.github.io/2017/03/15/Payment%EF%BC%9A%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E5%BD%93%E9%9D%A2%E4%BB%98%EF%BC%88%E6%89%AB%E7%A0%81%E6%94%AF%E4%BB%98%E4%B8%8E%E6%9D%A1%E7%A0%81%E6%94%AF%E4%BB%98%EF%BC%89%E6%95%99%E7%A8%8B/</url>
+      <content type="html"><![CDATA[<p>越写越觉得支付类的文档写这么细，会不会反而让大家觉得很复杂呀？其实都是同样的调用方式</p>
+<p>这一篇，将把支付宝剩下的扫码支付与条码支付全部写清楚。<br><a id="more"></a></p>
+<p><strong><code>Payment 3.0</code></strong> 支付宝的配置设置文档请 <a href="https://helei112g.github.io/2017/03/09/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E6%95%99%E7%A8%8B/">点击这里</a></p>
+<p><strong>项目GitHub地址</strong>：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
+<p>支付宝的当面付，包括扫码支付与条码支付。</p>
+<ul>
+<li>扫码支付，是消费者用手机去扫商家生成的二维码。个人觉得也可以将这个功能用在pc支付上。取代即时到账接口。</li>
+<li>条码支付，商家用扫码枪读取用户支付宝上的条码。对应微信的刷卡支付。该项广泛用在超市结账时。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>body</td>
+<td>boolean</td>
+<td>是</td>
+<td>商品描述</td>
+</tr>
+<tr>
+<td>subject</td>
+<td>string</td>
+<td>是</td>
+<td>商品名称,该参数最长为128个汉字</td>
+</tr>
+<tr>
+<td>order_no</td>
+<td>string</td>
+<td>是</td>
+<td>商户网站唯一订单号</td>
+</tr>
+<tr>
+<td>timeout_express</td>
+<td>string</td>
+<td>是</td>
+<td>设置未付款交易的超时时间，一旦超时，该笔交易就会自动被关闭。</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>float</td>
+<td>是</td>
+<td>该笔订单的资金总额，单位为RMB-Yuan</td>
+</tr>
+<tr>
+<td>store_id</td>
+<td>string</td>
+<td>否</td>
+<td>商户门店编号 </td>
+</tr>
+<tr>
+<td>operator_id</td>
+<td>string</td>
+<td>否</td>
+<td>商户操作员编号</td>
+</tr>
+<tr>
+<td>terminal_id</td>
+<td>string</td>
+<td>否</td>
+<td>商户机具终端编号</td>
+</tr>
+<tr>
+<td>alipay_store_id</td>
+<td>string</td>
+<td>否</td>
+<td>支付宝店铺的门店ID</td>
+</tr>
+<tr>
+<td>scene</td>
+<td>string</td>
+<td>是</td>
+<td>条码支付时，必须设置</td>
+</tr>
+<tr>
+<td>auth_code</td>
+<td>string</td>
+<td>是</td>
+<td>条码支付时，必须设置</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>body</code></strong> 主要是对商品的描述，根据自己的业务写就好，不过不要用一些非常特殊的字符，支付宝可能会进行一些处理，导致你的结果与预期不一样</p>
+<p><strong><code>subject</code></strong> 可以写一下商品名称信息，主要是方便支付宝后台对账时查看</p>
+<p><strong><code>order_no</code></strong> 自己生成的订单号，每次下单的单号必须唯一。也就是说：同一个 order_no 他的其他下单数据不能发生变化，价格、名称等等。如果有变化，需要重新生成一个订单号。</p>
+<p><strong><code>timeout_express</code></strong> 订单过期时间，很简单，你希望在那一刻过期，就写那个点的时间戳。只会精确到分钟</p>
+<p><strong><code>amount</code></strong> 订单的金额，就是用户实际需要支付的金额。</p>
+<p><strong><code>store_id</code></strong> 门店编号，这部分数据主要是支付宝为了将业务深化到线下而提供的，如果用不到，不设置就好。</p>
+<p><strong><code>operator_id</code></strong> 商户操作员编号，可以不设置。</p>
+<p><strong><code>terminal_id</code></strong> 商户机具终端编号，可以不设置。</p>
+<p><strong><code>alipay_store_id</code></strong> 支付宝店铺的门店ID，没有的话，也可以不设置。</p>
+<p><strong><code>scene</code></strong> 条码支付，必须设置该选项，条码支付，取值：bar_code 声波支付，取值：wave_code</p>
+<p><strong><code>auth_code</code></strong> 条码支付必须设置。</p>
+<p>在上面的参数中，除了特别说明的，其它部分，扫码支付与条码支付都需要。</p>
+<p>代码调用。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Common</span>\<span class="title">PayException</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Client</span>\<span class="title">Charge</span>;</span><br><span class="line"></span><br><span class="line">$config = <span class="keyword">require_once</span>(<span class="string">'./aliconfig.php'</span>);<span class="comment">// 支付宝的配置信息</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$channel = <span class="string">'ali_qr'</span>;<span class="comment">// ali_bar</span></span><br><span class="line">$payData = [</span><br><span class="line">    <span class="string">'body'</span> =&gt; <span class="string">'一个苹果'</span>,</span><br><span class="line">    <span class="string">'subject'</span> =&gt; <span class="string">'牛逼公司--付款吧'</span>,</span><br><span class="line">    <span class="string">'order_no'</span> =&gt; <span class="string">'NB12312355'</span>,</span><br><span class="line">    <span class="string">'timeout_express'</span> =&gt; <span class="string">'1489241888'</span>,</span><br><span class="line">    <span class="string">'amount'</span> =&gt; <span class="string">'100'</span>,</span><br><span class="line">    <span class="string">'return_param'</span> =&gt; <span class="string">'buy some'</span>,</span><br><span class="line">    <span class="string">'goods_type'</span> =&gt; <span class="number">1</span>,<span class="comment">// 默认值为1，因此也可以省略</span></span><br><span class="line">    <span class="string">'store_id'</span> =&gt; <span class="string">''</span>,<span class="comment">// 没有就不设置</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    $str = Charge::run($channel, $config, $payData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="comment">// 异常处理</span></span><br><span class="line">    <span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> htmlspecialchars($str);</span><br></pre></td></tr></table></figure>
+<p>如果使用的扫码支付，  <code>$channel = &#39;ali_qr&#39;</code></p>
+<p>则返回一个url。大家可以通过将返回的字符串生成一个二维码。即可进行扫码支付。</p>
+<p>另外请记得，如果使用的沙箱请使用对应的沙箱支付宝来扫码。关于沙箱的介绍。<a href="https://helei112g.github.io/2017/03/12/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E6%95%99%E7%A8%8B/">看这里</a></p>
+<p>如果使用的条码支付，  <code>$channel = &#39;ali_bar&#39;</code></p>
+<p>必须设置以下两个字段</p>
+<ul>
+<li>scene   支付场景 条码支付，取值：bar_code 声波支付，取值：wave_code</li>
+<li>auth_code   支付授权码，也就是用户手机条码对应的值。</li>
+</ul>
+<p>这个接口测试时，大家可以手动把条码的值，输入进去</p>
+<p>ok！支付宝支付类的接口基本就讲完了。接下来将开始讲解微信支付的接口。使用起来都一样，不一样的仅仅是参数部分。还是安排将微信支付的配置开一篇单独的文章进行讲解。</p>
+<hr>
+<p>如果你有不清楚的或者愿意交流的地方，请联系我：</p>
+<p><strong>邮箱</strong>：dayugog@gmail.com</p>
+<p>如果你觉得这个项目有帮助到你，请打赏我，让我有动力持续下去<a href="#">左边微信，右边支付宝</a>：</p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/ali-wx-pay.jpg?imageView2/2/w/500" alt="image"></p>
+<p><strong>ps：</strong> 一般性的问题请大家可以先查资料，如果实在无法解决找我吧（不免费服务）。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Payment：支付宝移动支付服务端教程]]></title>
       <url>https://helei112g.github.io/2017/03/14/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%95%99%E7%A8%8B/</url>
       <content type="html"><![CDATA[<p>默默的写文档，为什么要写呢？因为我想要被你们点赞，被你们打赏。</p>
@@ -126,7 +250,7 @@
 </tbody>
 </table>
 <blockquote>
-<p>还剩下支付宝的当面付，包括：扫码支付  条码支付  将会在下一篇全部写完。</p>
+<p>还剩下支付宝的当面付，包括：扫码支付  条码支付  将会在下一篇全部写完。 [点击这里看当面付]</p>
 </blockquote>
 <hr>
 <p>如果你有不清楚的或者愿意交流的地方，请联系我：</p>
@@ -422,6 +546,7 @@
 </tr>
 </tbody>
 </table>
+<p>接下来将说道<a href="https://helei112g.github.io/2017/03/12/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E6%95%99%E7%A8%8B/">手机网站支付</a>，会给大家说到沙箱的问题</p>
 <hr>
 <p>如果你有不清楚的或者愿意交流的地方，请联系我：</p>
 <p><strong>邮箱</strong>：dayugog@gmail.com</p>
