@@ -7,7 +7,7 @@
       <title><![CDATA[如何在 CentOs7 中安装guetzli]]></title>
       <url>https://helei112g.github.io/2017/03/21/%E5%A6%82%E4%BD%95%E5%9C%A8-CentOs7-%E4%B8%AD%E5%AE%89%E8%A3%85guetzli/</url>
       <content type="html"><![CDATA[<p>CentOs7 中安装 <code>guetzli</code> 教程，我的承诺，今天兑现。带你上车<br><a id="more"></a></p>
-<p>周六的时候收到 36kr 推送的一篇文章： Google开源新算法，可将JPEG文件缩小35%</p>
+<p>周六的时候收到 36kr 推送的一篇文章： <a href="http://36kr.com/p/5067258.html" target="_blank" rel="external">Google开源新算法，可将JPEG文件缩小35%</a></p>
 <p>测试了结果，惊的我目瞪口呆。如果非要我用一个词形容的话：</p>
 <p>牛逼</p>
 <p>太牛逼</p>
@@ -44,7 +44,7 @@
 <p>因此我猜测，可能是版本不对。通过 <code>yum info gflags</code> 确认一下当前的版本信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">名称    ：gflags</span><br><span class="line">架构    ：x86_64</span><br><span class="line">版本    ：2.1.1</span><br><span class="line">发布    ：6.el7</span><br><span class="line">大小    ：72 k</span><br><span class="line">源    ：epel/x86_64</span><br><span class="line">简介    ： Library for commandline flag processing</span><br><span class="line">网址    ：http://code.google.com/p/gflags</span><br><span class="line">协议    ： BSD</span><br></pre></td></tr></table></figure></p>
 <p>是2.1版本。因为我mac上的 <code>Guetzli</code> 是可以运行的，因此查看一下mac上的 <code>gflags</code> 版本，得到如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gflags: stable 2.2.0 (bottled)</span><br><span class="line">Library for processing command-line flags</span><br></pre></td></tr></table></figure>
-<p>ok，两者直接差了一个小版本。在 <a href="https://github.com/gflags/gflags" target="_blank" rel="external">gflags github</a> 查看发布的 <strong>release</strong> 版本。看到了最新的 2.2.0 版本。然后看到其对应的描述：</p>
+<p>ok，两者之间差了一个小版本。在 <a href="https://github.com/gflags/gflags" target="_blank" rel="external">gflags github</a> 查看发布的 <strong>release</strong> 版本。看到了最新的 2.2.0 版本。然后看到其对应的描述：</p>
 <blockquote>
 <p>This release adds support for use of the gflags library as external dependency not only in projects using CMake, but also Bazel, or pkg-config. </p>
 </blockquote>
@@ -69,7 +69,7 @@
 <li><a href="https://github.com/google/guetzli/pull/97" target="_blank" rel="external">https://github.com/google/guetzli/pull/97</a></li>
 <li><a href="https://github.com/google/guetzli/issues/89" target="_blank" rel="external">https://github.com/google/guetzli/issues/89</a></li>
 </ul>
-<p>欢迎打赏：</p>
+<p>觉得本文不错，欢迎打赏：</p>
 <p><img src="http://ol59nqr1i.bkt.clouddn.com/pay-qr.jpg?imageView2/2/w/500" alt="image"></p>
 ]]></content>
     </entry>
