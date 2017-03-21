@@ -69,6 +69,9 @@
 <li><a href="https://github.com/google/guetzli/pull/97" target="_blank" rel="external">https://github.com/google/guetzli/pull/97</a></li>
 <li><a href="https://github.com/google/guetzli/issues/89" target="_blank" rel="external">https://github.com/google/guetzli/issues/89</a></li>
 </ul>
+<p>如果直接下载的是 <code>guetzli</code> 当前最新的代码(git clone <a href="https://github.com/google/guetzli.git)。" target="_blank" rel="external">https://github.com/google/guetzli.git)。</a></p>
+<p>将不再需要 <code>gflags</code> 包了。只需要用 <code>yum install libpng-devel</code> 就好</p>
+<p>然后编译 <code>guetzli</code> ，进入目录，直接 <code>make</code> 就可得到正确结果。</p>
 <p>觉得本文不错，欢迎打赏：</p>
 <p><img src="http://ol59nqr1i.bkt.clouddn.com/pay-qr.jpg?imageView2/2/w/500" alt="image"></p>
 ]]></content>
