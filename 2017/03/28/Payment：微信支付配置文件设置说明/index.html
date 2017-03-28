@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="He Lei">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Payment：微信支付配置文件设置说明"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://helei112g.github.ioundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>大愚的博客｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Payment：微信支付配置文件设置说明</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:dayugog@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2017-03-28</span>
+            <span class="time">21:59:08</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/payment-3/">payment-3</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/微信支付/">#微信支付</a> <a class="tag" href="/tags/配置说明/">#配置说明</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>终于写到微信了。加油干，撸起袖子奔小康。<br><a id="more"></a></p>
+<p><strong>项目GitHub地址</strong>：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
+<p>微信支付个人觉得在后台设置上有些麻烦，帐号太多啦，支付宝目前就是一个应用基本涵盖了所有的接口开发。</p>
+<p>可能是由于微信支付的后端是财付通，反正咱们写代码的，也别管那么多。理清楚各配置的关系，然后写出高质量的代码就好。</p>
+<p>关于如何申请微信支付，只讲两个问题，服务号支付能力的申请在公众号后后台申请，app应用的支付能力申请在开发者中心申请。其他细节请自行查询。</p>
+<hr>
+<p>登陆微信商户平台：<a href="https://pay.weixin.qq.com" target="_blank" rel="external">https://pay.weixin.qq.com</a></p>
+<p>拿到微信给的商户号后，登陆商户平台，点击【账户中心】进入【API安全】<br>会看到下面的截图：</p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/pay/set-md5-key.jpeg" alt="image"></p>
+<p>微信支付发起请求的数据需要进行签名，签名的密钥就是在这里设置，设置时候请记录一下。等会配置中会需要。</p>
+<p>下载微信的安全证书，相关说明<a href="https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=4_3" target="_blank" rel="external">看这里</a></p>
+<p>配置文件<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> [</span><br><span class="line">    <span class="string">'app_id'</span>            =&gt; <span class="string">'应用ID'</span>,</span><br><span class="line">    <span class="string">'mch_id'</span>            =&gt; <span class="string">'商户id'</span>,</span><br><span class="line">    <span class="string">'md5_key'</span>           =&gt; <span class="string">'刚刚设置的密钥'</span>,</span><br><span class="line">    <span class="string">'app_cert_pem'</span>      =&gt; <span class="string">'apiclient_cert.pem'</span>,</span><br><span class="line">    <span class="string">'app_key_pem'</span>       =&gt; <span class="string">'apiclient_key.pem'</span>,</span><br><span class="line">    <span class="string">'sign_type'</span>         =&gt; <span class="string">'MD5'</span>,<span class="comment">// MD5  HMAC-SHA256</span></span><br><span class="line">    <span class="string">'limit_pay'</span>         =&gt; [</span><br><span class="line">        <span class="comment">//'no_credit',</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">'fee_type'</span>          =&gt; <span class="string">'CNY'</span>,<span class="comment">// 货币类型  当前仅支持该字段</span></span><br><span class="line">    <span class="string">'notify_url'</span>        =&gt; <span class="string">'https://helei112g.github.io/'</span>,</span><br><span class="line">    <span class="string">'redirect_url'</span>      =&gt; <span class="string">'https://helei112g.github.io/'</span>,</span><br><span class="line">    <span class="string">'return_raw'</span>        =&gt; <span class="keyword">false</span>,</span><br><span class="line">];</span><br></pre></td></tr></table></figure></p>
+<p>下面表格中 <strong>是否必须</strong> 列如果标记为 <code>是</code>  ，则该项必须设置，否则sdk将无法得到结果。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_id</td>
+<td>string</td>
+<td>是</td>
+<td>应用id，下面会详细解释</td>
+</tr>
+<tr>
+<td>mch_id</td>
+<td>string</td>
+<td>是</td>
+<td>微信支付分配的商户号</td>
+</tr>
+<tr>
+<td>md5_key</td>
+<td>string</td>
+<td>是</td>
+<td>用户在商户中心设置的api密钥</td>
+</tr>
+<tr>
+<td>sign_type</td>
+<td>string</td>
+<td>是</td>
+<td>签名类型，默认为MD5，支持HMAC-SHA256和MD5。</td>
+</tr>
+<tr>
+<td>app_cert_pem</td>
+<td>string</td>
+<td>是</td>
+<td>证书pem格式</td>
+</tr>
+<tr>
+<td>app_key_pem</td>
+<td>string</td>
+<td>是</td>
+<td>证书密钥pem格式</td>
+</tr>
+<tr>
+<td>limit_pay</td>
+<td>string</td>
+<td>否</td>
+<td>上传此参数no_credit–可限制用户不能使用信用卡支付</td>
+</tr>
+<tr>
+<td>fee_type</td>
+<td>string</td>
+<td>否</td>
+<td>默认人民币：CNY</td>
+</tr>
+<tr>
+<td>notify_url</td>
+<td>boolean</td>
+<td>是</td>
+<td>异步通知的地址</td>
+</tr>
+<tr>
+<td>redirect_url</td>
+<td>boolean</td>
+<td>否</td>
+<td>回调页面地址</td>
+</tr>
+<tr>
+<td>return_raw</td>
+<td>boolean</td>
+<td>否</td>
+<td>是否返回微信原始数据</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>app_id</code>:</strong> 对于公众号支付，是微信支付分配的公众账号ID，如果是app支付则是微信开放平台审核通过的应用APPID</p>
+<p>微信支付接口中，一定要注意区分不同的帐号类别</p>
+<ul>
+<li>公众号支付，需要对应服务号在公众号后台申请，该帐号无法用来进行app支付</li>
+<li>app支付，微信开放平台审核通过的应用APPID，无法用来进行公众号支付</li>
+<li>小程序支付也是一个独立的帐号，微信分配的小程序ID</li>
+<li>扫码支付，可以使用app支付的帐号，也可使用公众支付的帐号</li>
+<li>刷卡支付，两个帐号也可以使用</li>
+</ul>
+<p>由于我没有小程序的帐号，没办法测它是否可以用于扫码支付与刷卡支付，有测过的朋友请告诉我一下（微信号：<code>helei543345</code>）</p>
+<p><strong><code>mch_id</code>:</strong> 商户号，申请商户号成功后，腾讯给你发的邮件里边有</p>
+<p><strong><code>md5_key</code>:</strong> 在商户中心自己设置的api密钥，主要用来签名支付数据</p>
+<p><strong><code>sign_type</code>:</strong> 签名方式，当前微信支持HMAC-SHA256和MD5，默认使用 MD5</p>
+<p><strong><code>app_cert_pem</code>:</strong> 从apiclient_cert.p12中导出证书部分的文件，为pem格式，请妥善保管不要泄漏和被他人复制</p>
+<p><strong><code>app_key_pem</code>:</strong> 从apiclient_key.pem中导出密钥部分的文件，为pem格式</p>
+<p>关于 <code>app_cert_pem</code> 与 <code>app_key_pem</code> 的详情请看这里 : <a href="https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=4_3" target="_blank" rel="external">https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=4_3</a></p>
+<p><strong><code>limit_pay</code>：</strong> no_credit–指定不能使用信用卡支付  ，当前微信仅这一个参数，设置了，支付时，用户无法使用信用卡</p>
+<p><strong><code>fee_type</code>:</strong> 货币类型，默认是人民币，其他可选值看这里：<a href="https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=4_2" target="_blank" rel="external">https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=4_2</a></p>
+<p><strong><code>notify_url</code>：</strong> 异步接收微信支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。</p>
+<p><strong><code>redirect_url</code>:</strong> 只有在使用h5支付时，才需要设置，也可以选择不设置。用来控制在h5中支付成功后，跳转的页面。</p>
+<p><strong><code>return_raw</code>：</strong> 是否返回微信的原始数据，默认为false，建议设置为true</p>
+<ul>
+<li>该参数如果设置为 <code>false</code>，sdk内部会映射一些key，并且把微信的金额处理为元</li>
+<li>如果参数值为 <code>true</code> ，则只对异步数据进行签名检查，检查通过，返回一个数据类型的数据（微信原始为xml），其中包含的key是微信本身的，并且金额相关的单位都是分</li>
+</ul>
+<p>微信的配置文件相对来说比较简单，只是它的帐号体系有点多，大家在使用时，根据自己使用不同支付，读取不同配置，来完成相互间的切换。</p>
+<p>另外，如果还需要转账或者发红包，请设置以下图中的信息。<br><img src="http://ol59nqr1i.bkt.clouddn.com/pay/set-other.jpeg" alt="image"></p>
+<p>今天晚上公司部署新项目，在等待过程中把微信的配置文档搞定。</p>
+<p>最近自己弄了一个微信公众号，想分享一些自己的文章，以及自己写的小工具，比如：图片压缩，短连接在线接口，在线二维码接口等。</p>
+<p>感兴趣的朋友可以关注：</p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/mp-qr.jpg" alt="image"></p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
