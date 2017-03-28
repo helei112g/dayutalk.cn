@@ -8,7 +8,7 @@
       <url>https://helei112g.github.io/2017/03/28/Payment%EF%BC%9A%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E8%AF%B4%E6%98%8E/</url>
       <content type="html"><![CDATA[<p>终于写到微信了。加油干，撸起袖子奔小康。<br><a id="more"></a></p>
 <p><strong>项目GitHub地址</strong>：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
-<p>微信支付个人觉得在后台设置上有些麻烦，帐号太多啦，支付宝目前就是一个应用基本涵盖了所有的接口开发。</p>
+<p>微信支付个人觉得在帐号设置上有些麻烦，帐号太多啦，支付宝目前就是一个应用基本涵盖了所有的接口开发。</p>
 <p>可能是由于微信支付的后端是财付通，反正咱们写代码的，也别管那么多。理清楚各配置的关系，然后写出高质量的代码就好。</p>
 <p>关于如何申请微信支付，只讲两个问题，服务号支付能力的申请在公众号后后台申请，app应用的支付能力申请在开发者中心申请。其他细节请自行查询。</p>
 <hr>
