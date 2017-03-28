@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="He Lei">
   <!-- Open Graph Data -->
-  <meta property="og:title" content="友链"/>
+  <meta property="og:title" content="Guetzli 图片压缩到底有多牛"/>
   <meta property="og:description" content="" />
   <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
   <meta property="og:type" content="article" />
@@ -53,7 +53,7 @@
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <div class="page-title with-background-image">
-          <p class="title">友链</p>
+          <p class="title">Guetzli 图片压缩到底有多牛</p>
           <p class="subtitle"></p>
         </div>
         <div class="site-menu with-background-image">
@@ -110,70 +110,53 @@
           
           <!-- Date -->
           <span class="date-time info">On
-            <span class="date">2016-07-23</span>
+            <span class="date">2017-03-28</span>
             <span class="time">18:19:02</span>
           </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/linux/">linux</a>
+</span>
           
         </div>
         <!-- Tags -->
         
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/guetzli/">#guetzli</a> <a class="tag" href="/tags/图片压缩/">#图片压缩</a>
+
+
+          </div>
+        
         <!-- Post Main Content -->
         <div class="post-content">
-          <style>
-.meta {
-    display: none;
-}
-.page {
-    text-align: center;
-    padding-bottom: 20px;
-}
-.links-container {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-.link {
-    border: 3px solid #323232;
-    font-size: 1.1em;
-    padding: 1em 0;
-    margin: 1em;
-    background-color: transparent;
-    text-align: center;
-    transition: transform .1s;
-}
-.link:hover {
-    transform: scale(1.2, 1.2);
-    background-color: #323232;
-}
-.link a {
-    color: #323232;
-    letter-spacing: .4em;
-    font-weight: 900;
-    padding: 1.35em 3em 1.35em 3.4em;
-}
-.link a:hover {
-    text-decoration: none;
-    font-weight: 300;
-    color: white;
-}
-@media screen and (max-width:440px){
-        .links-container {
-            justify-content: space-around;
-        }
-    }
-</style>
-<h4><i>不错的博客</i></h4>
-<div class="links-container">
-    <div class="link">
-        <a href="http://blog.csdn.net/hel12he" title="我是大愚" target="_blank" rel="external">大愚之路</a>
-    </div>    
-    <div class="link">
-        <a href="https://tmy.me/" title="TmyBlog" target="_blank" rel="external">TmyBlog</a>
-    </div>
-</div>
-
-
+          <p>忙里偷闲，把一张图片用 guetzli 压缩了13次。你要不要来看看结果<br><a id="more"></a></p>
+<p>在上一篇文章中，介绍了 guetzli 的安装。伴随 1.0.1 版本移除 gflags ，安装也变的异常简单了。</p>
+<p>本篇带领大家看一下他的压缩效果。我下面放几张图。大家可以看看效果。看谁能够识别那张图是压缩了的。</p>
+<p>下面全是图片。</p>
+<p>图片一：<br><img src="http://ol59nqr1i.bkt.clouddn.com/guetzli/t1-thumb01.jpg" alt="image"></p>
+<p>图片二：<br><img src="http://ol59nqr1i.bkt.clouddn.com/guetzli/t1-t1.jpg" alt="image"></p>
+<p>图片三：<br><img src="http://ol59nqr1i.bkt.clouddn.com/guetzli/t1-thumb02.jpg" alt="image"></p>
+<p>图片四：<br><img src="http://ol59nqr1i.bkt.clouddn.com/guetzli/t1-thumb03.jpg" alt="image"></p>
+<p>图片五：<br><img src="http://ol59nqr1i.bkt.clouddn.com/guetzli/t1-thumb04.jpg" alt="image"></p>
+<p>图片六：<br><img src="http://ol59nqr1i.bkt.clouddn.com/guetzli/t1-thumb05.jpg" alt="image"></p>
+<p>图片七：<br><img src="http://ol59nqr1i.bkt.clouddn.com/guetzli/t1-thumb06.jpg" alt="image"></p>
+<p>图片八：<br><img src="http://ol59nqr1i.bkt.clouddn.com/guetzli/t1-thumb07.jpg" alt="image"></p>
+<p>图片九：<br><img src="http://ol59nqr1i.bkt.clouddn.com/guetzli/t1-thumb08.jpg" alt="image"></p>
+<p>图片十：<br><img src="http://ol59nqr1i.bkt.clouddn.com/guetzli/t1-thumb09.jpg" alt="image"></p>
+<p>图片十一：<br><img src="http://ol59nqr1i.bkt.clouddn.com/guetzli/t1-thumb10.jpg" alt="image"></p>
+<p>图片十二：<br><img src="http://ol59nqr1i.bkt.clouddn.com/guetzli/t1-thumb11.jpg" alt="image"></p>
+<p>图片十三：<br><img src="http://ol59nqr1i.bkt.clouddn.com/guetzli/t1-thumb12.jpg" alt="image"></p>
+<p>整个验证过程，我将原图进行了13次压缩。</p>
+<p>原始图片是： 1.3M ，压缩到最后只剩下 254KB。这是很高的压缩比，而且很难察觉图片质量是否变低。</p>
+<p>但是 guetzili 当前还仅支持单图压缩，而且很慢，希望以后可以改善。自己用python写了一个 批量处理图片的脚本。如果有需要的朋友，关注我的微信公众号，留下的邮箱，我会将脚本发送给你。随便把你猜的答案发给我。</p>
+<p>后期计划可能出一个在线api，方便大家使用。</p>
+<p><strong>个人微信公众号</strong>：</p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/mp-qr.jpg" alt="image"></p>
+<p>另外，最近公司项目比较紧，微信支付的相关文档，4月份开始更新。</p>
 
         </div>
       </div>
