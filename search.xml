@@ -4,6 +4,66 @@
   
     
     <entry>
+      <title><![CDATA[php工程狮感知的前端工作流程]]></title>
+      <url>https://helei112g.github.io/2017/04/01/php%E5%B7%A5%E7%A8%8B%E7%8B%AE%E6%84%9F%E7%9F%A5%E7%9A%84%E5%89%8D%E7%AB%AF%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B/</url>
+      <content type="html"><![CDATA[<p>这个时代不懂点前端知识，真的没有办法生存。就算不会写，也得了解它的原理吧！<br><a id="more"></a></p>
+<p>最近做了一些总结，之前都是迷迷糊糊，搞不清楚前端之前的相关定位。好好梳理了一下。错误之处请各位指正。</p>
+<p>本文主要说的是 JavaScript 工作流程</p>
+<hr>
+<p>目前前端真的该叫大前端，其越来越细化，越来越复杂。在这种背景下，诞生了很多工具很多前端工作流程。比如热门的：</p>
+<ul>
+<li>react</li>
+<li>vue</li>
+<li>webpack</li>
+<li>babel</li>
+<li>gulp</li>
+<li>node.js</li>
+<li>npm</li>
+<li>nvm</li>
+<li>angular</li>
+<li>bower<br>… …</li>
+</ul>
+<p>如果继续写，估计光这个，字数久能够达到1000+<br>这里边有的是前端js框架，有的是一些开发工具，但他们种类这么多，各自能够解决什么问题？互相之间有什么联系？是不是一个项目就必须用上这么多东西？使用时候，如何相互配合？</p>
+<p>带着这些疑问，作为一个后端程序员，进行了系列调查，要把我的成果分享出来（可能错误百出）。<br>首先前端开发的三大基础：</p>
+<ul>
+<li><strong><code>html</code></strong> 这个是最基础的，被称为：超文本标记语言。什么意思？简单来说就是描述一个页面的结构，比如：页面的头部，页面的内容，页面的尾部。也就说，它控制一个页面的结构。浏览器会按照它定义的结构来进行解析，显示不同内容。</li>
+<li><strong><code>css</code></strong> 我们对美的追求是无止境的，光有结构，看起来没有色彩，有些地方不突出。就像衣服：原始人用树叶、兽皮，随着进步，我们穿丝绸、破洞牛仔，搭配丝巾、手表等等，所以就是用来控制html的样式，让它变的更好看。</li>
+<li><strong><code>JavaScript</code></strong> 这是本文主要阐述的地方，有了html+css，显然还不能满足我们的追求，会html、css的人不能叫做前端工程师、更不能叫程序媛。但是如果你会了 JavaScript，江湖就有你的依稀之地，这也是本文主要介绍的部分。</li>
+</ul>
+<p>目前我们很多时候常说的前端工程师，其实主要指的就是其 js工程师。在Web世界里，只有JavaScript能跨平台、跨浏览器驱动网页，与用户交互。</p>
+<p>功能越强大，责任也越多。现在 js（后面全部使用简称，字太多，不想写）使用的越来越多，早期 js 仅仅用来做一些简单的交互，随着现在移动互联网的发展，各项硬件设备的性能提升。项目越来越复杂，效果越来越酷炫。js 做的事情也更多。</p>
+<p>当然今天不讲这么多发展历史（关键是我也没理清呀），总的来说就是 js 开发工作原来比较简单，大家随便写写久搞定工作了，但是现在工作的复杂度越来越高，像以前那么任性的工作，开发麻烦、维护麻烦。还好具备程序员三大美德人，开始构建一些工具。</p>
+<p>Perl语言的发明人Larry Wall说，好的程序员有3种美德： 懒惰、急躁和傲慢（Laziness, Impatience and hubris）。</p>
+<blockquote>
+<p>懒惰：<br>是这样一种品质，它使得你花大力气去避免消耗过多的精力。它敦促你写出节省体力的程序，同时别人也能利用它们。为此你会写出完善的文档，以免别人问你太多问题。<br>急躁：<br>是这样一种愤怒—-当你发现计算机懒洋洋地不给出结果。于是你写出更优秀的代码，能尽快真正的解决问题。至少看上去是这样<br>傲慢：<br>极度的自信，使你有信心写出（或维护）别人挑不出毛病的程序</p>
+</blockquote>
+<p>先是大家感觉js代码复用是个问题，我们想用别人写的某个功能，只能网上去翻别人写的源码，拷贝下来。后段语言都有自己的包管理工具，比如：java的maven，python的pip，php的composer等。于是在历史的使命召唤中，npm诞生了，js的包管理工具。<br>比如以前要使用 jquery，你的到官网去下载，现在 npm install jquery 就可以了。</p>
+<p>npm是运行在node的环境上，它们的关系又是另外一个话题，这里按下暂且不表。<br>像 react、vue都可以通过npm来安装。</p>
+<p>包管理的问题解决了，接下来又有另外一个问题，由于 js 是 <code>Brendan Eich</code> 这大哥花了 10 天时间设计的（牛人就是这么屌）。虽然如今广泛应用，也由于时间紧导致留下了很多设计缺陷。</p>
+<p>伴随了 <code>ES6</code> 的发布，js越来越规范了，我们程序员肯定都想用好用的简洁的语法来完成任务，好早点下班回家打lol呀。可惜呀，世界上成百上千万的网站，不可能一下子全部升级，浏览器也不可能立马就支持最新语法，怎么办？<code>babel</code> 诞生了，它牛逼在那里？让你可以用es6的语法写代码，然后在现在的环境下可以运行（在这里请自行忽略ie9以下浏览器）。</p>
+<p>在你用es6写完代码后，用它转码一下，可以得到es5的代码。不信？来个例子：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 转码前</span></span><br><span class="line">input.map(item =&gt; item + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 转码后</span></span><br><span class="line">input.map(<span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> item + <span class="number">1</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>上面的原始代码用了箭头函数，Babel 将其转为普通函数，就能在不支持箭头函数的 JavaScript 环境执行了。</p>
+<p>另外 babel 其实也是用js写的一个工具，所以它还是可以通过 <code>npm install babel-cli</code> 来安装。</p>
+<p>关于它怎么用，自己看官方文档。</p>
+<p>好。到目前为止，解决了两个大问题。接着看前端还有什么问题？那么在开发中还有什么问题需要解决？合并文件、压缩代码、检查语法错误、将Sass代码转成CSS代码等等这些都是开发中的重复性任务，以前这些任务都需要单独人工解决，然后为了提高效率，早点下班，就有了:Gulp  Grunt这些task runner。推荐使用gulp来自动化的执行这些任务。</p>
+<p>那么到了这里，是不是就截止了？还没有，现在的基本都讲究什么前后端分离，也就是变成了web app的方式，那么就要求页面重新加载要变少，用户交互要变多，也就导致一个页面上js越来越多。这么多的js怎么管理？如何提高浏览器的加在速度？能否将css img html 字体这些资源也当成模块来处理？在这些问题下，产生了很多模块打包工具，毫无疑问：webpack是最耀眼的，也是用起来最爽的。</p>
+<p>所以模块打包的问题也解决了，另外说一句，gulp的部分功能可能通过webpack的插件也能解决，但并不意味着不再需要它，一般来说gulp运行在webpack之后。</p>
+<p>再次声明，上面所有介绍的东西，都可以通过npm来安装获得。所以说到底它们都是用js写的一个工具。</p>
+<p>ok，那么工具基本介绍完了，到底页面怎么呈现给用户？后台传过来的数据怎么绑定到dom里边去？如果向后台发起请求获得数据？等等，这些需要一个js业务框架来完成。所以react、vue就是来解决这些问题的</p>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>至此前端的一个工作结构介绍至此结束。再瞎逼逼两句，学习是一件持续的事情，在学习某个新东西前，先要对它是干吗的，它解决一个什么样的问题有个认识，然后面对知识你才能在自己的脑海中建立一个体系。</p>
+<p>参考了很多资料，贴在这里供参考:</p>
+<ul>
+<li>[1] <a href="https://chenyiqiao.gitbooks.io/webpack/content/motivation_of_webpack.html" target="_blank" rel="external">我们为什么需要Webpack？</a></li>
+<li>[2] <a href="https://cn.vuejs.org/v2/guide/comparison.html" target="_blank" rel="external">Vue 对比其他框架</a></li>
+<li>[3] <a href="https://www.zhihu.com/question/37020798" target="_blank" rel="external">Webpack、Browserify和Gulp三者之间到底是怎样的关系？</a></li>
+<li>[4] <a href="http://es6.ruanyifeng.com/#docs/intro#Babel-转码器" target="_blank" rel="external">Babel-转码器</a></li>
+<li>[5] <a href="http://www.gulpjs.com.cn" target="_blank" rel="external">用自动化构建工具增强你的工作流程！</a></li>
+</ul>
+<p>想要看看以后写的文章，请扫码关注：<br><img src="http://ol59nqr1i.bkt.clouddn.com/mp-qr.jpg" alt="image"></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Payment：微信支付配置文件设置说明]]></title>
       <url>https://helei112g.github.io/2017/03/28/Payment%EF%BC%9A%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E8%AF%B4%E6%98%8E/</url>
       <content type="html"><![CDATA[<p>终于写到微信了。加油干，撸起袖子奔小康。<br><a id="more"></a></p>
