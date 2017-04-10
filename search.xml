@@ -4,6 +4,122 @@
   
     
     <entry>
+      <title><![CDATA[Payment：微信支付发起支付请求文档]]></title>
+      <url>https://helei112g.github.io/2017/04/10/Payment%EF%BC%9A%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E5%8F%91%E8%B5%B7%E6%94%AF%E4%BB%98%E8%AF%B7%E6%B1%82%E6%96%87%E6%A1%A3/</url>
+      <content type="html"><![CDATA[<p>文档更新太慢，自己都忍不住要抱怨了。可能越来越慢了<br><a id="more"></a></p>
+<p><strong><code>Payment 3.0</code></strong> 微信的配置设置文档请 <a href="https://helei112g.github.io/2017/03/28/Payment%EF%BC%9A%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E8%AF%B4%E6%98%8E/">点击这里</a></p>
+<p><strong>项目GitHub地址</strong>：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
+<p>为了调用方便，提供了统一的 <code>Client\Charge</code> 类来发起支付。需要设置的参数</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>body</td>
+<td>boolean</td>
+<td>是</td>
+<td>商品描述</td>
+</tr>
+<tr>
+<td>subject</td>
+<td>string</td>
+<td>是</td>
+<td>商品名称,该参数最长为128个汉字</td>
+</tr>
+<tr>
+<td>order_no</td>
+<td>string</td>
+<td>是</td>
+<td>商户网站唯一订单号</td>
+</tr>
+<tr>
+<td>timeout_express</td>
+<td>string</td>
+<td>是</td>
+<td>设置未付款交易的超时时间，一旦超时，该笔交易就会自动被关闭。</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>float</td>
+<td>是</td>
+<td>该笔订单的资金总额，单位为RMB-Yuan</td>
+</tr>
+<tr>
+<td>return_param</td>
+<td>string</td>
+<td>是</td>
+<td>附加数据，在查询API和支付通知中原样返回</td>
+</tr>
+<tr>
+<td>client_ip</td>
+<td>string</td>
+<td>是</td>
+<td>用户端实际ip</td>
+</tr>
+<tr>
+<td>terminal_id</td>
+<td>string</td>
+<td>是</td>
+<td>自定义参数，可以为终端设备号(门店号或收银设备ID)，PC网页或公众号内支付可以传”WEB”</td>
+</tr>
+<tr>
+<td>product_id</td>
+<td>string</td>
+<td>否</td>
+<td>商品ID</td>
+</tr>
+<tr>
+<td>openid</td>
+<td>string</td>
+<td>否</td>
+<td>此参数为微信用户在商户对应appid下的唯一标识</td>
+</tr>
+</tbody>
+</table>
+<p>在上面的参数中，无论微信的哪一种支付都必须提供：</p>
+<ul>
+<li>body</li>
+<li>subject</li>
+<li>order_no</li>
+<li>timeout_express</li>
+<li>amount</li>
+<li>return_param</li>
+<li>client_ip</li>
+<li>terminal_id<br>这几个参数，是必须进行设置的。</li>
+</ul>
+<h1 id="扫码支付"><a href="#扫码支付" class="headerlink" title="扫码支付"></a>扫码支付</h1><p>用户扫描商户展示在各种场景的二维码进行支付。这里采用的是模式二。</p>
+<p>对于扫码支付，必须提供: product_id  参数，该 <code>product_id</code> 是商户自己平台的信息，可用使用sku。</p>
+<p>如果扫码支付时，传入了 <code>openid</code>，则扫码时，只能使用对应的微信扫码才能完成支付。这里可以根据自己的需求来决定。<br><a href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_5" target="_blank" rel="external">扫码支付，模式二介绍</a></p>
+<h1 id="刷卡支付"><a href="#刷卡支付" class="headerlink" title="刷卡支付"></a>刷卡支付</h1><p>刷卡支付，就是用于用户向商户展示二维码，商户通过扫码枪获取二维码或者条码信息，完成收款。与上面的扫码支付相对应。<br><code>auth_code</code> 是必须设置的参数，扫码支付授权码，设备读取用户微信中的条码或者二维码信息</p>
+<h1 id="app支付"><a href="#app支付" class="headerlink" title="app支付"></a>app支付</h1><p>适用于商户在移动端APP中集成微信支付功能。<br>商户APP调用微信提供的SDK调用微信支付模块，商户APP会跳转到微信中完成支付，支付完后跳回到商户APP内，最后展示支付结果。<br>目前微信支付支持手机系统有：IOS（苹果）、Android（安卓）和WP（Windows Phone）。</p>
+<p>该支付方式，无需额外的参数信息，只需要上面表格中标记的必须参数。</p>
+<p><a href="https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_5" target="_blank" rel="external">客户端教程</a></p>
+<h1 id="公众号支付"><a href="#公众号支付" class="headerlink" title="公众号支付"></a>公众号支付</h1><p>商户已有H5商城网站，用户通过消息或扫描二维码在微信内打开网页时，可以调用微信支付完成下单购买的流程。</p>
+<p>这里记住一定时微信内部打开h5页面。</p>
+<p><code>openid</code> 是公众号支付必须提供的信息，微信用户在商户对应appid下的唯一标识。openid如何获取，可参考<a href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=4_4" target="_blank" rel="external">获取openid</a></p>
+<p>这里用到了 openid，也就说明该支付只能由发起支付请求的公众号完成支付。</p>
+<p>因此，如果有时候遇到：“下单账号和支付账号不一致”  ，那么肯定是发起支付请求的时候是一个帐号，而进行支付时变成了另外一个微信帐号导致的。</p>
+<blockquote>
+<p>小程序支付与公众号支付具有相同的请求参数</p>
+</blockquote>
+<p><a href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_7&amp;index=6" target="_blank" rel="external">公众号调起支付</a><br><a href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=7_7&amp;index=3" target="_blank" rel="external">小程序调起支付</a></p>
+<h1 id="h5支付"><a href="#h5支付" class="headerlink" title="h5支付"></a>h5支付</h1><p>H5支付是指商户在微信客户端外的移动端网页展示商品或服务，用户在前述页面确认使用微信支付时，商户发起本服务呼起微信客户端进行支付。<br>主要用于触屏版的手机浏览器请求微信支付的场景。可以方便的从外部浏览器唤起微信支付</p>
+<p>微信这个支付能力，并未完全开放，申请的条件也比较苛刻。不过说实话也不好用。</p>
+<p>参数跟app支付一样，不需要添加额外的信息。</p>
+<p><a href="https://pay.weixin.qq.com/wiki/doc/api/H5.php?chapter=15_4" target="_blank" rel="external">外部网页唤起微信支付</a></p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>下面代码实例一下<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Common</span>\<span class="title">PayException</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Client</span>\<span class="title">Charge</span>;</span><br><span class="line"></span><br><span class="line">$config = <span class="keyword">require_once</span>(<span class="string">'./wxconfig.php'</span>);<span class="comment">// 微信的配置信息</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$channel = <span class="string">'wx_app'</span>;<span class="comment">// wx_app    wx_pub   wx_qr   wx_bar  wx_lite   wx_wap</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$payData = [</span><br><span class="line">    <span class="string">'body'</span> =&gt; <span class="string">'一个苹果'</span>,</span><br><span class="line">    <span class="string">'subject'</span> =&gt; <span class="string">'牛逼公司--付款吧'</span>,</span><br><span class="line">    <span class="string">'order_no'</span> =&gt; <span class="string">'NB12312355'</span>,</span><br><span class="line">    <span class="string">'timeout_express'</span> =&gt; <span class="string">'1489241888'</span>,</span><br><span class="line">    <span class="string">'amount'</span> =&gt; <span class="string">'100'</span>,</span><br><span class="line">    <span class="string">'return_param'</span> =&gt; <span class="string">'buy some'</span>,</span><br><span class="line">    <span class="string">'client_ip'</span> =&gt; <span class="string">'127.0.0.1'</span>,</span><br><span class="line">    <span class="string">'terminal_id'</span> =&gt; <span class="string">'WEB'</span>,</span><br><span class="line">    <span class="comment">//'product_id' =&gt; '888',</span></span><br><span class="line">    <span class="comment">//'openid' =&gt; 'xxxxxxx',</span></span><br><span class="line">];</span><br><span class="line"><span class="comment">// product_id  openid  参数，并不是每一个支付都需要，具体行为阅读上面文档</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    $str = Charge::run($channel, $config, $payData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="comment">// 异常处理</span></span><br><span class="line">    <span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (is_array($ret)) &#123;</span><br><span class="line">    var_dump($ret);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    header(<span class="string">'Location:'</span> . $ret);</span><br><span class="line">    <span class="keyword">echo</span> htmlspecialchars($ret);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">exit</span>;</span><br></pre></td></tr></table></figure></p>
+<p>关于 <code>channel</code> 的说明：<br>渠道 | 说明<br>—|—|—|—<br>wx_app | 代表app支付<br>wx_pub | 代表公众号支付<br>wx_qr | 代表扫码支付<br>wx_bar | 代表刷卡支付<br>wx_lite | 代表小程序支付<br>wx_wap | 代表h5支付</p>
+<p>关于支付返回的各种数据，以及相关支付方式，如果调起微信支付，请自行查看对应文档。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[php工程狮感知的前端工作流程]]></title>
       <url>https://helei112g.github.io/2017/04/01/php%E5%B7%A5%E7%A8%8B%E7%8B%AE%E6%84%9F%E7%9F%A5%E7%9A%84%E5%89%8D%E7%AB%AF%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B/</url>
       <content type="html"><![CDATA[<p>这个时代不懂点前端知识，真的没有办法生存。就算不会写，也得了解它的原理吧！<br><a id="more"></a></p>
