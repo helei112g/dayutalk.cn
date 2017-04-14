@@ -4,6 +4,71 @@
   
     
     <entry>
+      <title><![CDATA[团队开发Git分支管理策略]]></title>
+      <url>https://helei112g.github.io/2017/04/14/%E5%9B%A2%E9%98%9F%E5%BC%80%E5%8F%91Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5/</url>
+      <content type="html"><![CDATA[<p>开发生涯的前三年都是使用 <code>svn</code>，回首放佛如前世。自从用了 <code>git</code> ，整个人都神经了。<br><a id="more"></a></p>
+<p>下面的内容肯定不是什么教你如何用git提交代码，合并分支之类的。现在本人要<strong>从写术的层面提升一下自己文章的品质到道的层面</strong>。</p>
+<h1 id="使用git带来的分支疑惑"><a href="#使用git带来的分支疑惑" class="headerlink" title="使用git带来的分支疑惑"></a>使用git带来的分支疑惑</h1><p><code>git</code> 为什么好，为什么要用 <code>git</code>，这不是我本文想要说明的问题。</p>
+<p>这里想要给大家分享一下自己使用过程中产生的疑惑，以及解决的这些疑惑的过程。话又说回来，我现在依然充满疑惑。真不知道30岁的时候会不会不惑。</p>
+<p>在使用 <code>git</code> 过程中，它的分支功能让我真的欣喜若狂，不过这是把双刃剑，一不小心你会得到这种<code>git</code>路径图：</p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/git/bg2012070502.png" alt="image"></p>
+<p><em>图片来源：阮一峰老师博客</em></p>
+<p>我的疑惑：</p>
+<ol>
+<li>那么团队中我们该使用怎样的分支策略来进行开发协作？</li>
+<li>在多人的团队中，我们应该在 <code>master</code> 分支上直接开发吗？</li>
+<li>如果线上产生了bug该通过什么样方式的分支去修复？</li>
+<li>当有多个分支的时候，测试如何有效的参与进来每一个分支的测试？</li>
+</ol>
+<h1 id="用成熟的工作流来解决问题"><a href="#用成熟的工作流来解决问题" class="headerlink" title="用成熟的工作流来解决问题"></a>用成熟的工作流来解决问题</h1><p>在解答上面的疑惑前，先介绍几个工作流，然后通过工作流的模式，来进行解答。因为我们必须在某种设定的情景下，才能讨论解决问题的思路。</p>
+<p>下面三种工作流方式，都是采用功能驱动开发，也就是先有需求产生，然后诞生对应的分支，然后开发，最后合并回来，完成使命被删除。</p>
+<ul>
+<li>Git flow</li>
+<li>Github flow</li>
+<li>Gitlab flow</li>
+</ul>
+<p>关于这三种工作流的详细介绍，建议看看<a href="http://www.ruanyifeng.com/blog/2015/12/git-workflow.html" target="_blank" rel="external">这篇文章-阮一峰</a></p>
+<p>我现在采用的是 <code>Git flow</code> ，经过自己的实践，确实好用，解决不少问题。然后如果发现与自己的实际情况有些出入，可以根据需求做出些变动调整。</p>
+<h2 id="我的选择"><a href="#我的选择" class="headerlink" title="我的选择"></a>我的选择</h2><p>我选择了 Git flow，它的主要特点是，长期存在两个分支：</p>
+<ul>
+<li>主分支master</li>
+<li>开发分支develop</li>
+</ul>
+<p>然后，存在三种辅助分支，都是短期的，并且一半情况下只应该存在本地，不要提交到远程库。</p>
+<ul>
+<li>功能分支（feature branch）</li>
+<li>补丁分支（hotfix branch）</li>
+<li>预发分支（release branch）<br>在进行上面的分支时，建议的命名规范：feature-xxx、release-xxx、hotfix-xxx</li>
+</ul>
+<blockquote>
+<p>话外：我以前喜欢用下划线，后来发现打中线不需要按 <code>shift</code> ，哈哈，从此开始中线时代。</p>
+</blockquote>
+<p><strong>什么时候要功能分支？</strong></p>
+<p>当你拿到一个需求，或者不是一个立马需求上线的bug修复，那么就应该从 <code>develop</code> 开一个分支出来，完成这部分工作。完成后合并到 <code>develop</code> 分支。</p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/git/25142846_iM1D.png" alt="image"></p>
+<p><strong>什么时候要预发分支？</strong></p>
+<p>这个分支是为预发准备的，测试的介入，也只应该在该分支产生时才介入。当我们不管是新功能开发，还是一般的bug修改都差不多了。就应该从<code>develop</code>产生一个<code>release</code>分支，交给测试，如果有bug直接在上面修改。全部完成后，合并回<code>develop</code>，并且合并到<code>master</code>。</p>
+<p>关于这个分支我得再多说几句。因为这是非常重要的一步，如果我们使用了 git 钩子，当合并到 <code>master</code> 的时候，会自动发布到线上，所以这是临上线的最后一道屏障。</p>
+<p>同时这里也解决了我一个疑惑，测试如何参与到<code>git</code>的每个分支中来？答案是：测试不应该参与到每个分支中来，只应该参与到<code>release</code>分支中去。其它的开发分支，都应该由开发人员自己测试，测试没有问题的时候才准许合并到<code>develop</code>，这就要求每一个开发要提高自己交付的产品质量，如何确保自己交付的产品质量？自动化测试是个不错的选择，好了，打住，这不是咋们今天的主要任务，这个话题改天再聊。</p>
+<p><strong>什么时候需要补丁分支？</strong></p>
+<p>这种情况越少越好。因为它产生的原因是：线上出了bug，并且必须马上修复，不管你身在何方，当手机响起，拿出电脑改bug吧。</p>
+<p>它与<code>release</code> 很像，都需要完成后，同时合并到:<code>master</code>与<code>develop</code>。不同的是，它需要从<code>master</code> 上开一个分支出来。<br><img src="http://ol59nqr1i.bkt.clouddn.com/git/hotfix.png" alt="image"></p>
+<p>注意这里没有测试的介入，一半来说都是代码上某一个小的紧急bug，虽然很严重，但是可以很容易改动。当然如果有一些例外情况，应该让测试进行测试后再合并、发布。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><code>git</code> 开发很好用，但是要按照一定规则合理使用分支。</p>
+<p>另外，除了:<code>master</code>与<code>develop</code> 分支，其它分支都不应该出现在远程仓库中。</p>
+<p>用<code>git</code>一定要结合它的各种钩子来使用，提升开发效率。这里后面来介绍下。</p>
+<p>参考资料:</p>
+<ul>
+<li>[1]<a href="http://www.ruanyifeng.com/blog/2015/12/git-workflow.html" target="_blank" rel="external">Git 工作流程</a></li>
+<li>[2]<a href="http://www.oschina.net/translate/a-successful-git-branching-model?lang=chs&amp;page=1" target="_blank" rel="external">介绍一个成功的 Git 分支模型</a></li>
+</ul>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>我是何磊，主要工作就是写代码，持续创业者（之所以持续是因为到现在还没有干成功过一件事）。如果你有兴趣欢迎关注我，我会分享技术，还有生活，当然还有我创业的故事（说出我的痛，让你开心一下）。</p>
+<p>因为自己的<a href="https://helei112g.github.io/">博客</a>没有留言功能，同时也需要大家记住域名很麻烦，因此我开通了这个公众号，希望在这里遇见你：</p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/mp-qr.jpg" alt="image"></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Payment：微信支付发起支付请求文档]]></title>
       <url>https://helei112g.github.io/2017/04/10/Payment%EF%BC%9A%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E5%8F%91%E8%B5%B7%E6%94%AF%E4%BB%98%E8%AF%B7%E6%B1%82%E6%96%87%E6%A1%A3/</url>
       <content type="html"><![CDATA[<p>文档更新太慢，自己都忍不住要抱怨了。可能越来越慢了<br><a id="more"></a></p>
