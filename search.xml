@@ -4,6 +4,45 @@
   
     
     <entry>
+      <title><![CDATA[Payment：支付的回调统一处理]]></title>
+      <url>https://helei112g.github.io/2017/05/01/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E7%9A%84%E5%9B%9E%E8%B0%83%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86/</url>
+      <content type="html"><![CDATA[<p>有20天没有更新了，主要原因有二：其一这期间对自己的职业规划做了一些调整；其二生了一场小病。所以大家一定要保重身体，平时得多锻炼锻炼了。<br><a id="more"></a></p>
+<p>根据大家反馈，大家对 <code>Payment</code> 还是很认同，这让我很开心。五一花了两天时间把招商一网通集成进来了。希望能够帮助到更多的人。</p>
+<hr>
+<p><strong>Payment使用文档</strong>：<a href="https://helei112g.github.io/categories/payment-3/">https://helei112g.github.io/categories/payment-3/</a></p>
+<p><strong>项目GitHub地址</strong>：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
+<p>言归正传，这篇拖了很久了，借着五一假期的最后一天，搞定它！先上一个支付的一般流程图。</p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/pay_path.jpg" alt="image"><br><em>图片来源：支付宝</em></p>
+<h1 id="异步与同步"><a href="#异步与同步" class="headerlink" title="异步与同步"></a>异步与同步</h1><p>在我们完成支付后，要确认用户是否真的支付了这笔钱，以及这笔钱支付的金额是否符合预期。怎么知道这些事情呢？</p>
+<p>用户告诉我们？我们肯定不能确认是否真假。比较恰当的方式是，第三方（支付宝、微信、招商一网通等）收到用户付款后，他来告诉我们。所以这里就引出了通知这个概念。</p>
+<p>通知的方式又有两种：同步通知，异步通知。同步通知的概念存在于网站支付或者H5支付中，因为只有在浏览器中才可以通过url进行跳转。那么我们应该使用同步通知作为支付成功的依据还是使用异步通知呢？</p>
+<p>我的答案是：同步通知不做服务端的更新，可用于客户端的显示，异步收到通知时才做相关的更新处理。原因有三：</p>
+<ol>
+<li>并不是所有的支付模块都有同步通知这个概念；</li>
+<li>同步通知的参数在url中，就算采用https协议，也存在更大被篡改的风险；</li>
+<li>异步通知提供完整的失败重发机制，更值得信耐。</li>
+</ol>
+<h1 id="异步通知处理"><a href="#异步通知处理" class="headerlink" title="异步通知处理"></a>异步通知处理</h1><p>所以在 Payment 中只针对异步通知到达的数据进行了签名相关处理。下面我们来看看代码。</p>
+<p>不管你是支付宝的异步通知，还是微信的异步通知或者招商一网通的异步通知，<code>Payment</code> 都提供了统一的异步处理接口，并且调用者完全不必去关心如何验证签名，如何核实数据，只需要专注自己的业务逻辑即可。</p>
+<p>回调使用了一个开发的小技巧：依赖注入，我先上代码，后面稍微解释下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$callback = new TestNotify();</span><br><span class="line"></span><br><span class="line">$type = &apos;ali_charge&apos;;// ali_charge wx_charge  cmb_charge</span><br><span class="line"></span><br><span class="line">try &#123;</span><br><span class="line">    // 获取第三方的原始数据，未进行签名检查，根据自己需要决定是否需要该步骤</span><br><span class="line">    //$retData = Notify::getNotifyData($type, $config);</span><br><span class="line"></span><br><span class="line">    $ret = Notify::run($type, $config, $callback);// 处理回调，内部进行了签名检查</span><br><span class="line">&#125; catch (PayException $e) &#123;</span><br><span class="line">    echo $e-&gt;errorMessage();</span><br><span class="line">    exit;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">return $ret;</span><br></pre></td></tr></table></figure></p>
+<p>回调 的代码就这么简单，其中 <code>Notify::getNotifyData($type, $config);</code> 可以获取到第三方的回调数据，sdk仅仅是解析成数组返回，没有做签名检查，不能直接用来进行回调处理。</p>
+<p><code>Notify::run($type, $config, $callback);</code> 则是进行回调相关的处理，它返回的值，是需要返回给第三方支付机构的，第三方机构通过返回值来识别商户是否正确处理了回调通知，并且以此来处理是否需要重发。</p>
+<p>这里的重点就是 <code>$callback</code>，注意看上面的代码 <code>$callback = new TestNotify();</code>，</p>
+<p>大家的重点就是创建这个 <code>TestNotify</code> 这个类，我们就叫它：商户回调业务处理类，名字大家随便取，根据自己的需要。看一下我示例中 <code>TestNotify.php</code> 的内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">use Payment\Notify\PayNotifyInterface;</span><br><span class="line">use Payment\Config;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 客户端需要继承该接口，并实现这个方法，在其中实现对应的业务逻辑</span><br><span class="line"> * Class TestNotify</span><br><span class="line"> * anthor helei</span><br><span class="line"> */</span><br><span class="line">class TestNotify implements PayNotifyInterface</span><br><span class="line">&#123;</span><br><span class="line">    public function notifyProcess(array $data)</span><br><span class="line">    &#123;</span><br><span class="line">        $channel = $data[&apos;channel&apos;];</span><br><span class="line">        if ($channel === Config::ALI_CHARGE) &#123;// 支付宝支付</span><br><span class="line"></span><br><span class="line">        &#125; elseif ($channel === Config::WX_CHARGE) &#123;// 微信支付</span><br><span class="line"></span><br><span class="line">        &#125; elseif ($channel === Config::CMB_CHARGE) &#123;// 招商支付</span><br><span class="line"></span><br><span class="line">        &#125; elseif ($channel === Config::CMB_BIND) &#123;// 招商签约</span><br><span class="line"></span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // 其它类型的通知</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 执行业务逻辑，成功后返回true</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里的核心就是，客户端创建的 <code>商户回调业务处理类</code> 一定要实现 <code>PayNotifyInterface</code> 这个接口，并且实现 <code>notifyProcess</code> 这个方法，在这个方法中完成自己的商户逻辑。然后根据处理结果返回布尔值。</p>
+<p>这里要重点说明的是 <code>TestNotify::notifyProcess(array $data)</code> 这个方法的参数 <code>$data</code>，它是通过sdk内部传过来的，它返回的信息与配置文件 <code>return_raw</code>的设置有关系。</p>
+<p>如果 <code>return_raw = false</code> 返回的是我映射的结果，这里需要小心，如果你的php报错级别设置的太高，可能会出现报错，因为内部有很多 <code>Undefined index</code>  错误，因为我并未进行检查，当前可能暂时也不打算修复这个问题。<br>如果  <code>return_raw = true</code> 则返回的是第三方支付机构的原始数据。</p>
+<p>不管是设置成什么，该参数里边都有一个 <code>channel</code> 参数，大家可以根据这个参数区分回调属于那一个类别。像上面的示例一样。</p>
+<h1 id="PayNotifyInterface-接口"><a href="#PayNotifyInterface-接口" class="headerlink" title="PayNotifyInterface 接口"></a>PayNotifyInterface 接口</h1><p>最近有很多人在微信中问我，干嘛一定要实现这个接口？我这里举个例子：<br>你出去旅行，到了突然发现ios的手机充电线没带，怎么办？找个便利店买一根好了（因为附近没有苹果店），那么怎么买的充电线确保你手机可以用呢？这个很简单，因为苹果把自己充电线的接口标准公布了，凡事想造苹果手机充电线的按照这个标准造出来的，你都可以用。</p>
+<p>所以接口的作用就是制定一个标准；你们都实现我规定的接口，然后返回布尔值给我，我就可以处理了。至于内部你们想怎么做，是你们的事情。</p>
+<p>通过这个接口完全将签名与商户业务逻辑进行了分离，以后你的调整只围绕这一个类即可。当然这里涉及到的思想有 ioc/di ，这又是另外一个话题，空的时候我们聊聊。</p>
+<h1 id="联系我"><a href="#联系我" class="headerlink" title="联系我"></a>联系我</h1><p>我的微信公众号(技术、创业主题)，欢迎订阅 <code>icanfo</code></p>
+<p>现在这个公众号名字不太好，想名字真头痛。有谁可以给推荐一个？</p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/mp-qr.jpg" alt="image"></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[团队开发Git分支管理策略]]></title>
       <url>https://helei112g.github.io/2017/04/14/%E5%9B%A2%E9%98%9F%E5%BC%80%E5%8F%91Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5/</url>
       <content type="html"><![CDATA[<p>开发生涯的前三年都是使用 <code>svn</code>，回首放佛如前世。自从用了 <code>git</code> ，整个人都神经了。<br><a id="more"></a></p>
