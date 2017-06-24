@@ -6,7 +6,33 @@
     <entry>
       <title><![CDATA[后端开发者从零做一个移动应用（一）]]></title>
       <url>https://helei112g.github.io/2017/06/24/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85%E4%BB%8E%E9%9B%B6%E5%81%9A%E4%B8%80%E4%B8%AA%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8%EF%BC%88%E4%B8%80%EF%BC%89/</url>
-      <content type="html"><![CDATA[<p>文章摘要，作者太懒了，没写……<br><a id="more"></a></p>
+      <content type="html"><![CDATA[<p>移动互联网这么火，我不想只当一个后端工程师…<br><a id="more"></a></p>
+<p>是时候学习一些新的东西了！</p>
+<p>一直以来想要学习一些前端的知识，扩宽自己的技术栈，但是一直以来对前端都是进行了解，没有用一个产品把这些东西给展示出来。最近终于痛定思痛，做了一个 android应用，目前的产品确实很一般，但决定以此为起步，逐步完善、逐步提高。</p>
+<p><a href="http://m.jiasux.com/#/share" target="_blank" rel="external">android 1.0版本：欢迎围观</a> </p>
+<p>今后一段时间内，博客、公众号的主要内容将会是该产品涉及的技术分享，包括：我的开发思路、技术选择、技术学习等。内容至少保证一月一篇的进度（因为初期还有很多知识需要学习，精力有限）。一来对自己是一个总结，二来是希望可以对打通任督二脉的同学起到一定的帮助。</p>
+<h1 id="产品介绍"><a href="#产品介绍" class="headerlink" title="产品介绍"></a>产品介绍</h1><p>先简单介绍一下做的是一个什么产品，大家之后看的时候，做到心中有数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">是以提供游戏下载、游戏礼包发放为核心的移动端应用。可以简单理解成一个游戏的应用市场。</span><br></pre></td></tr></table></figure>
+<p>当然除了普通的游戏下载外，还提供由我制作的加速游戏下载，是个什么意思呢？这里的加速并不是说优化手机环境，让游戏运行更流畅。而是进入游戏后，可以加速游戏进程，别人通过这个剧情需要10分钟，你只需要5分钟（所有加速的游戏均以取得对方授权）</p>
+<p>这个产品也将会以真实的形态进行运营。</p>
+<h1 id="技术介绍"><a href="#技术介绍" class="headerlink" title="技术介绍"></a>技术介绍</h1><p>作为一个想要成为 <code>跨端工程师</code> 的我，想以此为契机找到了学习新技术、运用新技术的支撑点。<br>为了完成这个app，最开始想全部采用原生，但这样会遗漏掉 混合应用 的学习，所以决定改为混合应用的方式进行开发。</p>
+<ul>
+<li>服务端：phalcon + nginx + mysql</li>
+<li>前端技术：android + vue + vux（提供 app 与 手机网站）</li>
+<li>后台界面：vue + iviewui</li>
+</ul>
+<p>为了完成上面的任务，服务端方面只需要看一下 <code>phalcon</code> 这个php框架，这对于我还是很容易上手的。一周时间做完了服务端的内容。后面的分享也先从它开始。</p>
+<p>在写后端的时候，产出了一个基于 <code>phalcon</code> 的 oauth2 授权的lib。当时本来想找个开源的，没找到。之后也会开源到github上。借鉴了 <a href="https://github.com/Filsh/yii2-oauth2-server" target="_blank" rel="external">Filsh/yii2-oauth2-server</a> 项目。</p>
+<p>后端做完后，需要前端展示出来，于是先学了android的一些基础知识（以前有java web开发经历），然后重点了解：<code>Fragment</code> <code>RecyclerView</code> <code>WebView</code>，然后途中了解到 Rxjava，又对它进行了解学习并使用。</p>
+<p>这年代学习js，<code>npm</code>，<code>webpack</code>都是必知必会的。</p>
+<p>js框架方面，选择目前最火也最好用的 <code>Vue</code>，这部分知识还是学习中，产出的唯一成果就是<a href="http://m.jiasux.com/#/share" target="_blank" rel="external">这个页面</a> <code>http://m.jiasux.com/#/share</code></p>
+<p>当然css的布局样式，怎么也没有办法绕过去了（我以前最讨厌的东西，各种浮动让我烦躁）。还好现在工作几年有了耐心，然后又出现了 <code>flex</code> 这种新的布局方案。<br>现在css的写法也是种类繁多，我学习了其中一种<code>less</code>，因为使用的开源项目中采用了该技术。</p>
+<h1 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h1><p>最近有些朋友一直再问我，<code>Payment</code> 项目的文档什么时候补全，放心，不会弃坑的。目前已经全部介入支付宝的新版本支付接口。</p>
+<p>后期会先从后段开始写，然后写前端。之后逐步记录每一次迭代时就按照开发顺序来进行。也希望大家能够持续关注这个产品，给我提出更好的意见。</p>
+<p>如果你对我的内容感兴趣，请关注我的微信公众号：</p>
+<p>公众号：<code>icanfo</code></p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/mp-qr.jpg" alt="image"></p>
+<p>个人博客：<a href="https://helei112g.github.io/">https://helei112g.github.io/</a></p>
 ]]></content>
     </entry>
     
