@@ -4,6 +4,63 @@
   
     
     <entry>
+      <title><![CDATA[后端开发者从零做一个移动应用（后端篇）]]></title>
+      <url>https://helei112g.github.io/2017/07/16/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85%E4%BB%8E%E9%9B%B6%E5%81%9A%E4%B8%80%E4%B8%AA%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8%EF%BC%88%E5%90%8E%E7%AB%AF%E7%AF%87%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p>后端开发，不手摸手，也不嘴对嘴。只想写好代码<br><a id="more"></a></p>
+<p>先来上一张前端页面的效果图（Vue + Vux + Vuex + Vue-Router）。<br><img src="http://ol59nqr1i.bkt.clouddn.com/x-app-1.gif" alt="image"></p>
+<p><strong> 第一次做gif 没什么经验，太大了。加载慢 </strong></p>
+<p>项目地址： <code>http://m.jiasux.com</code>  ，大家可以自行手机打开查看效果。</p>
+<hr>
+<p>好了，废话少说，来聊聊后端</p>
+<p>后端写些什么，什么东西写出来对我是更好的总结，也是对大家更好的帮助？在准备写的时候，我思考了很久。</p>
+<p>之前准备了 <code>手摸手，嘴对嘴</code> 教程。想一想这样子没什么意思，如果是一步步做的教程还不如看视频去，就想也许通过总结后端结构（注意是结构不是架构）设计、代码组织、模块划分对大家更有帮助。</p>
+<h1 id="后端开发的疑惑"><a href="#后端开发的疑惑" class="headerlink" title="后端开发的疑惑"></a>后端开发的疑惑</h1><p>后端开发最常面对的一个问题：性能、高并发等等。但是这不在本文的讨论范围，我们只讲基本的怎么把代码写好，如何把业务模块划分好。</p>
+<p>性能、高并发的解决方案， 大部分是在代码之外的扩展。</p>
+<p>那么站在纯粹的 <code>写代码</code> 角度，如何写好后端的代码呢？我以前的疑惑常常有：Controller 层到底放哪些代码？Model 又可以做哪些事情？自己的一些扩展、工具类，该如何组织？</p>
+<p><em>发现现在能够想起的疑惑变少了，如果你有什么疑惑，欢迎留言我们一起学习讨论</em></p>
+<p>虽然代码主要是实现业务逻辑，但是选择一款好的框架，非常有助于提升团队作业能力，让代码层面的性能无忧。</p>
+<h1 id="框架的选择"><a href="#框架的选择" class="headerlink" title="框架的选择"></a>框架的选择</h1><p>说实话，自感 <code>php7</code> 出来后，代码层面的性能，已经到了一个非常高的层度。基本上在百万级别左右的系统，在语言层面没有什么顾虑了。</p>
+<p>框架方面，自己用过的php框架包括（时间先后）：<code>ThinkPHP</code> <code>Laravel</code> <code>非著名自造框架</code> <code>Yii</code> <code>Phalcon</code></p>
+<p>本文所有代码结构设计与组织设计基于 <code>Phalcon</code> ，其它除了 <code>自造框架</code> 都是非常优秀的框架，不过框架层面的性能，就自身而言，是逐步升高。但是通过一些整合，也可以逐步提升其自身性能，如：<code>Laravel</code> <code>Yii</code>与<code>Swoole</code>结合，也可达到 <code>Phalcon</code> 的程度。</p>
+<p>php的版本是：7.1（如果你是一个新项目，一定要用php7）</p>
+<h1 id="后端要做些什么"><a href="#后端要做些什么" class="headerlink" title="后端要做些什么"></a>后端要做些什么</h1><p>当然肯定需要先把db设计好，不过这不在我们讨论范围，假设已经完成了这一步。</p>
+<p>我们的代码需要提供以下几部分能力：命令行脚本、api版本、后台管理这三部分。当然这三部分也可以拆分成三个项目，不过小公司、小项目没有必要（放在一个项目，加强了代码的复用性）</p>
+<p>这三个是大的模块，然后再一个个接下来分析。</p>
+<h2 id="命令行脚本"><a href="#命令行脚本" class="headerlink" title="命令行脚本"></a>命令行脚本</h2><p>先说 <strong>命令行脚本</strong> 它是比较独立的部分，不需要用户调用，主要用来完成一些定时任务等。现代一点的框架，都提供这个模块。<br>Phalcon提供了一个 <a href="https://docs.phalconphp.com/zh/3.2/application-cli" target="_blank" rel="external"><code>CLI</code></a> 模块，可以方便的完成这部分能力。他的代码写起来还是 mvc 的结构，只不过访问是通过命令行来进行。</p>
+<p>比如一个最简单的 cli<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainTask</span> <span class="keyword">extends</span> <span class="title">Task</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">mainAction</span><span class="params">()</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> fwrite(\STDOUT, <span class="string">'hello task!'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="api模块"><a href="#api模块" class="headerlink" title="api模块"></a>api模块</h2><p>我在最早接触api概念的时候，很懵逼，觉得很高大上。现在我对它的理解就是：前后端纯数据通信的一种方式。以前做web开发，我们不提供api，直接后段把数据渲染在页面上，用户直接在渲染的界面上操作，然后通过按钮或者什么触发一个请求到后端。</p>
+<p>而到了api时代，在web方面有了前后端分离概念；移动app后端更是无力渲染（天然前后端分离）。所以要后台需要把数据发给前端，前端根据数据的描述把数据用用户看得懂的方式展现出来。比如一个商品的api可能结构如下：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    code: 1,</span><br><span class="line">    msg: 'query ok',</span><br><span class="line">    data: &#123;</span><br><span class="line">        name: '最凉快的空调',</span><br><span class="line">        price: '9999.00',</span><br><span class="line">        img: 'xxx.webp',</span><br><span class="line">        stock: '10'</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这种方式让前后端的开发彼此独立，大家专注做自己的事情。但是这也带来另外一个问题：前端有了所谓的版本，后端必须兼顾所有使用的版本。如果我们永远只使用一个api地址。那么代码可能会相当难看。</p>
+<p>比如现在有了一个新的需求，以前 空调 只有一张图片。现在空调展示的时候有多张图片。那么有两种办法，一种是增加字段，一种是将原字段 <code>img</code> 变为一个数组。</p>
+<p>如果是增加字段不会带来兼容性的问题。但是如果是粗暴的将img类型变更为数组，之前的版本将无法解析这个类型，因此要想变为数组，只能是api的整体升级（一般不会因为这个问题就进行升级）。</p>
+<p>那么api做版本有哪些办法呢？我采用了Phalcon的模块来做api的版本控制。以前还尝试过控制器版本。比如：<br><code>ApiV1Controller</code> 表示这是v1版本。<code>ApiV2Controller</code>表示是v2版本。Phalcon的模块为版本提供了非常大的便利，直接新开一个模块，取名 <code>v1</code>，如果之后要升级，新开一个模块叫做 <code>v2</code>。对于不需要修改的功能，可以简单的让v2控制器继承v1中的控制器。</p>
+<p>api的版本方面，我们就可以简单通过url的方式完成，比如：</p>
+<ul>
+<li><a href="https://api.xxx.com/v1/user/123" target="_blank" rel="external">https://api.xxx.com/v1/user/123</a></li>
+<li><a href="https://api.xxx.com/v2/user/123" target="_blank" rel="external">https://api.xxx.com/v2/user/123</a><br>版本信息就非常的一目了然。</li>
+</ul>
+<h2 id="后台管理"><a href="#后台管理" class="headerlink" title="后台管理"></a>后台管理</h2><p>绝大部分系统，都需要一个cms来上传、修改相关资料。以加速侠为例：需要上传游戏，需要编辑一些游戏合辑等。你可以单独成一个项目，也可以还是用模块来进行开发（我推荐，极大程度的提供了代码复用）。</p>
+<p>我最不能接受的一句话是：后台顺便弄一下，反正给公司内部用的。</p>
+<p>做为一个有追求的程序员，我们必须要有底线，我们的目标是：让大家工作起来更便捷，更轻松，最后让大家没有工作（哈哈哈）。所以后台我也建议采用前后端分离，通过Vue来进行开发。</p>
+<p>当前的后台使用了 Vue + Element UI + Vuex + Vue-Roter来进行开发。参考了，网络上的： <a href="https://segmentfault.com/a/1190000009275424" target="_blank" rel="external">手摸手，带你用vue撸后台</a>，写的真不错，为我学习省了很多弯路，特别是前端在权限控制上这一部分，他的方式让我眼前一亮。我的后台现在才刚刚搭建完基本的部分（路由规划、一些自己扩展的vue插件）<br><img src="http://ol59nqr1i.bkt.clouddn.com/vue-control.jpeg" alt="image"></p>
+<p>前后端分离后，后段其实也可以归结到api的开发部分。并且这样带来的一个好处是：如果以后后段要做移动版的一些功能，api都是现成的。</p>
+<h1 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h1><p>写代码越久，越发现语言层面的东西，只要多动手，很快就能达到一个水平。但是业务代码写的再多，也不能让你再技术领域走的更远。因此如果你有幸在大公司，有机会接触大型项目（百万、千万用户级）的，一定好好观察为了这个项目这么多人开发，还能够很好的运作？他是如何解耦业务逻辑与系统架构？如果是在小的公司，那么就尽可能自己尝试去做一些系统的搭建，让大家在这个基础上进行业务开发，而不需要关心一些底层的东西，一个新手也能很快上手写业务。</p>
+<p>后面可能还会有两篇到四篇讲后端部分。主要包括，后端项目结构的划分（这个结构我已经尝试过在3、4个项目中使用，目前都运行的很好），后端登陆控制（会开源一个Phalcon的oauth2的代码），后段api的自动化测试。</p>
+<p>相关代码我将会陆续放在github上面。所有的代码就叫 <code>x-</code> 吧。x 从小学数学给我留下了深刻印象。</p>
+<ul>
+<li>x-api  是php的后端项目</li>
+<li>x-control 是vue写的后端管理系统</li>
+<li>x-client 是vue系的客户端界面</li>
+</ul>
+<hr>
+<p>如果你对我的内容感兴趣，请关注我的微信公众号：</p>
+<p>公众号：<code>icanfo</code></p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/mp-qr.jpg" alt="image"></p>
+<p>个人博客：<a href="https://helei112g.github.io/">https://helei112g.github.io/</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[后端开发者从零做一个移动应用（一）]]></title>
       <url>https://helei112g.github.io/2017/06/24/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85%E4%BB%8E%E9%9B%B6%E5%81%9A%E4%B8%80%E4%B8%AA%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8%EF%BC%88%E4%B8%80%EF%BC%89/</url>
       <content type="html"><![CDATA[<p>移动互联网时代，我不想只当一个后端工程师<br><a id="more"></a></p>
