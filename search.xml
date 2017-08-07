@@ -4,6 +4,66 @@
   
     
     <entry>
+      <title><![CDATA[PHP后端该如何组织项目结构]]></title>
+      <url>https://helei112g.github.io/2017/08/07/PHP%E5%90%8E%E7%AB%AF%E8%AF%A5%E5%A6%82%E4%BD%95%E7%BB%84%E7%BB%87%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84/</url>
+      <content type="html"><![CDATA[<p>全栈系列后端项目结构的思考，不夸夸其谈，只想写好代码。<br><a id="more"></a></p>
+<p>这是 <strong>后端开发者从零做一个移动应用</strong> 的后端部分第二篇。介绍下一个新项目，后端该如何从零去搭建。我们先假设这个项目由两部组成</p>
+<ul>
+<li>提供给wap站点、app使用的api；</li>
+<li>提供给运营人员使用的管理后台。</li>
+</ul>
+<p>整个项目采用 Phalcon，项目的demo可以 <a href="https://github.com/helei112g/x-api" target="_blank" rel="external">点这里</a> 参阅</p>
+<p><em>备注：跟随文章进度，项目持续更新，最后会与配套的wap app形成一个整体</em></p>
+<p>项目最终至少会包含以下内容：</p>
+<ul>
+<li>小米消息推送</li>
+<li>支付集成（支付宝、招商、微信）</li>
+<li>基于 Codeception 的api测试</li>
+<li>登陆api（这部分采用oauth2，会基于 ‘bshaffer/oauth2-server-php’ 做）</li>
+</ul>
+<h1 id="项目结构回顾"><a href="#项目结构回顾" class="headerlink" title="项目结构回顾"></a>项目结构回顾</h1><p>后端系统一般都是采用 MVC 结构（这里均以PHP为例），M 代表模型，V 代表视图，C 代表控制器。我在啰嗦几句</p>
+<blockquote>
+<p>Model指的是数据模型，这个数据模型包括你的Mysql中的表结构，或者redis的缓存对象结构都可以。它代表一个数据操作单元。</p>
+<p>View指的展示给用户浏览、直接操作的界面，这个大家都懂，不多说</p>
+<p>Controller 控制器，主要是为了隔离 View 与 Model 直接打交道，他做为一个中间人，两头传递小纸条。</p>
+</blockquote>
+<p>在我过往的项目中，我主要的困惑在于，业务逻辑是放在 C 还是放在 M。</p>
+<p>从对象角度出发，业务逻辑无非就是操作数据，要么读取，要么修改，那么应该放在M层，因为一个对象应该有自己的属性与方法。</p>
+<h2 id="业务放在M中"><a href="#业务放在M中" class="headerlink" title="业务放在M中"></a>业务放在M中</h2><p>实际工作中我们常常有这样的场景，比如：读取一个游戏列表数据，数据包括游戏的详情以及游戏的版本信息以及下载信息。因为游戏app会存在升级，因此一个游戏会对应多个包。那么这里至少存在两个model</p>
+<ul>
+<li>游戏详情model，包括游戏的名称，logo等基本信息</li>
+<li>游戏的包信息model，包括包所属平台，大小，下载地址，版本信息等</li>
+</ul>
+<p>那么这个动作的方法应该封装在哪里呢？以前的做法是，分别封装对应的操作到对应的model，然后在控制器中分别调用。说回到这里，游戏model封装了查询游戏列表的method，然后包model封装了根据游戏id查询包信息的method。</p>
+<p>然后我们在控制器中分别调用这个两个方法，然后再进行组装，把游戏对应的包设置到对应的游戏中。</p>
+<p>那么有一个问题，假设我们在游戏详情这个控制器方法中，需要返回一个相关游戏的集合，难道又重复一次上面的操作？<br><em>有人会说把处理游戏部分抽离成一个公共方法，那么假设是要在新闻详情里边调用呢？这根本不该在同一个控制器里边啊！</em></p>
+<h2 id="业务放在C中"><a href="#业务放在C中" class="headerlink" title="业务放在C中"></a>业务放在C中</h2><p>上面我们把方法放在model中遇到了复用的小麻烦，那么继续看看放到controller中会怎样？</p>
+<p>这个时候的一个好处是：我们可以使用连接查询，将刚刚的2次查询，通过连接查询1次完成，对于mysql的时间减少了，程序性能提升，然后对查询结果啪啪啪处理完成。</p>
+<p>好吧，不往后面说了，相信大家已经发现了，这个查询过程还是不可复用。自然而然的，我们这里应该想到，将它提炼成一个方法，无法满足其他控制器使用（一个控制器调用另外一个控制器的想法想都别想啊）。那么只能提炼成一个类了，这个类来封装所有的业务。</p>
+<p>这样之后，任何需要游戏列表数据的地方，直接调用这个GameServer（假设封装的业务逻辑都放在xxxServer中）就可以获得相同的数据，然后如果业务变动，我们也只需要改动这一处，所有地方得到的数据也将会是一致的。</p>
+<p>因此通过回顾，我们得出我们的后端项目需要一个server的层次，来存放业务逻辑。</p>
+<h2 id="Server层存在的意义"><a href="#Server层存在的意义" class="headerlink" title="Server层存在的意义"></a>Server层存在的意义</h2><p>分离出来的这一层，集中涵盖了所有的业务功能，极大的提高了代码的复用性，除了不同控制器不同方法的直接使用，还包括了不同模块之间的复用。</p>
+<p>但是在不同模块之前服用，server层也需要考虑一些额外的东西，比如我们有一个app api模块，有一个后台管理模块。那么都是获取列表数据，可能给app api模块可能不需要某些字段，但是后台管理需要知悉全部内容，以及后台用户权限上的一些问题。这些部分可以继续进行拆分，与server组合。需要结合自己的业务来进行管理。</p>
+<p>我个人实践过程中代码的另外一个好处是，server层从某种层度上让C层变得简单，这让团队中的新人能够快速上手接触代码。比如小明是团队新人，那么在他熟悉所使用框架的前提下，他可以立刻在C层开始做事情，因为这里没有业务，有的只是验证客户端传过来的数据，以及对server层的调用返回。通过这个过程可以加速其融入团队的进程。</p>
+<h1 id="统一的返回格式"><a href="#统一的返回格式" class="headerlink" title="统一的返回格式"></a>统一的返回格式</h1><p>约定api返回的数据格式，这基本上是系统开发开始的第一步，原先常用的方式就是在每个控制器中通过<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">return json_encode([</span><br><span class="line">    &apos;msg&apos; =&gt; &apos;ok&apos;,// 携带的信息，可以用来前端 alert 提示用户</span><br><span class="line">    &apos;data&apos; =&gt; [// 具体数据</span><br><span class="line">        ... ...</span><br><span class="line">    ],</span><br><span class="line">    &apos;code&apos; =&gt; &apos;0&apos;, // 0表示成功，其他表示对应错误</span><br><span class="line">])</span><br></pre></td></tr></table></figure></p>
+<p>那么这里首先遇到的第一个问题，为了简化前端对类型的判断，基本上所有的字段值，都是返回字符串形式。那么 data 里边的内容就需要在每个控制器中进行处理字符串、utf-8编码等问题。要重复代码，就算你抽离成一个方法，也需要面对该问题。好点的解决方案是在返回数据的拦截器（每一个框架都有类似的概念）内进行统一的处理。</p>
+<p>像上面这样的代码写法，带来的额外问题可能有，字段名称打错，比如： code 写成 cdoe ，data 写成 date。为程序代码额外的风险（尤其是bug修复时最容易出现该情况）</p>
+<p>那么一种解决办法就该由此想到，采用对象的方式来规范化返回的数据结构。比如我们定义一个类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">class ResultData &#123;</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 返回的信息提示</span><br><span class="line">     * @var string $msg</span><br><span class="line">     */</span><br><span class="line">    private $msg;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 返回的数据结构</span><br><span class="line">     * @var array|object|string</span><br><span class="line">     */</span><br><span class="line">    private $data;</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * api 状态码</span><br><span class="line">     * @var int $apiCode</span><br><span class="line">     * @see ApiCode</span><br><span class="line">     */</span><br><span class="line">    private $apiCode;</span><br><span class="line">    </span><br><span class="line">    public function __construct(int $apiCode, string $msg = &apos;ok&apos;, $data = null)</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;apiCode = strval($apiCode);</span><br><span class="line">        $this-&gt;msg = trim(strval($msg));</span><br><span class="line">        $this-&gt;data = $data;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 获取数据结果</span><br><span class="line">     * @return array</span><br><span class="line">     */</span><br><span class="line">    public function getRetData()</span><br><span class="line">    &#123;</span><br><span class="line">        if (! is_array($this-&gt;data) &amp;&amp; is_object($this-&gt;data) &amp;&amp; method_exists($this-&gt;data, &apos;toArray&apos;)) &#123;</span><br><span class="line">            $this-&gt;data = $this-&gt;data-&gt;toArray();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // valueToString 将data的value转化为 string 并且做utf-8转码</span><br><span class="line">        $result = [</span><br><span class="line">            &apos;code&apos; =&gt; $this-&gt;apiCode,</span><br><span class="line">            &apos;msg&apos; =&gt; $this-&gt;msg,</span><br><span class="line">            &apos;data&apos; =&gt; $this-&gt;data ? ArrayUtil::valueToString($this-&gt;data) : [],</span><br><span class="line">        ];</span><br><span class="line"></span><br><span class="line">        if (! APP_ENV_PROD) &#123;// 测试环境显示 api 的处理时间信息 方便优化</span><br><span class="line">            $result[&apos;use_time&apos;] = microtime(true) - $_SERVER[&apos;REQUEST_TIME_FLOAT&apos;];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return $result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有了上面这个类，我们所有的服务层或者controller都应该用它作为返回值。然后在拦截器中统一进行json encode即可。这样子即减少了犯错的可能性，同时对统一处理数据的地方做了统一管理集中到 ResultData 中，那么以后有什么特殊变动，调整一处，处处生效。</p>
+<h1 id="其它问题"><a href="#其它问题" class="headerlink" title="其它问题"></a>其它问题</h1><p>另外还有关于 oauth2 如何集成到项目中等等问题，这部分均放到 x-api 项目中进行说明，纸上说来终觉浅嘛。</p>
+<p>日志的记录也是系统开发非常重要的部分，这部分没什么太多说的，用规范的格式，存储指定的数据（介质可以是：db、file）。</p>
+<p>系统开发中应该拒绝使用 <code>var_dump</code>、<code>echo</code> 这些方式进行调试，另外建议采用：PhpStorm IDE来进行系统开发。</p>
+<h1 id="后续分享"><a href="#后续分享" class="headerlink" title="后续分享"></a>后续分享</h1><p>接下来会完善一个 <code>x-api</code> 的基本结构，以及php自动化测试部分文档教程，然后后端部分就告一段落。（本系列的分享主要集中在代码层面，不涉及相关系统部署问题）</p>
+<hr>
+<p>如果你对我的内容感兴趣，请关注我的微信公众号：</p>
+<p>公众号：<code>icanfo</code></p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/mp-qr.jpg" alt="image"></p>
+<p>个人博客：<a href="https://helei112g.github.io/">https://helei112g.github.io/</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[后端开发者从零做一个移动应用（后端篇）]]></title>
       <url>https://helei112g.github.io/2017/07/16/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85%E4%BB%8E%E9%9B%B6%E5%81%9A%E4%B8%80%E4%B8%AA%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8%EF%BC%88%E5%90%8E%E7%AB%AF%E7%AF%87%EF%BC%89/</url>
       <content type="html"><![CDATA[<p>后端开发，不手摸手，也不嘴对嘴。只想写好代码<br><a id="more"></a></p>
