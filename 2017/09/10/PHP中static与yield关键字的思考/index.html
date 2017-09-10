@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="He Lei">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="PHP中static与yield关键字的思考"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://helei112g.github.ioundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>大愚的博客｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">PHP中static与yield关键字的思考</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:dayugog@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2017-09-10</span>
+            <span class="time">17:45:38</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/coding/">coding</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/php/">#php</a> <a class="tag" href="/tags/语言技巧/">#语言技巧</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>语言的本身，远远重要于其它。<br><a id="more"></a></p>
+<p>你以为你知道了一切，只是你以为而已。知识的美妙就在于，一生的时光在它面前显得多么的短暂。</p>
+<p>嗯嗯，扯远了，我今天只想说说：<strong>static</strong> 与 <strong>yield</strong>。</p>
+<p>先来说说 <code>static</code> 关键字。本篇只讲静态方法的使用与后期绑定的知识点。</p>
+<h1 id="static-什么时候用来修饰方法"><a href="#static-什么时候用来修饰方法" class="headerlink" title="static 什么时候用来修饰方法"></a>static 什么时候用来修饰方法</h1><p><code>static</code> 关键字大家都知道是用来修饰方法与属性的。 那么大家在项目中会在哪些场景下使用它？</p>
+<p>我遇到过几个项目，要求所有的方法全部 <code>static</code> 化，当然控制器方法不能这么干。原因之一就是：静态方法执行效率高？那么我们基于此来分析一下。</p>
+<p>首先执行效率高我是没有意见的。哪么是不是因为它效率高，就该毫无节制的使用在项目中？讨论这个问题先来回顾下编程语言的历史。在早一点的时候，还没有面向对象，采用的都是结构化编程，当时基本上所有的方法都是 <strong>静态方法</strong>，然后有了面向对象，产生了实例化的概念。</p>
+<p>从上面简短的发展过程可以看出，如果仅仅为了性能，哪么面向对象好像没有存在的必要。那么这些大师为了要在 <code>c++</code> <code>java</code> 这些语言中引入面向对象、引入实例化的感念呢？我觉得是因为伴随发展，项目越来越大，需要更好的组织代码方式与编程思维。</p>
+<p>再回过头来看 <code>static</code> ，它定义的静态方法，效率确实高，但是会持续占用内存，只有在程序退出时才结束生命周期，期间无法进行销毁等副作用是其一；其二从设计模式上来说，它具有强耦合性，外部可修改 static 属性；其三static定义的方法没有办法override来重写，ioc di等概念无用武之地；其四在进行单元测试时，静态方法让人头痛。</p>
+<p>那么通过上面所说，感觉以后还是别用 <strong>static</strong> 方法了，老老实实的实例化然后调用方法？咱们得理性，不能极端到什么地方都用，也不能一丁点都不用。一句话：学会面向对象的方式来思考。我们写代码的第一考虑点我觉得是：可扩展性（应对业务快速变化），可维护性（线上问题及时修复）。高效率应该是最后再来考虑（因为优化效率的手段非常之多，并不一定非要给每个方法加个: static）。如果从面向对象的角度出发，这个方法完全独立跟类属性无关，那么就用 <strong>static</strong> 吧。</p>
+<p>总之是站在面向对象的角度，软件设计的层次来考虑语法的使用，而不是为了效率破坏掉代码的美。</p>
+<h1 id="static-后期静态绑定"><a href="#static-后期静态绑定" class="headerlink" title="static 后期静态绑定"></a>static 后期静态绑定</h1><p>这一点php的文档做了详细的介绍，但是我以前一直很少关注这个地方，基本上都是使用 <code>self::</code> 的方式进行静态方法与属性的调用。</p>
+<p>我觉得后期绑定某种程度上，像是静态方法的重载。这里贴出 php 文档中的例子来进行一下讲述<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">who</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="keyword">__CLASS__</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">self</span>::who();</span><br><span class="line">        <span class="keyword">static</span>::who();<span class="comment">// 后期静态绑定</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">who</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="keyword">__CLASS__</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">B::test();</span><br></pre></td></tr></table></figure></p>
+<p>如果是 <code>self::who()</code> 调用，会输出：<strong>A</strong>。如果是 <code>static::who()</code> 会输出 <strong>B</strong></p>
+<p>这样来看，是不是相当于 class B重写了父类 A 的 <code>who()</code> 方法？那么如果灵活使用这个特性，可以让 static 具备更强的灵活性。充分发挥其性能优势，又能解决扩展性差的问题。当然还是一样，要从面向对象的角度出发，一切适可而止。</p>
+<h1 id="PHP-中-yield-的使用场景"><a href="#PHP-中-yield-的使用场景" class="headerlink" title="PHP 中 yield 的使用场景"></a>PHP 中 yield 的使用场景</h1><p>说实话，很长一段时间我并不知道 <code>php</code> 还有这么个语法。直到有一天我在 js 中遇到了这个关键字，感觉这么不明觉厉的东西，世界上最好的语言怎么没有？回头看文档，真有，不愧为世界上最好的语言。</p>
+<p>那么 <strong>yield</strong> 的使用场景是什么？刚好最近有人 sg 上面问道我，借此整理一下。希望大家能够将它更多的结合自己的业务进行使用。这里不会进行 <code>yield</code> 与 <code>Iterator</code> 的比较。相信看完后，你能够明了二者的谁更简介。</p>
+<p>先说它的使用场景，还是得先回顾历史，在没有 yield 之前，我们要生成一个数组，只能一次性把所有内容全部读入内存（当然也可以通过实现 <code>Iterator</code>接口实现一个迭代）。有了 <code>yield</code> 之后，我们可以通过一个简单的 <code>yield</code> 关键字，完成一个数组的生成，并且是用到的时候才会产生值，相对而言内存占用肯定会下降。空口无凭，咱们下面通过代码实际检验一下上面的结论。</p>
+<p><strong>先来看普通模式</strong><br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">generateData</span><span class="params">($max)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    $arr = [];</span><br><span class="line">    <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt;= $max; $i++) &#123;</span><br><span class="line">        $arr[] = $i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">'开始前内存占用：'</span> . memory_get_usage() . PHP_EOL;</span><br><span class="line">$data = generateData(<span class="number">100000</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">'生成完数组后内存占用：'</span> . memory_get_usage() . PHP_EOL;</span><br><span class="line"><span class="keyword">unset</span>($data);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">'释放后的内存占用：'</span> . memory_get_usage() . PHP_EOL;</span><br></pre></td></tr></table></figure></p>
+<p>运行得到结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">开始前内存占用：231528</span><br><span class="line">生成完数组后内存占用：231712</span><br><span class="line">释放后的内存占用：231576</span><br></pre></td></tr></table></figure></p>
+<p>前后的差值是：<strong>184</strong></p>
+<hr>
+<p><strong>使用yield后的效果</strong><br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">generateData</span><span class="params">($max)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt;= $max; $i++) &#123;</span><br><span class="line">      <span class="keyword">yield</span> $i;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">'开始前内存占用：'</span> . memory_get_usage() . PHP_EOL;</span><br><span class="line">$data = generateData(<span class="number">100000</span>);<span class="comment">// 这里实际上得到的是一个迭代器</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">'生成完数组后内存占用：'</span> . memory_get_usage() . PHP_EOL;</span><br><span class="line"><span class="keyword">unset</span>($data);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">'释放后的内存占用：'</span> . memory_get_usage() . PHP_EOL;</span><br></pre></td></tr></table></figure></p>
+<p>运行结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">开始前内存占用：228968</span><br><span class="line">生成完数组后内存占用：229824</span><br><span class="line">释放后的内存占用：229016</span><br></pre></td></tr></table></figure></p>
+<p>前后的差值是：<strong>856</strong></p>
+<p>奇怪，使用了 <strong>yield</strong> 后，内存占用反而上升了，这是什么鬼？别急。上面我们参数传入的是 <strong>1,000,00</strong>，我现在将传入参数改成改成 <strong>1,000,000</strong>试试。</p>
+<p>第一个方法得到的结果是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">开始前内存占用：231528</span><br><span class="line"></span><br><span class="line">Fatal error: Allowed memory size of 134217728 bytes exhausted (tried to allocate 32 bytes) in /test/yield.php on line 6</span><br></pre></td></tr></table></figure></p>
+<p>看了吧，一百万次的循环时，一次性载入内存，超出了限制。那么再来看 yield 的执行结果:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">开始前内存占用：228968</span><br><span class="line">生成完数组后内存占用：229824</span><br><span class="line">释放后的内存占用：229016</span><br></pre></td></tr></table></figure></p>
+<p>前后的差值依然是：<strong>856</strong></p>
+<p>好了到这里，应该看出来了，<strong>yield</strong>无论数组大小，占用均是 <strong>856</strong> ，这是因为它自身，它在你进行迭代的时候才会产生真实数据。</p>
+<p>所以如果你的数据来源非常大，那么用 yield 吧。如果数据来源很小，当然选择一次载入内存。</p>
+<hr>
+<p>如果你对我的内容感兴趣，请关注我的微信公众号：</p>
+<p>公众号：<code>icanfo</code></p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/mp-qr.jpg" alt="image"></p>
+<p>GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p>
+<p><strong>我在github开源了支付宝支付、微信支付、招商一网通支付的php sdk。希望能够帮助你提升项目开发的效率。<a href="https://github.com/helei112g/payment" target="_blank" rel="external">项目地址</a></strong></p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
