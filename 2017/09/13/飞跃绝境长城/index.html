@@ -111,7 +111,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2017-09-13</span>
-            <span class="time">09:43:27</span>
+            <span class="time">09:59:48</span>
           </span>
           
           <!--  Categories  -->
@@ -233,7 +233,7 @@
 <h1 id="防火墙与路由转发"><a href="#防火墙与路由转发" class="headerlink" title="防火墙与路由转发"></a>防火墙与路由转发</h1><p><strong>！！！如果你用的是 CentOS7 以上的操作系统，下面部分不适合你</strong></p>
 <p>首先关闭SELinux：<code>SELINUX=disabled</code></p>
 <p>配置防火墙，准许 <code>1194</code> 端口通过，如果你修改了默认端口，这里记得修改<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -I INPUT -p tcp --dport 1194 -m comment --comment &quot;openvpn&quot; -j ACCEPT</span><br></pre></td></tr></table></figure></p>
-<p>允许vpn客户端所在网段流量转发到其它网卡<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-I FORWARD -s 10.8.0.0/24 -j ACCEPT</span><br></pre></td></tr></table></figure></p>
+<p>允许vpn客户端所在网段流量转发到其它网卡<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -I FORWARD -s 10.8.0.0/24 -j ACCEPT</span><br></pre></td></tr></table></figure></p>
 <p>将 vpn 流量转到eth0网卡上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j  MASQUERADE</span><br></pre></td></tr></table></figure></p>
 <p>保存配置结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/iptables save</span><br></pre></td></tr></table></figure></p>
 <p>开启路由转发<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -i &apos;/net.ipv4.ip_forward/s/0/1/&apos; /etc/sysctl.conf</span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure></p>
