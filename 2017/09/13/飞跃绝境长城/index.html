@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="He Lei">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="飞跃绝境长城"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://helei112g.github.ioundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>大愚的博客｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">飞跃绝境长城</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:dayugog@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2017-09-13</span>
+            <span class="time">09:43:27</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/科学上网/">科学上网</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/翻墙/">#翻墙</a> <a class="tag" href="/tags/科学上网/">#科学上网</a> <a class="tag" href="/tags/openvpn/">#openvpn</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>首发微信公众号，结果被删除了。所以博客还是得坚持<br><a id="more"></a></p>
+<p>《冰与火之歌》中有一道绝境长成保护着七国子民。我们也有一道绝境长成，给我们打造良好健康的信息环境。</p>
+<p>不过我们程序员想用github快一点，google查询资料全一点，怎么破？我今天将把走出绝境长成的地图交给你们。</p>
+<blockquote>
+<p>记得收藏保存，万一被删了呢。</p>
+</blockquote>
+<h1 id="免费方案"><a href="#免费方案" class="headerlink" title="免费方案"></a>免费方案</h1><p>用的最多的就是蓝灯，下载地址：<a href="https://github.com/getlantern/forum" target="_blank" rel="external">https://github.com/getlantern/forum</a></p>
+<p>另外还有个集合大全：<a href="https://github.com/bannedbook/fanqiang/wiki" target="_blank" rel="external">https://github.com/bannedbook/fanqiang/wiki</a></p>
+<p>下面开始我要开始进行openvpn的翻墙技术交流了，通过 openvpn 实现的穿越长城。</p>
+<h1 id="OpenVPN"><a href="#OpenVPN" class="headerlink" title="OpenVPN"></a>OpenVPN</h1><blockquote>
+<p>OpenVPN 是一个用于创建虚拟专用网络加密通道的软件包，最早由James Yonan编写。OpenVPN允许创建的VPN使用公开密钥、电子证书、或者用户名／密码来进行身份验证。</p>
+<p>它大量使用了OpenSSL加密库中的SSLv3/TLSv1协议函数库。</p>
+</blockquote>
+<p>OpenVPN 实现翻墙的原理是它虚拟了一张网卡，客户端所有的请求通过这张网卡的包装进行重新的请求与接受。从而完成翻墙。下面来看具体的操作。</p>
+<h2 id="安装-OpenVPN"><a href="#安装-OpenVPN" class="headerlink" title="安装 OpenVPN"></a>安装 OpenVPN</h2><p>为了详细说明每一个软件的安装原因，我将会按照依次顺序进行，每一个可能的错误尽可能展示。</p>
+<p>安装的环境:</p>
+<ul>
+<li>CentOS: 6.8 64位</li>
+<li>1核  1G内存</li>
+<li>服务器位置：香港</li>
+</ul>
+<p><strong>下载：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://swupdate.openvpn.org/community/releases/openvpn-2.4.3.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p><strong>解压：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf openvpn-2.4.3.tar.gz &amp;&amp; cd openvpn-2.4.3</span><br></pre></td></tr></table></figure></p>
+<p><strong>生成Makefile，为编译做准备：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure --prefix=/usr/local/openvpn</span><br></pre></td></tr></table></figure></p>
+<p>第一个报错：</p>
+<blockquote>
+<p>checking for SSL_CTX_new… no</p>
+<p>configure: error: openssl check failed</p>
+</blockquote>
+<p><strong>错误原因：</strong> 没有 <code>openssl</code> 服务，安装： <code>yum install openssl openssl-devel -y</code></p>
+<p>第二次执行： <code>./configure --prefix=/usr/local/openvpn</code></p>
+<p>第二个报错：</p>
+<blockquote>
+<p>configure: error: lzo enabled but missing</p>
+</blockquote>
+<p>因为 openvpn 会用到 <code>lzo</code> 压缩算法。安装：<code>yum install lzo lzo-devel -y</code></p>
+<p>第三次执行：<code>./configure --prefix=/usr/local/openvpn</code></p>
+<p>第三个报错：</p>
+<blockquote>
+<p>configure: error: libpam required but missing</p>
+</blockquote>
+<p>根据提示安装 <code>yum install pam pam-devel -y</code></p>
+<p>再次执行：<code>./configure --prefix=/usr/local/openvpn</code></p>
+<p>成功运行，生成了编译需要的 Makefile，进行编译安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure></p>
+<p><strong>备注：在安装 openall lzo pam 的时候，我们同时安装了 *-devel 包。该包是开发库，一般编译软件的时候都需要。大家也可以试试看不安装是否报错，报错的时候在装上去</strong></p>
+<h2 id="加密证书生成"><a href="#加密证书生成" class="headerlink" title="加密证书生成"></a>加密证书生成</h2><p>为了确保数据交互的安全，在客户端与服务端交互时，需要进行加密，签名等操作。在进行这一步前我们需要生成供客户端、服务端使用的相关证书。证书生成工具 <code>easy-rsa</code></p>
+<p><strong>准备工作</strong>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/OpenVPN/easy-rsa.git</span><br><span class="line">cd /easy-rsa/easyrsa3/</span><br><span class="line">cp vars.example vars</span><br></pre></td></tr></table></figure></p>
+<p>然后修改以下信息，主要是跟自己组织相关的信息，自己随意改<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">vim vars</span><br><span class="line"></span><br><span class="line">// 这些组织信息，根据自己的实际情况进行修改</span><br><span class="line">set_var EASYRSA_REQ_COUNTRY     &quot;CN&quot;</span><br><span class="line">set_var EASYRSA_REQ_PROVINCE    &quot;Beijing&quot;</span><br><span class="line">set_var EASYRSA_REQ_CITY        &quot;Zhao Yang&quot;</span><br><span class="line">set_var EASYRSA_REQ_ORG &quot;Ai Zhong Guo&quot;</span><br><span class="line">set_var EASYRSA_REQ_EMAIL       &quot;foo@aiguo.com&quot;</span><br><span class="line">set_var EASYRSA_REQ_OU          &quot;aiguo Openvpn&quot;</span><br></pre></td></tr></table></figure></p>
+<p><strong>创建 ca 证书</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./easyrsa init-pki</span><br><span class="line">./easyrsa build-ca</span><br></pre></td></tr></table></figure></p>
+<p>这个过程需要输入密码，与 ca 证书的名称； 请记住这个密码，后面签名服务端与客户端密钥的时候需要。<br>假设我这里是：</p>
+<ul>
+<li>名称: aiguoca</li>
+<li>密码：123456</li>
+</ul>
+<p><strong>创建服务端证书</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./easyrsa gen-req server-aiguo nopass</span><br></pre></td></tr></table></figure></p>
+<p>又需要一个名字，不能跟之前的ca冲突: aiguoserver</p>
+<p>对服务端证书签名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./easyrsa sign server server-aliguo</span><br></pre></td></tr></table></figure></p>
+<p>根据提示输入：<code>yes</code>  以及ca证书的密码：<code>123456</code></p>
+<p><strong>创建Diffie-Hellman证书</strong></p>
+<blockquote>
+<p>该证书主要作用是确保共享KEY安全穿越不安全网络</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./easyrsa gen-dh</span><br></pre></td></tr></table></figure>
+<p>这一步时间有点久。可以倒杯水在过来继续</p>
+<p><strong>创建客户端证书</strong><br>有的教程这里又 init 了一个 pki环境。其实完全没有必要。直接继续在原先的基础上继续即可。</p>
+<p>跟着我的姿势继续往下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./easyrsa gen-req client-aiguo nopass</span><br></pre></td></tr></table></figure></p>
+<p>客户端创建证书的命令是不是跟服务端创建命令很像？仅仅是取了个不同名字。当然名字还是不要跟上面用过的名字冲突就好: aiguoclient</p>
+<p>紧接着对它签名，步骤跟服务端一样。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./easyrsa sign client client-ssl</span><br></pre></td></tr></table></figure></p>
+<p>这里需要注意呃,签名的 sign 后面 server 换成了 client 。也正是基于此，才能够知晓那个是服务端证书，那个是客户端证书。签名过程中还是需要输入 <code>yes</code> 以及ca证书的密码 <code>123456</code>。</p>
+<p>至此证书生成完毕。现在开始相关配置。</p>
+<h1 id="OpenVPN-服务端配置"><a href="#OpenVPN-服务端配置" class="headerlink" title="OpenVPN 服务端配置"></a>OpenVPN 服务端配置</h1><p>准备工作已经搞定，现在来做服务端的配置，以及让他运行起来。</p>
+<p>由于我们是通过编译安装的，在 /etc/ 下面并没有 openvpn 这个目录。手动创建该目录。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /etc/openvpn/</span><br></pre></td></tr></table></figure></p>
+<p>拷贝 <code>openvpn</code> 提供的样板配置文件进去<br><code>cp sample-config-files/server.conf /etc/openvpn/</code></p>
+<p>然后把服务端需要的证书，也全部拷贝进去<br><code>cp pki/ca.crt pki/issued/server-aiguo.crt pki/private/server-aiguo.key pki/dh.pemy /etc/openvpn/</code><br>这里千万不要选错了目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ll /etc/openvpn/ </span><br><span class="line"></span><br><span class="line"># 完成后，该目录有以下文件</span><br><span class="line">-rw------- 1 root root  1159 Sep  7 13:27 ca.crt</span><br><span class="line">-rw-r--r-- 1 root root 10782 Sep  7 13:25 server.conf</span><br><span class="line">-rw------- 1 root root  4547 Sep  7 13:27 server-aiguo.crt</span><br><span class="line">-rw------- 1 root root  1708 Sep  7 13:27 server-aiguo.key</span><br></pre></td></tr></table></figure>
+<p><strong>server.conf 文件的配置</strong></p>
+<p>该文件配置项含义中文翻译，看这里： <a href="https://my.oschina.net/liucao/blog/863112" target="_blank" rel="external">https://my.oschina.net/liucao/blog/863112</a></p>
+<p>这里只讲诉几个关键配置。其他未说明的默认即可。<br>首先修改协议，建议使用 <code>tcp</code> 协议。网络上讲 <code>udp</code> 在高延时的情况下会存在很多丢包现象。</p>
+<p>配置证书路径：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ca /etc/openvpn/ca.crt</span><br><span class="line">cert /etc/openvpn/server-ssl.crt</span><br><span class="line">key /etc/openvpn/server-ssl.key</span><br><span class="line">dh /etc/openvpn/dh.pem</span><br></pre></td></tr></table></figure></p>
+<p>这里的文件路径，自己根据实际情况调整</p>
+<p>注释掉： ;tls-auth ta.key 0 。因为我们并没有生存该key文件。</p>
+<p>打开 comp-lzo 压缩</p>
+<p>日志开启到 verb 6 ，方便后续调试</p>
+<p>;explicit-exit-notify 1  注释掉，仅有 udp 才可使用</p>
+<p>设置dns<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">push &quot;dhcp-option DNS 8.8.8.8&quot;</span><br><span class="line">push &quot;dhcp-option DNS 8.8.4.4&quot;</span><br></pre></td></tr></table></figure></p>
+<p>打开 <code>duplicate-cn</code> 项，默认是关闭状态。</p>
+<p>注释 <code>explicit-exit-notify 1</code> 默认是关闭。</p>
+<p>到这一步，配置全部完成。保存退出。</p>
+<p><strong>启动服务端</strong></p>
+<p>先检查一下，可以在前台运行 openvpn 服务，检查错误以及调试：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/openvpn/sbin/openvpn --config /etc/openvpn/server.conf</span><br></pre></td></tr></table></figure></p>
+<p>以守护进行运行的命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/openvpn/sbin/openvpn --daemon --config /etc/openvpn/server.conf</span><br></pre></td></tr></table></figure></p>
+<p>这里两个命令的使用，是因为以下原因：</p>
+<ul>
+<li>本教程安装路径是 /usr/local/openvpn</li>
+<li>本教程配置都是放在 /etc/openvpn 中。</li>
+</ul>
+<p>情况不同者，根据实际情况设置即可</p>
+<h1 id="防火墙与路由转发"><a href="#防火墙与路由转发" class="headerlink" title="防火墙与路由转发"></a>防火墙与路由转发</h1><p><strong>！！！如果你用的是 CentOS7 以上的操作系统，下面部分不适合你</strong></p>
+<p>首先关闭SELinux：<code>SELINUX=disabled</code></p>
+<p>配置防火墙，准许 <code>1194</code> 端口通过，如果你修改了默认端口，这里记得修改<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -I INPUT -p tcp --dport 1194 -m comment --comment &quot;openvpn&quot; -j ACCEPT</span><br></pre></td></tr></table></figure></p>
+<p>允许vpn客户端所在网段流量转发到其它网卡<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-I FORWARD -s 10.8.0.0/24 -j ACCEPT</span><br></pre></td></tr></table></figure></p>
+<p>将 vpn 流量转到eth0网卡上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j  MASQUERADE</span><br></pre></td></tr></table></figure></p>
+<p>保存配置结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/iptables save</span><br></pre></td></tr></table></figure></p>
+<p>开启路由转发<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -i &apos;/net.ipv4.ip_forward/s/0/1/&apos; /etc/sysctl.conf</span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>sysctl -p 是查看修改后的结果，如果你看到 net.ipv4.ip_forward = 1 ，说明配置正确</p>
+</blockquote>
+<p>至此，服务器上的事情，全部搞定。下面列举一个android手机客户端的配置。其它端也是大同小异。</p>
+<h1 id="客户端-Android-的配置"><a href="#客户端-Android-的配置" class="headerlink" title="客户端 Android 的配置"></a>客户端 Android 的配置</h1><p>当我们有了服务端，它已经可以进行工作了，如果再有一个客户端，那就能够天下我有了。这里就仅以android为代表说明一下客户端配置，其它端大同小异。</p>
+<p><strong>下载开源的android客户端</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://f-droid.org/repo/de.blinkt.openvpn_153.apk</span><br></pre></td></tr></table></figure></p>
+<p>客户端的主要作用，就是用来连接上我们的服务器。</p>
+<p>将服务器上面的客户端证书拷贝到本地，我选用的是scp。任何能够完成该项任务的手段都可以。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scp root@192.168.11.11:/home/easy-rsa/easyrsa3/pki/private/client-aiguo.key ./</span><br><span class="line">scp root@192.168.11.11:/home/easy-rsa/easyrsa3/pki/issued/client-aiguo.key ./</span><br><span class="line">scp root@192.168.11.11:/home/easy-rsa/easyrsa3/pki/ca.crt ./</span><br></pre></td></tr></table></figure></p>
+<p>唯一需要注意的是，不要搞错了文件路径，这个路径根据每个人设置是不同的，不要完全进行拷贝。</p>
+<p>在完成上面步骤后，可以通过qq或者手机助手之类的，将文件发送到自己的手机，请记得文件路径位置。下面会用到。</p>
+<p>打开客户端app，新建一个配置文件。名字任意取（最好别用中文）。下面开始说需要配置的项目，未提到的项目默认即可，不需要设置。</p>
+<h2 id="BASIC-项目配置"><a href="#BASIC-项目配置" class="headerlink" title="BASIC 项目配置"></a>BASIC 项目配置</h2><p><img src="http://ol59nqr1i.bkt.clouddn.com/vpn-basic.png" alt="image"></p>
+<p>注意图中标红的地方。类型一定要选择 <strong>用户名／密码 + 证书</strong> 的类型。</p>
+<ul>
+<li>ca证书 找到刚刚拷贝到手机上的 <code>ca.crt</code> 文件</li>
+<li>客户端证书 找到刚刚拷贝到手机上的 <code>client-aiguo.crt</code> 文件</li>
+<li>客户端证书密钥 找到刚刚拷贝到手机上的 <code>client-aiguo.crt</code> 文件</li>
+</ul>
+<p>另外，这里一定要启用 lzo 压缩算法。</p>
+<p>在底部的用户与密钥。用户随便填写接口，密码留空（在本教程中，我们没有为用户分配用户名与密码，因此可以这样操作）</p>
+<h2 id="服务器列表-项目配置"><a href="#服务器列表-项目配置" class="headerlink" title="服务器列表 项目配置"></a>服务器列表 项目配置</h2><p><img src="http://ol59nqr1i.bkt.clouddn.com/vpn-serlist.png" alt="image"></p>
+<p>这一比较简单，主要就是两个配置。其一是：<br>服务器的地址，填写你购买的服务器外网地址。端口如果没有修改过，请默认</p>
+<p>其二是将协议修改为：tcp</p>
+<h2 id="AUTHENTICATION-ENCRYPTION-项目配置"><a href="#AUTHENTICATION-ENCRYPTION-项目配置" class="headerlink" title="AUTHENTICATION/ENCRYPTION 项目配置"></a>AUTHENTICATION/ENCRYPTION 项目配置</h2><p>该项配置很简单，将默认所有打勾的选项，全部取消即可。</p>
+<hr>
+<p>至此，配置全部完成，篇幅虽然长，但是并没有什么难点。现在可以回到首页，你会看到刚配置的文件名称，点击它即可连接。</p>
+<p>本教程的目的仅仅是技术交流，希望大家翻跃长城后技术实力更上一层楼。</p>
+<hr>
+<p>如果你对我的内容感兴趣，请关注我的微信公众号：</p>
+<p>公众号：<code>icanfo</code></p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/mp-qr.jpg" alt="image"></p>
+<p>GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p>
+<p><strong>我在github开源了支付宝支付、微信支付、招商一网通支付的php sdk。希望能够帮助你提升项目开发的效率。<a href="https://github.com/helei112g/payment" target="_blank" rel="external">项目地址</a></strong></p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
