@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="He Lei">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Go初始化变量的招式"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://helei112g.github.ioundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>大愚的博客｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Go初始化变量的招式</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:dayugog@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-05-26</span>
+            <span class="time">19:15:57</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Golang/">Golang</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/Golang/">#Golang</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>乱立Flag害死人<br><a id="more"></a></p>
+<p>年初的立的各种Flag，已经被我抛到九霄云外去了。2018年已经过去了一半，终于开始了第三篇文章，距离全年30篇的输出计划，仅剩27本，我很有“信心完成”剩下的部分。</p>
+<p>2018年伊始，开始从PHP转到Go的开发方向，虽然说学习路线并不是非常陡峭，但是过程中遇到不少坑以及有意思的地方，忍不住想总结分享给大家。今天先来聊一聊Go中初始化变量的几种方式。</p>
+<h1 id="Go中初始化值类型的招式"><a href="#Go中初始化值类型的招式" class="headerlink" title="Go中初始化值类型的招式"></a>Go中初始化值类型的招式</h1><p>Golang的数据类型可以分为：<strong>值类型</strong> 与 <strong>引用类型</strong>，我先来总结一下Go中值类型（以 <strong>string</strong> 为例）的初始化方式：<br><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a1 <span class="keyword">string</span></span><br><span class="line">fmt.Printf(<span class="string">"a1: %#v \n"</span>, a1) <span class="comment">// a1: ""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a2 *<span class="keyword">string</span></span><br><span class="line">fmt.Printf(<span class="string">"a2: %#v \n"</span>, a2) <span class="comment">// a2: (*string)(nil)</span></span><br><span class="line"><span class="comment">// panic: runtime error: invalid memory address or nil pointer dereference</span></span><br><span class="line"><span class="comment">//fmt.Printf(**"a2: %#v \n"**, *a2)</span></span><br><span class="line"></span><br><span class="line">a3 := <span class="built_in">new</span>(<span class="keyword">string</span>)</span><br><span class="line">fmt.Printf(<span class="string">"a3: %#v \n"</span>, a3) <span class="comment">// a3: (*string)(0xc42000e200)</span></span><br><span class="line">fmt.Printf(**<span class="string">"a3: %#v \n"</span>**, *a3) <span class="comment">// a3: ""</span></span><br><span class="line"></span><br><span class="line">a4 := <span class="string">"hello"</span></span><br><span class="line">fmt.Printf(<span class="string">"a4: %#v \n"</span>, a4) <span class="comment">// a4: "hello"</span></span><br><span class="line"></span><br><span class="line">a5 := <span class="keyword">string</span>(<span class="string">"hello"</span>)</span><br><span class="line">fmt.Printf(<span class="string">"a5: %#v \n"</span>, a5) <span class="comment">// a5: "hello"</span></span><br><span class="line"></span><br><span class="line">a6 := &amp;a5</span><br><span class="line">fmt.Printf(<span class="string">"a6: %#v \n"</span>, a6) <span class="comment">// a6: (*string)(0xc42000e1e0)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 报错，cannot make type string</span></span><br><span class="line"><span class="comment">//a7 := make(string, 1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 报错，cannot take the address of string("hello")</span></span><br><span class="line"><span class="comment">//a8 := &amp;string("hello")</span></span><br></pre></td></tr></table></figure></p>
+<p>注释部分是输出的信息，可以看到有的结果打出来是个值，有的是一个指针。这一部分重点我只想说明两个点：</p>
+<ol>
+<li>Go会自动将申明变量初始化为0值，所谓的0值是：int就是0，string就是空字符，bool就是false等</li>
+<li>对于通过new创建的变量，是一个指针，它与var声明的变量是不同的，var声明的变量仅是一个nil。而new(string) 为string分配一片内存，初始化为 0。通过上面注释的报错信息大家可以理解。</li>
+</ol>
+<h1 id="Go中初始化引用类型的招式"><a href="#Go中初始化引用类型的招式" class="headerlink" title="Go中初始化引用类型的招式"></a>Go中初始化引用类型的招式</h1><p>这是我想说的重点，Go中的引用类型仅有三种：::map:: ::slice:: ::channel::，这里举例就用slice来进行。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s1 []<span class="keyword">string</span></span><br><span class="line">fmt.Printf(<span class="string">"s1: %#v\n"</span>, s1) <span class="comment">// s1: []string(nil)</span></span><br><span class="line">s1 = <span class="built_in">append</span>(s1, <span class="string">"hello"</span>)</span><br><span class="line">fmt.Printf(<span class="string">"s1: %#v\n"</span>, s1) <span class="comment">// s1: []string&#123;"hello"&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> s2 *[]<span class="keyword">string</span></span><br><span class="line">fmt.Printf(<span class="string">"s2: %#v\n"</span>, s2) <span class="comment">// s2: (*[]string)(nil)</span></span><br><span class="line"></span><br><span class="line">s3 := []<span class="keyword">string</span>&#123;<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>&#125;</span><br><span class="line">fmt.Printf(<span class="string">"s3: %#v\n"</span>, s3) <span class="comment">// s3: []string&#123;"a", "b", "c"&#125;</span></span><br><span class="line"></span><br><span class="line">s4 := &amp;[]<span class="keyword">string</span>&#123;&#125;</span><br><span class="line">fmt.Printf(<span class="string">"s4: %#v\n"</span>, s4) <span class="comment">// s4: &amp;[]string&#123;&#125;</span></span><br><span class="line"></span><br><span class="line">s5 := &amp;s3</span><br><span class="line">fmt.Printf(<span class="string">"s5: %#v\n"</span>, s5) <span class="comment">// s5: &amp;[]string&#123;"a", "b", "c"&#125;</span></span><br><span class="line"></span><br><span class="line">s6 := <span class="built_in">new</span>([]<span class="keyword">string</span>)</span><br><span class="line">fmt.Printf(<span class="string">"s6: %#v\n"</span>, s6) <span class="comment">// s6: &amp;[]string(nil)</span></span><br><span class="line"><span class="comment">// first argument to append must be slice; have *[]string</span></span><br><span class="line"><span class="comment">//s6 = append(s6, "hello") // 这是一个空引用的指针，所以报错</span></span><br><span class="line"></span><br><span class="line">s7 := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">0</span>)</span><br><span class="line">fmt.Printf(<span class="string">"s7: %#v\n"</span>, s7) <span class="comment">// s7: []string&#123;&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 有毛病才用这种方式</span></span><br><span class="line">s8 := <span class="built_in">new</span>([]<span class="keyword">string</span>)</span><br><span class="line">*s8 = <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">0</span>)</span><br><span class="line">fmt.Printf(<span class="string">"s8: %#v\n"</span>, s8) <span class="comment">// s8: &amp;[]string&#123;&#125;</span></span><br><span class="line"></span><br><span class="line">arr := [<span class="number">5</span>]<span class="keyword">string</span>&#123;<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>&#125;</span><br><span class="line">s9 := arr[:]</span><br><span class="line">fmt.Printf(<span class="string">"s9: %#v\n"</span>, s9) <span class="comment">// s9: []string&#123;"a", "b", "c", "", ""&#125;</span></span><br></pre></td></tr></table></figure>
+<p>这里我重点分析一下s6、s7、s8这三种初始化方式。先说s6，使用的是new。</p>
+<blockquote>
+<p>new(T) 为每个新的类型T分配一片内存，初始化为 0 并且返回类型为*T的内存地址：这种方法 返回一个指向类型为 T，值为 0 的地址的指针<br>这里所谓的值为0，并不是数值0，而是go的默认0值，对应 ::slice:: 就是nil。</p>
+</blockquote>
+<p>在Go中绝对不会采用这种方式来初始化 ::slice:: 的，原因是为什么呢？我这里先简单说一下，是因为Go中::slice::是如下定义的：<br><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> slice <span class="keyword">struct</span>&#123;</span><br><span class="line">	array unsafe.Pointer</span><br><span class="line">	<span class="built_in">len</span>   <span class="keyword">int</span></span><br><span class="line">	<span class="built_in">cap</span>   <span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果用 new 因为返回的是 <em>T 的内存地址，无法完成对 ::slice::的初始化，无法让slice正常使用，想要让他可以正常使用，就得像s8的处理方式一样，再用make对应  </em>T 进行一次初始化。如果这么干，你说是不是有毛病才用的方式？</p>
+<blockquote>
+<p>slice 的初始化需要初始化 len、cap的值，让 array 指向一个数组的指针。完成这些初始化后，slice才能正常使用。  </p>
+</blockquote>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>关于自定义结构的初始化与上面string的初始化一样，map、channel与slice一样。大家可以自己写点代码试试</p>
+<ul>
+<li>记住make只用于map，slice和channel，并且不返回指针。</li>
+<li>要获得一个显式的指针，使用new进行分配，或者显式地使用一个变量的地址。</li>
+</ul>
+<p>接下来计划分享的内容：</p>
+<ol>
+<li>Go中值、引用、指针方面的知识，重点是函数参数的传参方式</li>
+<li>Go中::slice::与::array::的亲密关系</li>
+<li>Go中接口的知识，从::sort::的源代码角度来介绍</li>
+</ol>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+        <p class="copyright text-muted">
+          友情链接 <a target="_blank" href="http://52fhy.com/">飞鸿影</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
