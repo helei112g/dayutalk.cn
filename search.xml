@@ -4,7 +4,7 @@
   
     
     <entry>
-      <title><![CDATA[指针、引用的理解.md]]></title>
+      <title><![CDATA[指针、引用的理解]]></title>
       <url>https://helei112g.github.io/2018/06/06/%E6%8C%87%E9%92%88%E3%80%81%E5%BC%95%E7%94%A8%E7%9A%84%E7%90%86%E8%A7%A3-md/</url>
       <content type="html"><![CDATA[<p>指针与引用常常被混淆，他们为什么总被人理解错误？<br><a id="more"></a></p>
 <p>最近在学习Golang的过程中，发现一个有意思的事情，有的文章说函数调用传参时 <strong>slice</strong> 是引用传递，有的说是值传递。为什么同一个东西大家会不同认识？为了搞清楚其本质，我进行了以下内容的研究：</p>
@@ -58,7 +58,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[一个程序员对架构的认识.md]]></title>
+      <title><![CDATA[一个程序员对架构的认识]]></title>
       <url>https://helei112g.github.io/2018/05/27/%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AF%B9%E6%9E%B6%E6%9E%84%E7%9A%84%E8%AE%A4%E8%AF%86-md/</url>
       <content type="html"><![CDATA[<p>架构是一个系统的草图（逻辑+物理角度），它是有生命的，随着业务的变化会不断演进。没有完美的架构只有合适的架构。<br><a id="more"></a></p>
 <p>最近订阅了一些架构方面的资料，阅读后获益匪浅，想着整理一些自己的体会与思考，形成架构方面的读书笔记，一来与大家交流，二来通过文字的形式检查自己到底收获多少！</p>
