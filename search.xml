@@ -4,6 +4,60 @@
   
     
     <entry>
+      <title><![CDATA[指针、引用的理解.md]]></title>
+      <url>https://helei112g.github.io/2018/06/06/%E6%8C%87%E9%92%88%E3%80%81%E5%BC%95%E7%94%A8%E7%9A%84%E7%90%86%E8%A7%A3-md/</url>
+      <content type="html"><![CDATA[<p>指针与引用常常被混淆，他们为什么总被人理解错误？<br><a id="more"></a></p>
+<p>最近在学习Golang的过程中，发现一个有意思的事情，有的文章说函数调用传参时 <strong>slice</strong> 是引用传递，有的说是值传递。为什么同一个东西大家会不同认识？为了搞清楚其本质，我进行了以下内容的研究：</p>
+<ol>
+<li>变量的变量名、变量值、变量地址在内存中是怎么样的？</li>
+<li>指针的定义是什么？引用的定义是什么？二者有什么关系？</li>
+<li>函数传参中值传递、指针传递与引用传递到底有什么不一样？</li>
+<li>Go中 <strong>slice</strong> 在传入函数时到底是不是引用传递？如果不是，在函数内为什么能修改其值？</li>
+</ol>
+<p>为了避免文章写的过长，看了想瞌睡，分成两篇文章来解释这个问题，本文先解决问题1跟2，下一篇说明余下的问题。</p>
+<h1 id="变量名程序员给地址取的外号"><a href="#变量名程序员给地址取的外号" class="headerlink" title="变量名程序员给地址取的外号"></a>变量名程序员给地址取的外号</h1><p>上学的时候，老师讲变量是存在内存中的，内存就像一排排抽屉组成的，每个抽屉上面有个编号，我们定义一个变量，就是把想放的东西放到这个对应编号的抽屉里。比如： int a = 10，用图来表示下：<br><img src="http://ol59nqr1i.bkt.clouddn.com/ref1.png" alt=""></p>
+<p>这里：变量的名字叫 <strong>a</strong> ，变量的值是：<strong>10</strong>，变量的地址是：<strong>0x 00000001</strong>。<br>那么问题来了，变量的值我们知道是放在了抽屉里（内存中），每个抽屉有编号（地址），但是变量的名字 <strong>a</strong> 存放在哪里呢？或者说它会存在于内存中吗？</p>
+<p>大家想一个问题，如果变量的名字要存放在内存中，那么肯定分配一个空间给他，保存它的空间有个地址，这个地址是不是又得有个地方存起来程序才能找到？如果真是这样设计，那么代码根本没发写、无法运行了。</p>
+<p>其实变量名仅仅是写给程序员看的，让我们写代码的时候知道这个变量有什么用，能够通过名字调用变量的值。因为如果直接给你一个地址 0x 23004123，你知道这是要干嘛吗？代码经过编译后，最终都会转换成机器码，我们定义的变量名就都不存在了，存在的只有地址跟值。</p>
+<h1 id="指针其实很普通"><a href="#指针其实很普通" class="headerlink" title="指针其实很普通"></a>指针其实很普通</h1><p>有了上面的理解，再来一个特殊的变量：指针变量。什么叫指针变量呢？其实就是这个变量里边存放的是一个变量的地址，通过这个地址，机器可以找到对应变量的值，例如：int <em> pa = &amp;a，就表示变量 <strong>pa</strong> 抽屉里放的是 <strong>a</strong> 的地址，它的类型是：int</em>，继续看图：<br><img src="http://ol59nqr1i.bkt.clouddn.com/ref2.png" alt=""></p>
+<p><strong>这里需要重要说明的是：指针pa与a的关系是：a抽屉里边放的是变量值10，pa放的是变量的地址：0x00000001</strong>，这里一定要记住，下面说引用的时候才更容易理解。</p>
+<h1 id="引用就是变量的另一名字"><a href="#引用就是变量的另一名字" class="headerlink" title="引用就是变量的另一名字"></a>引用就是变量的另一名字</h1><p>继续谈引用，引用与指针我们经常傻傻分不清，因为它们的行为确实非常诡异，看起来效果非常相似，看代码：</p>
+<blockquote>
+<p>由于引用的概念是在 c++ 中引入的，因此下面的代码使用c++，仅仅是一些打印而已，放心看下去  </p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>;<span class="comment">// 变量</span></span><br><span class="line">    <span class="keyword">int</span> * pa = &amp;a; <span class="comment">// 指针</span></span><br><span class="line">    <span class="keyword">int</span> &amp; b = a; <span class="comment">// 引用</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"a: %d\n"</span>, a);<span class="comment">// a: 10</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"*pa: %d\n"</span>, *pa);<span class="comment">// *pa: 10</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"b: %d\n"</span>, b);<span class="comment">// b: 10</span></span><br><span class="line"></span><br><span class="line">    *pa = <span class="number">20</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"a: %d\n"</span>, a);<span class="comment">// a: 20</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"*pa: %d\n"</span>, *pa);<span class="comment">// *pa: 20</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"b: %d\n"</span>, b);<span class="comment">// b: 20</span></span><br><span class="line"></span><br><span class="line">    b = <span class="number">30</span>;</span><br><span class="line">	  <span class="built_in">printf</span>(<span class="string">"a: %d\n"</span>, a);<span class="comment">// a: 30</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"*pa: %d\n"</span>, *pa);<span class="comment">// *pa: 30</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"b: %d\n"</span>, b);<span class="comment">// b: 30</span></span><br><span class="line"></span><br><span class="line">	  a = <span class="number">40</span>;</span><br><span class="line">	  <span class="built_in">printf</span>(<span class="string">"a: %d\n"</span>, a);<span class="comment">// a: 40</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"*pa: %d\n"</span>, *pa);<span class="comment">// *pa: 40</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"b: %d\n"</span>, b);<span class="comment">// b: 40</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过上面的代码我们发现，指针与引用都能达到一个效果：都有能力修改a的值，指针前面讲过了，因为它保存了a的地址，通过解引用操作后，实际上就是打开了a的抽屉，因此可以进行修改。那么引用又是怎么办到的？这里注意一个细节：<em>pa = 20； c = 30；a = 40。我们看到操作c的时候与操作a是一样的方式：直接使用变量名，但是pa要想改变a的值，必须进行 </em>pa 操作（解引用），如果直接 pa=20，这仅仅是改变的pa的值，让他指向了另外一个地址。</p>
+<p>为什么引用与变量是一样的操作方式？先来看一下引用的定义：</p>
+<blockquote>
+<p>引用就是某一变量的一个别名，对引用的操作与对变量直接操作完全一样。  </p>
+</blockquote>
+<p>那么别名是什么意思呢？继续看图，一看就懂<br><img src="http://ol59nqr1i.bkt.clouddn.com/ref3.png" alt=""><br>看到了吧？a就是b，b就是a。系统并不会为引用额外分配空间进行存储，甚至可以简单理解为：这个别名仅仅是为了给程序员看的，到机器码层面的时候，他们都会变成地址：0x 00000001。</p>
+<h1 id="有码为证"><a href="#有码为证" class="headerlink" title="有码为证"></a>有码为证</h1><p>通过上面的分析不知道你理解了几分？或者你是不是对指针与引用还是半信半疑？没关系，写点代码证明一下即可，我们要证明的是：</p>
+<ul>
+<li>引用是变量的别名，那么它的地址应该与变量一致；</li>
+<li>指针保存的是变量的地址，那么它的值是变量的地址，它自身的地址与变量不同。</li>
+</ul>
+<p>为了证明，程序设计如下：定义一个变量，分别赋值给指针、引用，然后检查他们对应的值与地址。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, a);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%p\n"</span>, &amp;a);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"~~~~~~~~~~~~~~\n"</span>);</span><br><span class="line">    <span class="keyword">int</span> * b = &amp;a;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%p\n"</span>, b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%p\n"</span>, &amp;b);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"~~~~~~~~~~~~~~\n"</span>);</span><br><span class="line">    <span class="keyword">int</span> &amp; c = a;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, c);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%p\n"</span>, &amp;c);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>获得输出：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">10 // 变量a的值</span><br><span class="line">0x7ffee3c7a768 // 变量a的地址</span><br><span class="line">~~~~~~~~~~~~~~</span><br><span class="line">0x7ffee3c7a768 // 指针的值，是变量a的地址</span><br><span class="line">0x7ffee3c7a760 // 指针变量自己的地址</span><br><span class="line">~~~~~~~~~~~~~~</span><br><span class="line">10 // 变量a的值</span><br><span class="line">0x7ffee3c7a768 // 引用变量c的地址，与变量a的地址完全一样</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>在上面如果指针想要打印变量a的值，需要解引用操作：printf(“%d\n”, *b);  </p>
+</blockquote>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><ul>
+<li>变量由三分部分构成：变量名、变量值、变量地址；</li>
+<li>变量名实际上只是给程序员看的，编译后的代码中并不存在变量名；</li>
+<li>指针变量就是一个变量存储了另外一个变量的地址，系统也会为他分配内存空间来存储这个地址；</li>
+<li>引用实际是变量的别名，他跟变量有相同的地址。</li>
+</ul>
+<p><strong>下次预告：</strong></p>
+<ol>
+<li>函数传参中值传递、指针传递与引用传递到底有什么不一样？</li>
+<li>为什么说 <strong>slice</strong> 是引用类型？</li>
+<li>Go中 <strong>slice</strong> 在传入函数时到底是不是引用传递？如果不是，在函数内为什么能修改其值？</li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[一个程序员对架构的认识.md]]></title>
       <url>https://helei112g.github.io/2018/05/27/%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AF%B9%E6%9E%B6%E6%9E%84%E7%9A%84%E8%AE%A4%E8%AF%86-md/</url>
       <content type="html"><![CDATA[<p>架构是一个系统的草图（逻辑+物理角度），它是有生命的，随着业务的变化会不断演进。没有完美的架构只有合适的架构。<br><a id="more"></a></p>
