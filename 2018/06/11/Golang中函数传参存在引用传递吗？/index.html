@@ -111,7 +111,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2018-06-11</span>
-            <span class="time">08:02:26</span>
+            <span class="time">09:16:06</span>
           </span>
           
         </div>
@@ -169,7 +169,7 @@
 <p>针对这种三种类型是 <strong>by value</strong> 传递，我们用 slice 来进行验证。<br><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	arr := [<span class="number">5</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>&#125;</span><br><span class="line">	fmt.Printf(<span class="string">"addr:%p\n"</span>, &amp;arr)<span class="comment">// addr:0xc42001a1e0</span></span><br><span class="line">	s1 := arr[:]</span><br><span class="line">	fmt.Printf(<span class="string">"addr:%p\n"</span>, &amp;s1)<span class="comment">// addr:0xc42000a060</span></span><br><span class="line"></span><br><span class="line">	changeSlice(s1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">changeSlice</span><span class="params">(s []<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	fmt.Printf(<span class="string">"addr:%p\n"</span>, &amp;s)<span class="comment">// addr:0xc42000a080</span></span><br><span class="line">	fmt.Printf(<span class="string">"addr:%p\n"</span>, &amp;s[<span class="number">0</span>])<span class="comment">// addr:0xc42001a1e0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>代码中定义了一个数组 <strong>arr</strong>，然后用它生成了一个slice。如果go中存在引用传递，形参 s 的地址应该与实参 s1 一样（上面c++的证明），通过实际的情况我们发现它们具备完全不同的地址，也就是传参依然发生了拷贝——值传递。</p>
 <p>但是这里有个奇怪的现象，大家看到了 <strong>arr</strong> 的地址与 <strong>s[0]</strong> 有相同的地址，这也就是为什么我们在函数内部能够修改 slice 的原因，因为当它作为参数传入函数时，虽然 slice 本身是值拷贝，但是它内部引用了对应数组的结构，因此 <strong>s[0]</strong> 就是 <strong>arr[0]</strong> 的引用，这也就是能够进行修改的原因。</p>
-<p><img src="http://ol59nqr1i.bkt.clouddn.com/funcCall13.png" alt="funcCall"></p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/funcCall3.png" alt="funcCall"></p>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><ul>
 <li>Go 中函数传参仅有值传递一种方式；</li>
 <li><strong>slice</strong>、<strong>map</strong>、<strong>channel</strong>都是引用类型，但是跟c++的不同；</li>
