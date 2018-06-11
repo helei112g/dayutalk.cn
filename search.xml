@@ -4,6 +4,61 @@
   
     
     <entry>
+      <title><![CDATA[Golang中函数传参存在引用传递吗？]]></title>
+      <url>https://helei112g.github.io/2018/06/11/Golang%E4%B8%AD%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E5%AD%98%E5%9C%A8%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92%E5%90%97%EF%BC%9F/</url>
+      <content type="html"><![CDATA[<p>Go的函数传递详解，一篇文章搞明白Golang的值传递。<br><a id="more"></a></p>
+<p>继上篇文章后，继续来探讨下面的几个问题:</p>
+<ol>
+<li>函数传参中值传递、指针传递与引用传递到底有什么不一样？</li>
+<li>为什么说 <strong>slice</strong>、<strong>map</strong>、<strong>channel</strong> 是引用类型？</li>
+<li>Go中 <strong>slice</strong> 在传入函数时到底是不是引用传递？如果不是，在函数内为什么能修改其值？</li>
+</ol>
+<blockquote>
+<p>In a function call, the function value and arguments are evaluated in the usual order. After they are evaluated, the parameters of the call are <strong>passed by value</strong> to the function and the called function begins execution.<br>文档地址：<a href="https://golang.org/ref/spec#Calls" target="_blank" rel="external">https://golang.org/ref/spec#Calls</a></p>
+</blockquote>
+<p>官方文档已经明确说明：<strong>Go里边函数传参只有值传递一种方式</strong>，为了加强自己的理解，再来把每种传参方式进行一次梳理。</p>
+<h1 id="值传递"><a href="#值传递" class="headerlink" title="值传递"></a>值传递</h1><blockquote>
+<p>值传递是指在调用函数时将实际参数复制一份传递到函数中，这样在函数中如果对参数进行修改，将不会影响到实际参数。</p>
+</blockquote>
+<p>概念总给人一种教科书的感觉，写点代码验证下。<br><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := <span class="number">10</span></span><br><span class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, &amp;a) <span class="comment">// (*int)(0xc420018080)</span></span><br><span class="line">	vFoo(a)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">vFoo</span><span class="params">(b <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, &amp;b) <span class="comment">// (*int)(0xc420018090)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><em>注释内容是我机器的输出，你如果运行会得到不一样的输出</em></p>
+<p>根据代码来解释下，所谓的值传递就是：实参 <strong>a</strong> 在传递给函数 <strong>vFoo</strong> 的形参 <strong>b</strong> 后，在 <strong>vFoo</strong> 的内部，<strong>b</strong> 会被当作局部变量在栈上分配空间，并且完全拷贝 <strong>a</strong> 的值。</p>
+<p>代码执行后，我们看到的结果便是：a、b拥有完全不同的内存地址， 说明他们虽然值相同（b拷贝的a，值肯定一样），但是分别在内存中不同的地方，也因此在函数 <strong>vFoo</strong> 内部如果改变 <strong>b</strong> 的值，<strong>a</strong> 是不会受到影响的。</p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/funcCall1.png" alt="funcCall"></p>
+<p>图中左侧是还未调用时，内存的分配，右侧是调用函数后内存分别分配的变量。这里需要注意，就算vFoo的参数名字是a，实参与形参也分别有自己的内存空间，因为参数的名字仅仅是给程序员看的，上篇文章已经说清楚了。</p>
+<h1 id="指针传递"><a href="#指针传递" class="headerlink" title="指针传递"></a>指针传递</h1><blockquote>
+<p>形参为指向实参地址的指针，当对形参的指向操作时，就相当于对实参本身进行的操作。</p>
+</blockquote>
+<p>是不是云里雾里的？还是通过代码结合来分析所谓的指针传递。<br><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := <span class="number">10</span></span><br><span class="line">	pa := &amp;a</span><br><span class="line">	fmt.Printf(<span class="string">"value: %#v\n"</span>, pa) <span class="comment">// value: (*int)(0xc420080008)</span></span><br><span class="line">	fmt.Printf(<span class="string">"addr: %#v\n"</span>, &amp;pa) <span class="comment">// addr: (**int)(0xc420088018)</span></span><br><span class="line">	pFoo(pa)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">pFoo</span><span class="params">(p * <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	fmt.Printf(<span class="string">"value: %#v\n"</span>, p) <span class="comment">// value: (*int)(0xc420080008)</span></span><br><span class="line">	fmt.Printf(<span class="string">"addr: %#v\n"</span>, &amp;p) <span class="comment">// addr: (**int)(0xc420088028)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>定义了一个变量 a，并把地址保存在指针变量 pa 里边了。按照我们定的结论，<strong>Go中只有值传递</strong>，那么指针变量pa传给函数的形参p后，形参将会是它在栈上的一份拷贝，他们本身将各自拥有不同的地址，但是二者的值是一样的（都是变量a的地址）。上面的注释部分是我程序运行后的结果，pa 与 p 的地址各自互不相关，说明在参数传递中发生了值拷贝。</p>
+<p>在函数 <strong>pFoo</strong> 中，形参 p 的地址与实参 pa 的地址并不一样，但是他们在内存中的值都是变量 a 的地址，因此可以通过指针相关的操作来改变a的值。<br><img src="http://ol59nqr1i.bkt.clouddn.com/funcCall2.png" alt="funcCall"></p>
+<p><em>图中 &amp;a 表示a的地址，值为： 0xc420080008</em></p>
+<h1 id="引用传递"><a href="#引用传递" class="headerlink" title="引用传递"></a>引用传递</h1><blockquote>
+<p>所谓引用传递是指在调用函数时将实际参数的地址传递到函数中，那么在函数中对参数所进行的修改，将影响到实际参数。</p>
+</blockquote>
+<p>由于 Go 里边并不存在引用传递，我们常常看到说 Go 中的引用传递也是针对：<strong>Slice</strong>、<strong>Map</strong>、<strong>Channel</strong> 这几种类型（这是个错误观点），因此为了解释清楚引用传递，先劳烦大家看一段 C++ 的代码（当然非常简单）。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rFoo</span><span class="params">(<span class="keyword">int</span> &amp; ref)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%p\n"</span>, &amp;ref);<span class="comment">// 0x7ffee5aef768</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">	  <span class="built_in">printf</span>(<span class="string">"%p\n"</span>, &amp;a);<span class="comment">// 0x7ffee7307768</span></span><br><span class="line">    <span class="keyword">int</span> &amp; b = a;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%p\n"</span>, &amp;b);<span class="comment">// 0x7ffee5aef768</span></span><br><span class="line">    rFoo(b);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里就是简单的在main中定义一个引用，然后传给函数 <strong>rFoo</strong>，那么来看看正统的引用传递是什么样的？</p>
+<p>这里 b 是 a 的别名（引用，不清楚的可以看我上篇文章），因此a、b必定具备相同的地址。那么按照引用传递的定义，实参 b 传给形参 ref 之后，ref 将是 b 的别名（也即a、b、ref都是同一个变量），他们将拥有相同地址。通过在 <strong>rFoo</strong> 函数中的打印信息，可以看到三者具有完全形同的地址，这是所谓的引用传递。</p>
+<h1 id="Go中没有引用传递"><a href="#Go中没有引用传递" class="headerlink" title="Go中没有引用传递"></a>Go中没有引用传递</h1><p>Go中函数调用只有值传递，但是类型引用有引用类型，他们是：<strong>slice</strong>、<strong>map</strong>、<strong>channel</strong>。来看看官方的说法：</p>
+<blockquote>
+<p>There’s a lot of history on that topic. Early on, maps and channels were syntactically pointers and it was impossible to declare or use a non-pointer instance. Also, we struggled with how arrays should work. Eventually we decided that the strict separation of pointers and values made the language harder to use.  <strong>Changing these types to act as references to the associated, shared data structures resolved these issues</strong>. This change added some regrettable complexity to the language but had a large effect on usability: Go became a more productive, comfortable language when it was introduced.</p>
+</blockquote>
+<p>大概意思是说：最开始用的是指针语法，由于种种原因改成了引用，但是这个引用与C++的引用是不同的，它是共享关联数据的结构。关于这个问题的深入讨论我会放到 <strong>slice</strong> 相关文章中进行讨论，现在回到今天讨论的主题。</p>
+<p>那么Go的引用传递源起何处？我觉得让大家误解的是，map、slice、channel这类引用类型在传递到函数内部，可以在函数内部对它的值进行修改而引起的误会。</p>
+<p>针对这种三种类型是 <strong>by value</strong> 传递，我们用 slice 来进行验证。<br><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	arr := [<span class="number">5</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>&#125;</span><br><span class="line">	fmt.Printf(<span class="string">"addr:%p\n"</span>, &amp;arr)<span class="comment">// addr:0xc42001a1e0</span></span><br><span class="line">	s1 := arr[:]</span><br><span class="line">	fmt.Printf(<span class="string">"addr:%p\n"</span>, &amp;s1)<span class="comment">// addr:0xc42000a060</span></span><br><span class="line"></span><br><span class="line">	changeSlice(s1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">changeSlice</span><span class="params">(s []<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	fmt.Printf(<span class="string">"addr:%p\n"</span>, &amp;s)<span class="comment">// addr:0xc42000a080</span></span><br><span class="line">	fmt.Printf(<span class="string">"addr:%p\n"</span>, &amp;s[<span class="number">0</span>])<span class="comment">// addr:0xc42001a1e0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>代码中定义了一个数组 <strong>arr</strong>，然后用它生成了一个slice。如果go中存在引用传递，形参 s 的地址应该与实参 s1 一样（上面c++的证明），通过实际的情况我们发现它们具备完全不同的地址，也就是传参依然发生了拷贝——值传递。</p>
+<p>但是这里有个奇怪的现象，大家看到了 <strong>arr</strong> 的地址与 <strong>s[0]</strong> 有相同的地址，这也就是为什么我们在函数内部能够修改 slice 的原因，因为当它作为参数传入函数时，虽然 slice 本身是值拷贝，但是它内部引用了对应数组的结构，因此 <strong>s[0]</strong> 就是 <strong>arr[0]</strong> 的引用，这也就是能够进行修改的原因。</p>
+<p><img src="http://ol59nqr1i.bkt.clouddn.com/funcCall13.png" alt="funcCall"></p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><ul>
+<li>Go 中函数传参仅有值传递一种方式；</li>
+<li><strong>slice</strong>、<strong>map</strong>、<strong>channel</strong>都是引用类型，但是跟c++的不同；</li>
+<li><strong>slice</strong>能够通过函数传参后，修改对应的数组值，是因为 slice 内部保存了引用数组的指针，并不是因为引用传递。</li>
+</ul>
+<p>接下来的文章尝试解析下：<br>slice 为什么一定要用 make 进行初始话，它初始化做了哪些事情？它每次动态扩展容量的时候进行了什么操作？</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[指针、引用的理解]]></title>
       <url>https://helei112g.github.io/2018/06/06/%E6%8C%87%E9%92%88%E3%80%81%E5%BC%95%E7%94%A8%E7%9A%84%E7%90%86%E8%A7%A3-md/</url>
       <content type="html"><![CDATA[<p>指针与引用常常被混淆，他们为什么总被人理解错误？<br><a id="more"></a></p>
