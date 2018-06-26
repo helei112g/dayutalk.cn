@@ -111,7 +111,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2018-06-25</span>
-            <span class="time">20:28:06</span>
+            <span class="time">14:59:05</span>
           </span>
           
           <!--  Categories  -->
@@ -126,7 +126,7 @@
           <div class="post-tags text-muted">
             Tags: 
 
-<a class="tag" href="/tags/Docker/">#Docker</a> <a class="tag" href="/tags/Dockerfile/">#Dockerfile</a> <a class="tag" href="/tags/Docker搭建环境/">#Docker搭建环境</a>
+<a class="tag" href="/tags/Docker/">#Docker</a> <a class="tag" href="/tags/Docker-Compose/">#Docker Compose</a>
 
 
           </div>
@@ -144,39 +144,39 @@
 <li>探索一下如何监控docker中的进程。</li>
 </ul>
 <h1 id="涉及的命令介绍"><a href="#涉及的命令介绍" class="headerlink" title="涉及的命令介绍"></a>涉及的命令介绍</h1><p>这仅仅是操作笔记，不涉及 <strong>Docker</strong> 原理什么之类的知识，重点是如何应用。为了后续理解方便，先把用到的相关命令在这里进行整体介绍。</p>
-<h2 id="查找镜像"><a href="#查找镜像" class="headerlink" title="查找镜像"></a>查找镜像</h2><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search mysql</span><br></pre></td></tr></table></figure>
+<h2 id="查找镜像"><a href="#查找镜像" class="headerlink" title="查找镜像"></a>查找镜像</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/home/dockerenv &gt;docker search mysql</span><br></pre></td></tr></table></figure>
 <p>上面这个命令就是查找 mysql 镜像。对应的可以将 mysql 替换成其它想要查找的镜像名称。该命令常用选项是： <code>-s</code>。可以设置搜索条件：多少个start以上的镜像。</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search -s 100 mysql</span><br></pre></td></tr></table></figure>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/home/dockerenv &gt;docker search -s 100 mysql</span><br></pre></td></tr></table></figure>
 <p>搜索有100个以上start的 mysql 镜像。</p>
 <h2 id="获取镜像"><a href="#获取镜像" class="headerlink" title="获取镜像"></a>获取镜像</h2><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull centos7</span><br></pre></td></tr></table></figure>
 <p>这个命令会把镜像克隆到本地，就像：<code>git clone</code> 一样的效果。关于什么是镜像、容器之类的概念不在我的讲解范畴了。</p>
-<h2 id="查看与删除镜像"><a href="#查看与删除镜像" class="headerlink" title="查看与删除镜像"></a>查看与删除镜像</h2><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image ls</span><br></pre></td></tr></table></figure>
+<h2 id="查看与删除镜像"><a href="#查看与删除镜像" class="headerlink" title="查看与删除镜像"></a>查看与删除镜像</h2><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/home/dockerenv &gt;docker image ls</span><br></pre></td></tr></table></figure>
 <p>会列出当前所有的本地安装了的镜像。看到了有哪些镜像，有时候一个镜像我们用不到了，想把它干掉，为硬盘腾腾位置，可以用下面的命令：</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi 0d16d0a97dd1 <span class="comment"># 编号是 image id</span></span><br></pre></td></tr></table></figure>
-<h2 id="创建镜像-Dockerfile"><a href="#创建镜像-Dockerfile" class="headerlink" title="创建镜像 - Dockerfile"></a>创建镜像 - Dockerfile</h2><p>docker的镜像可以从官方直接拉取，也可也通过 Dockerfile 进行定制，写好 Dockerfile 文件后，可以执行下面的命令运行镜像。<br><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t nginx:1.14.0 .</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/home/dockerenv &gt;docker rmi 0d16d0a97dd1 <span class="comment"># 编号是 image id</span></span><br></pre></td></tr></table></figure>
+<h2 id="创建镜像-Dockerfile"><a href="#创建镜像-Dockerfile" class="headerlink" title="创建镜像 - Dockerfile"></a>创建镜像 - Dockerfile</h2><p>docker的镜像可以从官方直接拉取，也可也通过 Dockerfile 进行定制，写好 Dockerfile 文件后，可以执行下面的命令运行镜像。<br><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/home/dockerenv &gt;docker build -t nginx:1.14.0 .</span><br></pre></td></tr></table></figure></p>
 <p>这里的结尾有个 <code>.</code> 它表示上下文，而不是说 Dockerfile 的路径。举例来说，在 Dockerfile 中常常用 Copy 指令，它拷贝的文件必须要在这个上下文中。</p>
 <p>Dockerfile的主要作用是：自己根据基础镜像，重新定制镜像，而不是直接从官方仓库拿现成的使用。</p>
 <p>具体含义可以看这里：<a href="https://yeasy.gitbooks.io/docker_practice/content/image/build.html" target="_blank" rel="external">https://yeasy.gitbooks.io/docker_practice/content/image/build.html</a></p>
-<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="keyword">run</span> -it --rm php:7 bash</span><br></pre></td></tr></table></figure>
+<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/home/dockerenv &gt;docker <span class="keyword">run</span> -it --rm php:7 bash</span><br></pre></td></tr></table></figure>
 <p>上面的命令会启动一个容器，并且分配一个伪终端，退出后容器就会被删除。</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="keyword">run</span> -d -p 9000:9000 php:7</span><br></pre></td></tr></table></figure>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/home/dockerenv &gt;docker <span class="keyword">run</span> -d -p 9000:9000 php:7</span><br></pre></td></tr></table></figure>
 <p>这个命令会在后台运行一个容器，此容器不会因为退出就被删除，可以重复进行start、stop操作。</p>
 <p>上面两种容器启动的操作方式，在我的文章中其实不会出现，我的环境是基于docker-compose + Dockerfile 来搭建的。因为根据最佳实践：一个容器内部只包含一个进程，像上面我需要安装：PHP/Golang/Redis/Nginx/Mysql等，就算不算主从也需要启动5个容器，每次这样启动都要累死，还不说需要管理容器之间的互联。因此我使用Compose来定义和运行多个 Docker 容器的应用。</p>
-<h2 id="查看容器信息"><a href="#查看容器信息" class="headerlink" title="查看容器信息"></a>查看容器信息</h2><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect a49dfb2e6f45 <span class="comment"># image id</span></span><br></pre></td></tr></table></figure>
+<h2 id="查看容器信息"><a href="#查看容器信息" class="headerlink" title="查看容器信息"></a>查看容器信息</h2><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/home/dockerenv &gt;docker inspect a49dfb2e6f45 <span class="comment"># image id</span></span><br></pre></td></tr></table></figure>
 <p>通过该命令可以看到容器的完整信息，我用这个命令主要是在进行容器互联的时候，检查容器的网络与IP相关的情况。</p>
-<h2 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h2><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it e8d740a6ac7a bash <span class="comment"># image id</span></span><br></pre></td></tr></table></figure>
+<h2 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h2><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/home/dockerenv &gt;docker exec -it e8d740a6ac7a bash <span class="comment"># image id</span></span><br></pre></td></tr></table></figure>
 <p>上面的命令可以进入容器，让你感觉像是 ssh 到了远程机器一样的感觉。</p>
-<h2 id="停止、启动"><a href="#停止、启动" class="headerlink" title="停止、启动"></a>停止、启动</h2><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop a49dfb2e6f45 <span class="comment"># image id</span></span><br></pre></td></tr></table></figure>
+<h2 id="停止、启动"><a href="#停止、启动" class="headerlink" title="停止、启动"></a>停止、启动</h2><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/home/dockerenv &gt;docker stop a49dfb2e6f45 <span class="comment"># image id</span></span><br></pre></td></tr></table></figure>
 <p>如果容器是在后台启动，可以通过该方式停止容器。停止后可以使用下面的命令启动容器：</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start a49dfb2e6f45 <span class="comment"># image id</span></span><br></pre></td></tr></table></figure>
-<h2 id="查看与删除容器"><a href="#查看与删除容器" class="headerlink" title="查看与删除容器"></a>查看与删除容器</h2><p>容器也可以像镜像一样进行查看<br><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure></p>
-<p>上面的命令只会显示启动了的镜像，如果要查看所有镜像，可以添加 <code>-a</code> 选项。<br>如果某个容器不需要了，可以使用下面的命令进行删除：<br><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm 0d848bc87fe7  <span class="comment"># image id</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/home/dockerenv &gt;docker start a49dfb2e6f45 <span class="comment"># image id</span></span><br></pre></td></tr></table></figure>
+<h2 id="查看与删除容器"><a href="#查看与删除容器" class="headerlink" title="查看与删除容器"></a>查看与删除容器</h2><p>容器也可以像镜像一样进行查看<br><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/home/dockerenv &gt;docker ps</span><br></pre></td></tr></table></figure></p>
+<p>上面的命令只会显示启动了的镜像，如果要查看所有镜像，可以添加 <code>-a</code> 选项。<br>如果某个容器不需要了，可以使用下面的命令进行删除：<br><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/home/dockerenv &gt;docker rm 0d848bc87fe7  <span class="comment"># image id</span></span><br></pre></td></tr></table></figure></p>
 <p>容器的删除并不会影响镜像，镜像可以继续用来启动新的容器。并且如果依赖某个镜像创建的容器没有被删除，该镜像是不能直接删除的，需要先删除容器后才能继续删除镜像。</p>
 <h2 id="Compose-中的启动与停止"><a href="#Compose-中的启动与停止" class="headerlink" title="Compose 中的启动与停止"></a>Compose 中的启动与停止</h2><p>针对docker compose启动与停止用到下面的命令，个人感觉这就是批量操作，毕竟容器太多，一个一个操作太麻烦，容易遗漏等等问题。</p>
-<p>批量启动：<br><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure></p>
+<p>批量启动：<br><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/home/dockerenv &gt;docker-compose up -d</span><br></pre></td></tr></table></figure></p>
 <p>虽然该命令并不是单纯的启动容器，它非常强大，将尝试自动完成包括构建镜像，（重新）创建服务，启动服务，并关联服务相关容器的一系列操作。</p>
-<p>如果已经创建完了，也可以用下面的命令来启动已经创建的容器。<br><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose start</span><br></pre></td></tr></table></figure></p>
-<p>如果想要停止容器可以使用下面的命令：<br><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose stop</span><br></pre></td></tr></table></figure></p>
+<p>如果已经创建完了，也可以用下面的命令来启动已经创建的容器。<br><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/home/dockerenv &gt;docker-compose start</span><br></pre></td></tr></table></figure></p>
+<p>如果想要停止容器可以使用下面的命令：<br><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/home/dockerenv &gt;docker-compose stop</span><br></pre></td></tr></table></figure></p>
 <p>当然这些命令的运行，要在 <code>docker-compose.yml</code> 文件所在的目录下运行，否则它也不知道该启动或关闭哪些容器。</p>
 <p>基本用到的命令大概就是上面这些，接下来先说说 <code>docker-compose.yml</code> 文件的编写。</p>
 <h1 id="Docker-Compose构建环境"><a href="#Docker-Compose构建环境" class="headerlink" title="Docker Compose构建环境"></a>Docker Compose构建环境</h1><p>Docker Compose 可以把多个容器方便的管理起来，也就是所谓的编排技术。</p>

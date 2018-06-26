@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="He Lei">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Dockerfile 与 Compose 环境搭建学习笔记（二）"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚的博客｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://helei112g.github.ioundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚的博客｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>大愚的博客｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Dockerfile 与 Compose 环境搭建学习笔记（二）</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:dayugog@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-06-26</span>
+            <span class="time">14:59:06</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/工具学习/">工具学习</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/Docker/">#Docker</a> <a class="tag" href="/tags/Dockerfile/">#Dockerfile</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>Dockerfile 的编写是门手艺<br><a id="more"></a></p>
+<p>上一篇文章对整体结构进行了简单记录，这一篇介绍下关于Dockerfile自定义镜像以及各个服务的配置。</p>
+<blockquote>
+<p>其实 <code>https://hub.docker.com/</code> 上面各种基础镜像非常完善，特别是官方的镜像质量非常之高，而我再捣腾一次完全是为了让自己掌握 Dockerfile 方面的技能而已。  </p>
+</blockquote>
+<p>在选择基础镜像方面，推荐使用 <code>Alpine</code> ，然后再它上面进行定制，因为它非常的小仅3M。我的 Nginx/Redis 是在 <code>Alpine</code> 基础上定制的，<code>PHP</code> 是在 <code>CentOS7</code>上面进行的定制。截图大家可以感受下大小：</p>
+<p><img src="&amp;&amp;&amp;SFLOCALFILEPATH&amp;&amp;&amp;FE7C23F8-FC2D-4B9A-8CF3-B22471ABC2E2.png" alt=""></p>
+<h1 id="Dockerfile-与-Compose-建立关联"><a href="#Dockerfile-与-Compose-建立关联" class="headerlink" title="Dockerfile 与 Compose 建立关联"></a>Dockerfile 与 Compose 建立关联</h1><p>关于概念可以看这里：<br><a href="https://yeasy.gitbooks.io/docker_practice/content/image/build.html" target="_blank" rel="external">https://yeasy.gitbooks.io/docker_practice/content/image/build.html</a></p>
+<p>我这里以 PHP/Redis/Nginx 的定制来进行一些说明（我也只是现学现用，希望高手多指教）。</p>
+<p>在上篇的 docker-compose.yml 文件中如下的配置：<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">dev.nginx.srv:</span><br><span class="line">	image: lei_nginx:<span class="number">1.14</span><span class="number">.0</span></span><br><span class="line">	build: ./nginx</span><br><span class="line">	volumes:</span><br><span class="line">		- ./nginx/conf:/home/work/app/nginx/conf</span><br><span class="line"><span class="bullet">      -</span> ./www:/home/work/www</span><br><span class="line">	ports:</span><br><span class="line">		- <span class="string">"80:8080"</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"443:443"</span></span><br><span class="line">	restart: always</span><br></pre></td></tr></table></figure></p>
+<p>这里重要的是多了 build 这个选项，设置的对应目录中可以找到 <code>Dockerfile</code> 这个文件，当我们 <code>docker-compose up</code> 时，docker会根据这个文件去先创建镜像，然后启动一个容器。</p>
+<h2 id="Dockerfile-如何写"><a href="#Dockerfile-如何写" class="headerlink" title="Dockerfile 如何写"></a>Dockerfile 如何写</h2><p>网络上有非常多关于 <code>Dockerfile</code> 该如何写的最佳实践，我觉得有几点特别重要：</p>
+<ul>
+<li>一个容器只运行一个进程；</li>
+<li>镜像层数尽可能少，当然还需要考虑可读性等方面的因素；</li>
+<li>RUN指令应该用 \ 分成多行方便阅读；</li>
+<li>容器镜像要尽可能的小。</li>
+</ul>
+<p>更多最佳实践可以看这里：<br><a href="https://yeasy.gitbooks.io/docker_practice/content/appendix/best_practices.html" target="_blank" rel="external">https://yeasy.gitbooks.io/docker_practice/content/appendix/best_practices.html</a></p>
+<p>接下来以 Redis 的 Dockerfile 来聊一聊实际如何编写。<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> alpine:<span class="number">3.7</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 解释信息</span></span><br><span class="line"><span class="keyword">LABEL</span> maintainer="HeLei &lt;dayugog@gmail.com&gt;"</span><br><span class="line"></span><br><span class="line"><span class="keyword">ENV</span> REDIS_VERSION=<span class="number">3.2</span>.<span class="number">11</span> \</span><br><span class="line">    SRC_DIR=/home/work/src \</span><br><span class="line">    DATA_DIR=/home/work/app/redis/data \</span><br><span class="line">    CONF_DIR=/home/work/app/redis/conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置系统时区</span></span><br><span class="line"><span class="keyword">RUN</span> ln -snf /usr/share/zoneinfo/$TZ /etc/localtime &amp;&amp; echo $TZ &gt; /etc/timezone</span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span> src/ $SRC_DIR</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编译文件</span></span><br><span class="line"><span class="keyword">RUN</span> set -ex; \</span><br><span class="line">    \</span><br><span class="line">    addgroup -S work &amp;&amp; adduser -S -G work work; \</span><br><span class="line">    apk add --no-cache --virtual .build-deps \</span><br><span class="line">            coreutils \</span><br><span class="line">            gcc \</span><br><span class="line">            jemalloc-dev \</span><br><span class="line">            linux-headers \</span><br><span class="line">            make \</span><br><span class="line">            musl-dev \</span><br><span class="line">        ; \</span><br><span class="line">    \</span><br><span class="line">    cd $SRC_DIR; \</span><br><span class="line">    tar xvzf redis-$REDIS_VERSION.tar.gz; \</span><br><span class="line">    cd redis-$REDIS_VERSION; \</span><br><span class="line">    make &amp;&amp; make install; \</span><br><span class="line">    apk del .build-deps; \</span><br><span class="line">    \</span><br><span class="line">    mkdir -p $DATA_DIR &amp;&amp; mkdir -p $CONF_DIR; \</span><br><span class="line">    chown -R work:work /home; \</span><br><span class="line">    rm -rf $SRC_DIR</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝配置文件</span></span><br><span class="line"><span class="keyword">COPY</span> conf/ /home/work/app/redis/conf</span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span> docker-entrypoint.sh /usr/local/bin/</span><br><span class="line"><span class="keyword">ENTRYPOINT</span> ["docker-entrypoint.sh"]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导出端口</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">6379</span></span><br><span class="line"><span class="comment"># 启动redis</span></span><br><span class="line">CMD [<span class="string">"redis-server"</span>]</span><br></pre></td></tr></table></figure></p>
+<p>第一行 <strong>FROM</strong> 用来指定基础镜像。也就是你要在什么镜像上进行定制，我这里选择的是 alpine，这是一个提供的基础空白对象非常小。只是它上面的包管理是 <code>apk</code> ，使用时需要掌握下它的一些参数。</p>
+<p><strong>LABEL</strong>可以理解成添加一些说明、描述信息。我这里仅添加了自己的联系方式。可以通过反斜线 <code>\</code> 来进行换行。</p>
+<p><strong>ENV</strong>用来设置环境变量，例如：定义一些系统版本、路径的环境变量，在后续RUN中可以使用（当然不仅仅是RUN中可用），也可以用改写原有的环境变量，例如：PATH。</p>
+<p><strong>RUN</strong>这是一个非常重要的命令，它是用来执行命令行的命令。就像上面看到的用 yum 安装更新软件，make编译代码等。可以通过反斜线 <code>\</code> 来进行换行。</p>
+<p><strong>COPY</strong>它是将宿主机的内容复制到容器中指定的路径。</p>
+<p><strong>EXPOSE</strong>指令用于指定容器将要监听的端口。一般设置为应用程序使用常见的端口，例如Redis设置为：<code>6379</code></p>
+<p>现在重点说下 <strong>CMD</strong> 与 <strong>ENTRYPOINT</strong> 两个命令。如果Dockerfile中没有 <strong>ENTRYPOINT</strong> 选项，<strong>CMD</strong> 的内容就相当于直接执行某个命令。但是当存在时就是另外一回事。以上面的为例：<br><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">COPY</span> docker-entrypoint.sh /usr/local/bin/</span><br><span class="line"><span class="keyword">ENTRYPOINT</span> ["docker-entrypoint.sh"]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动redis</span></span><br><span class="line"><span class="keyword">CMD</span> ["redis-server"]</span><br></pre></td></tr></table></figure></p>
+<p>这里设置了一个 <strong>ENTRYPOINT</strong> ，像上面这种情况的时候如果直接启动一个容器时，相当于最后应用启动执行的命令是：<code>./docker-entrypoint.sh redis-server</code>。</p>
+<p>根据这个特性，<code>docker-entrypoint.sh</code> 内部可以根据相关参数进行特殊处理。来看下我的 <code>docker-entrypoint.sh</code> 脚本内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">set -e</span><br><span class="line"></span><br><span class="line">cd `dirname $0`</span><br><span class="line"></span><br><span class="line"># 对文件夹进行权限修改</span><br><span class="line">if [ &quot;$1&quot; = &apos;redis-server&apos; -a &quot;$(id -u)&quot; = &apos;0&apos; ]; then</span><br><span class="line">	chown -R work:work /home</span><br><span class="line">  exec redis-server /home/work/app/redis/conf/redis.conf</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">exec &quot;$@&quot;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到如果脚本后面带的参数是<code>redis-server</code>则会先进行相关目录授权，然后启动redis。如果不是就会直接执行，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/dockerEnv &gt;docker run -it --rm redis:3.2.11 redis-cli -v</span><br><span class="line">redis-cli 3.2.11</span><br></pre></td></tr></table></figure></p>
+<p>会直接执行后面这个命令，你可以看到redis客户端的版本信息。这也就是表示，可以把镜像当成一个命令来使用了。</p>
+<p>有了 <strong>ENTRYPOINT</strong> 这个功能，可以用它在服务启动时，做更多操作 。例如可以结合 docker-compose.yml 中设置的环境变量做更多事情。可以查看官方的MySQL的 <code>docker-entrypoint.sh</code> 文件内容。</p>
+<h1 id="依据Dockerfile启动容器"><a href="#依据Dockerfile启动容器" class="headerlink" title="依据Dockerfile启动容器"></a>依据Dockerfile启动容器</h1><p>Dockerfile 已经写好了，通过下面的命令即可创建镜像启动容器。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ ~/dockerEnv &gt;docker build -t lei_redis:3.2.11 .</span><br></pre></td></tr></table></figure></p>
+<p>在 redis/ 目录下执行上面的命令，他会先获取基础镜像，然后根据命令逐条执行，完成redis的编译、安装以及相关清理工作。</p>
+<p>编译完成后可用通过<code>docker image ls</code>查看当前的镜像列表数据。</p>
+<p>然后通过 <code>docker run -it -p 6379:6379 -d lei_redis:3.2.11</code> 启动一个容器。</p>
+<p>启动完成后，大家可以用redis客户端链接查看redis已经正常启动。</p>
+<p>当然还有 PHP/Nginx 的镜像定制，以及每个服务的配置，大家可以在github上查看详情，这里就不再赘述了，剩下再介绍下这个过程中遇的到的几个错误。</p>
+<h1 id="遇到的错误"><a href="#遇到的错误" class="headerlink" title="遇到的错误"></a>遇到的错误</h1><ol>
+<li><strong>在宿主机中无法连接Redis</strong><br>这是由于bind的问题。以前在 vagrant 中安装redis也遇到过， 通过将配置修改为：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bind 0.0.0.0</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>宿主机能够连接到服务器上。这样设置的含义是，让容器中的Redis监听容器ip的所有端口。这样设置而不是指定ip是因为每个镜像可以启动多个容器，而每个容器的ip地址是不确定的。</p>
+<ol>
+<li><strong>镜像创建时报错</strong><br>报错信息如下：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ERROR: for dockerenv_dev.php-fpm.srv_1  Cannot start service dev.php-fpm.srv: OCI runtime create failed: container_linux.go:348: starting container process caused &quot;exec: \&quot;docker-entrypoint.sh\&quot;: executable file not found in $PATH&quot;: unknown</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这个问题主要是：我的 <code>docker-entrypoint.sh</code> 文件没有可执行权限，因此在镜像创建完后，执行<strong>ENTRYPOINT</strong>指定的脚本时导致错误，解决办法当然很简单，直接执行：<code>chmod +x docker-entrypoint.sh</code>。然后需要重新创建镜像。</p>
+<ol>
+<li><strong>Nginx 无法连接php-fpm</strong><br>这个错误其实与宿主机无法连接Redis很像，错误信息：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2018/06/13 11:13:26 [error] 5#0: *8 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: &quot;GET / HTTP/1.1&quot;, upstream: &quot;fastcgi://172.18.0.2:9000&quot;, host: &quot;localhost&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>修改 php-fpm 的监听地址为：<strong>0.0.0.0:9000</strong>，Nginx可正常启动。</p>
+<ol>
+<li><strong>访问php文件时找不到文件</strong><br>执行动态文件时，出现了文件找不到的提示，具体错误信息：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2018/06/13 11:21:20 [error] 5#0: *10 FastCGI sent in stderr: &quot;Primary script unknown&quot; while reading response header from upstream, client: 172.18.0.1, server: localhost, request: &quot;GET / HTTP/1.1&quot;, upstream: &quot;fastcgi://172.18.0.2:9000&quot;, host: &quot;localhost&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>由于Nginx与PHP没有部署在同一个容器中，相关的项目文件只与Nginx进行了共享，而没有与PHP的容器进行共享。因此当访问静态文件时，Nginx直接在自己的容器中完成操作，而访问php文件时信息传到了PHP所在的容器，容器内部无法找到对应的php文件而导致的错误。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>经过2天的折腾，算是基本把环境搭建起来了。不过还有一些其他问题需要思考该如何进行：</p>
+<ul>
+<li>如果我的PHP需要新的扩展，该如何去编译这个扩展包？</li>
+<li>如何去监控docker中的应用的状态？比如：Redis/Nginx等服务的状态。</li>
+</ul>
+<p>后续会继续摸索分享自己的经验。</p>
+<p>项目地址：<br><a href="https://github.com/helei112g/docker-env" target="_blank" rel="external">https://github.com/helei112g/docker-env</a></p>
+<p>微信公众号：<br><img src="http://ol59nqr1i.bkt.clouddn.com/mp-qr.jpg" alt="pub"></p>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://yeasy.gitbooks.io/docker_practice/content/" target="_blank" rel="external">https://yeasy.gitbooks.io/docker_practice/content/</a></li>
+<li><a href="https://docs.lvrui.io/2017/06/09/%E7%BC%96%E5%86%99docker-entrypoint-sh%E5%85%A5%E5%8F%A3%E6%96%87%E4%BB%B6/" target="_blank" rel="external">https://docs.lvrui.io/2017/06/09/%E7%BC%96%E5%86%99docker-entrypoint-sh%E5%85%A5%E5%8F%A3%E6%96%87%E4%BB%B6/</a></li>
+<li><a href="https://pkgs.alpinelinux.org/packages" target="_blank" rel="external">https://pkgs.alpinelinux.org/packages</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+        <p class="copyright text-muted">
+          友情链接 <a target="_blank" href="http://52fhy.com/">飞鸿影</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
