@@ -6,7 +6,7 @@
     <entry>
       <title><![CDATA[为什么要用Redis]]></title>
       <url>https://helei112g.github.io/2018/07/19/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8Redis/</url>
-      <content type="html"><![CDATA[<p>文章摘要，作者太懒了，没写……<br><a id="more"></a></p>
+      <content type="html"><![CDATA[<p>从今天开始探索Redis，不让它成为一个黑盒子<br><a id="more"></a></p>
 <p>最近阅读了《Redis开发与运维》，非常不错。这里对书中的知识整理一下，方便自己回顾一下Redis的整个体系，来对相关知识点查漏补缺。</p>
 <p>我按照五点把书中的内容进行一下整理：<br>    •    为什么要选择Redis：介绍Redis的使用场景与使用Redis的原因；<br>    •    Redis常用命令总结：包括时间复杂度总结与具体数据类型在Redis内部使用的数据结构；<br>    •    Redis的高级功能：包括持久化、复制、哨兵、集群介绍；<br>    •    理解Redis：理解内存、阻塞；这部分是非常重要的，前面介绍的都可以成为术，这里应该属于道的部分。；<br>    •    开发技巧：主要是一些开发实战的总结，包括缓存设计与常见坑点。</p>
 <p>先来开启第一部分的内容，对Redis来一次重新打量。<br>本系列内容基于：redis-3.2.12</p>
