@@ -11,10 +11,13 @@
 <p>本系列内容基于：redis-3.2.12</p>
 <p>文中不会介绍所有命令，主要是工作中经常遇到的。</p>
 <p>平时我们看的大部分资料，都是简单粗暴的告诉我们这个命令干嘛，那个命令需要几个参数。这种方式只会知其然不知其所以然，本文从命令的时间复杂度到用途，再到对应类型在Redis低层采用何种结构保存数据，希望让大家认识的更深刻，使用时心里更有底。</p>
-<pre><code>1.    这里在阅读中请注意：虽然很多命令的时间复杂度都是O(n)，但要注意其n所代表的具体含义。
-
-2.    文中会用到 OBJECT ENCODING xxx 来检查Redis的内部编码，它其实是读取的 redisObject 结构体中 encoding 所代表的值。redisObject 对不同类型的数据提供了统一的表现形式。
-</code></pre><h1 id="String类型"><a href="#String类型" class="headerlink" title="String类型"></a>String类型</h1><p>应该讲这是Redis中使用的最广泛的数据类型。该类型中的一些命令使用场景非常广泛。比如：</p>
+<ol>
+<li><p>这里在阅读中请注意：虽然很多命令的时间复杂度都是O(n)，但要注意其n所代表的具体含义。</p>
+</li>
+<li><p>文中会用到 OBJECT ENCODING xxx 来检查Redis的内部编码，它其实是读取的 redisObject 结构体中 encoding 所代表的值。redisObject 对不同类型的数据提供了统一的表现形式。</p>
+</li>
+</ol>
+<h1 id="String类型"><a href="#String类型" class="headerlink" title="String类型"></a>String类型</h1><p>应该讲这是Redis中使用的最广泛的数据类型。该类型中的一些命令使用场景非常广泛。比如：</p>
 <ul>
 <li>缓存，这是使用非常多的地方；</li>
 <li>计数器/限速器技术；</li>
