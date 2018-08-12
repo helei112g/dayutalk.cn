@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="He Lei">
   <!-- Open Graph Data -->
-  <meta property="og:title" content="Redis的数据类型一探究竟"/>
+  <meta property="og:title" content="Redis的数据类型——探究竟"/>
   <meta property="og:description" content="" />
   <meta property="og:site_name" content="大愚Talk｜与你把酒言诗"/>
   <meta property="og:type" content="article" />
@@ -53,7 +53,7 @@
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <div class="page-title with-background-image">
-          <p class="title">Redis的数据类型一探究竟</p>
+          <p class="title">Redis的数据类型——探究竟</p>
           <p class="subtitle"></p>
         </div>
         <div class="site-menu with-background-image">
@@ -111,7 +111,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2018-07-22</span>
-            <span class="time">09:48:49</span>
+            <span class="time">17:10:12</span>
           </span>
           
           <!--  Categories  -->
@@ -135,7 +135,9 @@
         <div class="post-content">
           <p>第二篇来了，Redis常用5种类型大揭秘。长文预警！<br><a id="more"></a></p>
 <p>接上篇 <a href="https://mp.weixin.qq.com/s/cKIaRPGKywrxfs_s7wiaQg" target="_blank" rel="external">为什么要用Redis</a>，今天来聊聊具体的Redis数据类型与命令。本篇是深入理解Redis的一个重要基础，请坐稳，前方 长文预警。</p>
+<blockquote>
 <p>本系列内容基于：redis-3.2.12</p>
+</blockquote>
 <p>文中不会介绍所有命令，主要是工作中经常遇到的。</p>
 <p>平时我们看的大部分资料，都是简单粗暴的告诉我们这个命令干嘛，那个命令需要几个参数。这种方式只会知其然不知其所以然，本文从命令的时间复杂度到用途，再到对应类型在Redis低层采用何种结构保存数据，希望让大家认识的更深刻，使用时心里更有底。</p>
 <ol>

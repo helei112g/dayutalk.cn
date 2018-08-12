@@ -165,7 +165,11 @@
   </body>
 </html>
 
-Name('pre'))
+fter Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
     codeBlocks.forEach(function(block, index) {
       hljs.highlightBlock(block);
     });
