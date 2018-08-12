@@ -6,8 +6,8 @@
     <entry>
       <title><![CDATA[玩转Redis持久化]]></title>
       <url>https://helei112g.github.io/2018/08/12/%E7%8E%A9%E8%BD%ACRedis%E6%8C%81%E4%B9%85%E5%8C%96/</url>
-      <content type="html"><![CDATA[<p>结合自己看过的只是，以及最近对Redis源码的阅读、实践总结一下自己对持久化的认识。</p>
-<p>真心希望对你有帮助<br><a id="more"></a></p>
+      <content type="html"><![CDATA[<p>Redis系列的第三篇，结合自己看过的文章，以及最近对Redis源码的阅读总结一下自己对持久化的认识。</p>
+<p>真心希望对你有帮助。<br><a id="more"></a></p>
 <p>Redis为持久化提供了两种方式：</p>
 <ul>
 <li>RDB：在指定的时间间隔能对你的数据进行快照存储。</li>
