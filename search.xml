@@ -5,7 +5,7 @@
     
     <entry>
       <title><![CDATA[玩转Redis持久化]]></title>
-      <url>https://helei112g.github.io/2018/08/12/%E7%8E%A9%E8%BD%ACRedis%E6%8C%81%E4%B9%85%E5%8C%96/</url>
+      <url>http://dayutalk.cn/2018/08/12/%E7%8E%A9%E8%BD%ACRedis%E6%8C%81%E4%B9%85%E5%8C%96/</url>
       <content type="html"><![CDATA[<p>Redis系列的第三篇，结合自己看过的文章，以及最近对Redis源码的阅读总结一下自己对持久化的认识。</p>
 <p>真心希望对你有帮助。<br><a id="more"></a></p>
 <p>Redis为持久化提供了两种方式：</p>
@@ -100,7 +100,7 @@
     
     <entry>
       <title><![CDATA[Redis的数据类型——探究竟]]></title>
-      <url>https://helei112g.github.io/2018/07/22/Redis%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%80%E6%8E%A2%E7%A9%B6%E7%AB%9F/</url>
+      <url>http://dayutalk.cn/2018/07/22/Redis%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%80%E6%8E%A2%E7%A9%B6%E7%AB%9F/</url>
       <content type="html"><![CDATA[<p>第二篇来了，Redis常用5种类型大揭秘。长文预警！<br><a id="more"></a></p>
 <p>接上篇 <a href="https://mp.weixin.qq.com/s/cKIaRPGKywrxfs_s7wiaQg" target="_blank" rel="external">为什么要用Redis</a>，今天来聊聊具体的Redis数据类型与命令。本篇是深入理解Redis的一个重要基础，请坐稳，前方 长文预警。</p>
 <blockquote>
@@ -239,7 +239,7 @@
     
     <entry>
       <title><![CDATA[为什么要用Redis]]></title>
-      <url>https://helei112g.github.io/2018/07/19/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8Redis/</url>
+      <url>http://dayutalk.cn/2018/07/19/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8Redis/</url>
       <content type="html"><![CDATA[<p>从今天开始探索Redis，不让它成为一个黑盒子<br><a id="more"></a></p>
 <p>最近阅读了《Redis开发与运维》，非常不错。这里对书中的知识整理一下，方便自己回顾一下Redis的整个体系，来对相关知识点查漏补缺。</p>
 <p>我按照五点把书中的内容进行一下整理：<br>    •    为什么要选择Redis：介绍Redis的使用场景与使用Redis的原因；<br>    •    Redis常用命令总结：包括时间复杂度总结与具体数据类型在Redis内部使用的数据结构；<br>    •    Redis的高级功能：包括持久化、复制、哨兵、集群介绍；<br>    •    理解Redis：理解内存、阻塞；这部分是非常重要的，前面介绍的都可以成为术，这里应该属于道的部分。；<br>    •    开发技巧：主要是一些开发实战的总结，包括缓存设计与常见坑点。</p>
@@ -271,7 +271,7 @@
     
     <entry>
       <title><![CDATA[MySQL InnoDB引擎锁的总结]]></title>
-      <url>https://helei112g.github.io/2018/07/09/MySQL-InnoDB%E5%BC%95%E6%93%8E%E9%94%81%E7%9A%84%E6%80%BB%E7%BB%93/</url>
+      <url>http://dayutalk.cn/2018/07/09/MySQL-InnoDB%E5%BC%95%E6%93%8E%E9%94%81%E7%9A%84%E6%80%BB%E7%BB%93/</url>
       <content type="html"><![CDATA[<p>知其然，知其所以然<br><a id="more"></a></p>
 <p>总结一下自己多年来对MySQL的相关知识，做个梳理。</p>
 <p>本文用到的MySQL版本：5.7.22</p>
@@ -324,7 +324,7 @@
     
     <entry>
       <title><![CDATA[Dockerfile 与 Compose 环境搭建学习笔记（二）]]></title>
-      <url>https://helei112g.github.io/2018/06/26/Dockerfile-%E4%B8%8E-Compose-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
+      <url>http://dayutalk.cn/2018/06/26/Dockerfile-%E4%B8%8E-Compose-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
       <content type="html"><![CDATA[<p>Dockerfile 的编写是门手艺<br><a id="more"></a></p>
 <p>上一篇文章对整体结构进行了简单记录，这一篇介绍下关于Dockerfile自定义镜像以及各个服务的配置。</p>
 <blockquote>
@@ -402,7 +402,7 @@
     
     <entry>
       <title><![CDATA[Dockerfile 与 Compose 环境搭建学习笔记（一）]]></title>
-      <url>https://helei112g.github.io/2018/06/25/Dockerfile-%E4%B8%8E-Compose-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+      <url>http://dayutalk.cn/2018/06/25/Dockerfile-%E4%B8%8E-Compose-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/</url>
       <content type="html"><![CDATA[<p>大家都用docker了，我先把自己的开发环境换了吧~_~<br><a id="more"></a></p>
 <p>以前一直使用 <strong>Vagrant</strong> 作为自己的开发环境，并且在上家公司也推行大家采用 Vagrant 作为开发环境，保障公司使用的是同一套开发环境。随着docker的流行，越来越多的人在docker上运行自己的项目，利用docker也非常方便模拟各种线上集群，相比虚拟机效率会更高，不管是搭建还是运行。</p>
 <p>网络上关于docker搭建环境的资料非常之多了，但自己一直没有进行过实践。纸上得来终觉浅，只有自己动过手之后，才能对相关的概念更熟悉。花了将近2天时间折腾，终于算是把docker的开发环境搭建好了，对他的很多概念也又了更深入的认识。整理一下整个过程，方便以后查漏补缺。</p>
@@ -485,7 +485,7 @@
     
     <entry>
       <title><![CDATA[Golang中函数传参存在引用传递吗？]]></title>
-      <url>https://helei112g.github.io/2018/06/11/Golang%E4%B8%AD%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E5%AD%98%E5%9C%A8%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92%E5%90%97%EF%BC%9F/</url>
+      <url>http://dayutalk.cn/2018/06/11/Golang%E4%B8%AD%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E5%AD%98%E5%9C%A8%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92%E5%90%97%EF%BC%9F/</url>
       <content type="html"><![CDATA[<p>Go的函数传递详解，一篇文章搞明白Golang的值传递。<br><a id="more"></a></p>
 <p>继上篇文章后，继续来探讨下面的几个问题:</p>
 <ol>
@@ -540,7 +540,7 @@
     
     <entry>
       <title><![CDATA[指针、引用的理解]]></title>
-      <url>https://helei112g.github.io/2018/06/06/%E6%8C%87%E9%92%88%E3%80%81%E5%BC%95%E7%94%A8%E7%9A%84%E7%90%86%E8%A7%A3-md/</url>
+      <url>http://dayutalk.cn/2018/06/06/%E6%8C%87%E9%92%88%E3%80%81%E5%BC%95%E7%94%A8%E7%9A%84%E7%90%86%E8%A7%A3-md/</url>
       <content type="html"><![CDATA[<p>指针与引用常常被混淆，他们为什么总被人理解错误？<br><a id="more"></a></p>
 <p>最近在学习Golang的过程中，发现一个有意思的事情，有的文章说函数调用传参时 <strong>slice</strong> 是引用传递，有的说是值传递。为什么同一个东西大家会不同认识？为了搞清楚其本质，我进行了以下内容的研究：</p>
 <ol>
@@ -594,7 +594,7 @@
     
     <entry>
       <title><![CDATA[一个程序员对架构的认识]]></title>
-      <url>https://helei112g.github.io/2018/05/27/%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AF%B9%E6%9E%B6%E6%9E%84%E7%9A%84%E8%AE%A4%E8%AF%86-md/</url>
+      <url>http://dayutalk.cn/2018/05/27/%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AF%B9%E6%9E%B6%E6%9E%84%E7%9A%84%E8%AE%A4%E8%AF%86-md/</url>
       <content type="html"><![CDATA[<p>架构是一个系统的草图（逻辑+物理角度），它是有生命的，随着业务的变化会不断演进。没有完美的架构只有合适的架构。<br><a id="more"></a></p>
 <p>最近订阅了一些架构方面的资料，阅读后获益匪浅，想着整理一些自己的体会与思考，形成架构方面的读书笔记，一来与大家交流，二来通过文字的形式检查自己到底收获多少！</p>
 <p>“我们系统是MVC架构的”</p>
@@ -629,7 +629,7 @@
     
     <entry>
       <title><![CDATA[Go初始化变量的招式]]></title>
-      <url>https://helei112g.github.io/2018/05/26/Go%E5%88%9D%E5%A7%8B%E5%8C%96%E5%8F%98%E9%87%8F%E7%9A%84%E6%8B%9B%E5%BC%8F/</url>
+      <url>http://dayutalk.cn/2018/05/26/Go%E5%88%9D%E5%A7%8B%E5%8C%96%E5%8F%98%E9%87%8F%E7%9A%84%E6%8B%9B%E5%BC%8F/</url>
       <content type="html"><![CDATA[<p>乱立Flag害死人<br><a id="more"></a></p>
 <p>年初的立的各种Flag，已经被我抛到九霄云外去了。2018年已经过去了一半，终于开始了第三篇文章，距离全年30篇的输出计划，仅剩27本，我很有“信心完成”剩下的部分。</p>
 <p>2018年伊始，开始从PHP转到Go的开发方向，虽然说学习路线并不是非常陡峭，但是过程中遇到不少坑以及有意思的地方，忍不住想总结分享给大家。今天先来聊一聊Go中初始化变量的几种方式。</p>
@@ -666,7 +666,7 @@
     
     <entry>
       <title><![CDATA[Go语言中的Interface]]></title>
-      <url>https://helei112g.github.io/2018/02/13/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84Interface/</url>
+      <url>http://dayutalk.cn/2018/02/13/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84Interface/</url>
       <content type="html"><![CDATA[<p>文章摘要，作者太懒了，没写……<br><a id="more"></a></p>
 <p><strong>先给大家拜个早年：狗年旺旺旺</strong></p>
 <p>最近在看Go语言的面向对象的知识点时，发现它的面向对象能力全靠 interface 撑着，而且它的 interface 还与我们以前知道的 interface 完全不同。故而整个过程不断的思考为什么要如此设计？这样设计给我们带来了什么影响？</p>
@@ -709,7 +709,7 @@
     
     <entry>
       <title><![CDATA[PHP的引用，你知道多少]]></title>
-      <url>https://helei112g.github.io/2017/12/15/PHP%E7%9A%84%E5%BC%95%E7%94%A8%EF%BC%8C%E4%BD%A0%E7%9F%A5%E9%81%93%E5%A4%9A%E5%B0%91/</url>
+      <url>http://dayutalk.cn/2017/12/15/PHP%E7%9A%84%E5%BC%95%E7%94%A8%EF%BC%8C%E4%BD%A0%E7%9F%A5%E9%81%93%E5%A4%9A%E5%B0%91/</url>
       <content type="html"><![CDATA[<p>除了学到引用知识，文末还给你带来了一家2018年上海最值得加入的公司。<br><a id="more"></a></p>
 <p>真的是变懒了，一个月一篇的节凑都很难保证了。</p>
 <p>最近面试他人的过程中，问了一些关于PHP引用的知识，发现很多同学对这方面知之甚少，还有很多工作中基本没有使用过。甚至有人告诉我要少用引用，引用会带来一些诡异的问题。我心里默默说，避免诡异的问题是要去理解引用而不是少用引用。今天一起来解析解析。</p>
@@ -765,7 +765,7 @@
     
     <entry>
       <title><![CDATA[我想成为一个真的程序员]]></title>
-      <url>https://helei112g.github.io/2017/10/25/%E6%88%91%E6%83%B3%E6%88%90%E4%B8%BA%E4%B8%80%E4%B8%AA%E7%9C%9F%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%91%98/</url>
+      <url>http://dayutalk.cn/2017/10/25/%E6%88%91%E6%83%B3%E6%88%90%E4%B8%BA%E4%B8%80%E4%B8%AA%E7%9C%9F%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%91%98/</url>
       <content type="html"><![CDATA[<p>是的，当了4年假程序员，我想要变成真的<br><a id="more"></a></p>
 <p>最近看了 <code>左耳朵耗子</code> 写的一段话：</p>
 <blockquote>
@@ -792,7 +792,7 @@
     
     <entry>
       <title><![CDATA[飞跃绝境长城]]></title>
-      <url>https://helei112g.github.io/2017/09/13/%E9%A3%9E%E8%B7%83%E7%BB%9D%E5%A2%83%E9%95%BF%E5%9F%8E/</url>
+      <url>http://dayutalk.cn/2017/09/13/%E9%A3%9E%E8%B7%83%E7%BB%9D%E5%A2%83%E9%95%BF%E5%9F%8E/</url>
       <content type="html"><![CDATA[<p>首发微信公众号，结果被删除了。所以博客还是得坚持<br><a id="more"></a></p>
 <p>《冰与火之歌》中有一道绝境长成保护着七国子民。我们也有一道绝境长成，给我们打造良好健康的信息环境。</p>
 <p>不过我们程序员想用github快一点，google查询资料全一点，怎么破？我今天将把走出绝境长成的地图交给你们。</p>
@@ -935,7 +935,7 @@
     
     <entry>
       <title><![CDATA[PHP中static与yield关键字的思考]]></title>
-      <url>https://helei112g.github.io/2017/09/10/PHP%E4%B8%ADstatic%E4%B8%8Eyield%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E6%80%9D%E8%80%83/</url>
+      <url>http://dayutalk.cn/2017/09/10/PHP%E4%B8%ADstatic%E4%B8%8Eyield%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E6%80%9D%E8%80%83/</url>
       <content type="html"><![CDATA[<p>语言的本身，远远重要于其它。<br><a id="more"></a></p>
 <p>你以为你知道了一切，只是你以为而已。知识的美妙就在于，一生的时光在它面前显得多么的短暂。</p>
 <p>嗯嗯，扯远了，我今天只想说说：<strong>static</strong> 与 <strong>yield</strong>。</p>
@@ -978,7 +978,7 @@
     
     <entry>
       <title><![CDATA[Web开发中说高并发的时候，我们在说什么]]></title>
-      <url>https://helei112g.github.io/2017/08/25/Web%E5%BC%80%E5%8F%91%E4%B8%AD%E8%AF%B4%E9%AB%98%E5%B9%B6%E5%8F%91%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%AF%B4%E4%BB%80%E4%B9%88/</url>
+      <url>http://dayutalk.cn/2017/08/25/Web%E5%BC%80%E5%8F%91%E4%B8%AD%E8%AF%B4%E9%AB%98%E5%B9%B6%E5%8F%91%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%AF%B4%E4%BB%80%E4%B9%88/</url>
       <content type="html"><![CDATA[<p>概念背后的实质，才值得我们真正去畅谈与思考。<br><a id="more"></a></p>
 <p>这并不是一个回答的问题的文章，而是由此引发的一个思考。</p>
 <p><strong>大家心里仔细想想，当你们听到高并发网站时，心里对这个网站是个什么概念？首先想到的是淘宝吗？带着问题，我们一起思考技术</strong></p>
@@ -1045,7 +1045,7 @@
     
     <entry>
       <title><![CDATA[PHP后端该如何组织项目结构]]></title>
-      <url>https://helei112g.github.io/2017/08/07/PHP%E5%90%8E%E7%AB%AF%E8%AF%A5%E5%A6%82%E4%BD%95%E7%BB%84%E7%BB%87%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84/</url>
+      <url>http://dayutalk.cn/2017/08/07/PHP%E5%90%8E%E7%AB%AF%E8%AF%A5%E5%A6%82%E4%BD%95%E7%BB%84%E7%BB%87%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84/</url>
       <content type="html"><![CDATA[<p>全栈系列后端项目结构的思考，不夸夸其谈，只想写好代码。<br><a id="more"></a></p>
 <p>这是 <strong>后端开发者从零做一个移动应用</strong> 的后端部分第二篇。介绍下一个新项目，后端该如何从零去搭建。我们先假设这个项目由两部组成</p>
 <ul>
@@ -1099,13 +1099,13 @@
 <p>如果你对我的内容感兴趣，请关注我的微信公众号：</p>
 <p>公众号：<code>icanfo</code></p>
 <p><img src="http://ol59nqr1i.bkt.clouddn.com/mp-qr.jpg" alt="image"></p>
-<p>个人博客：<a href="https://helei112g.github.io/">https://helei112g.github.io/</a></p>
+<p>个人博客：<a href="https://helei112g.github.io/" target="_blank" rel="external">https://helei112g.github.io/</a></p>
 ]]></content>
     </entry>
     
     <entry>
       <title><![CDATA[后端开发者从零做一个移动应用（后端篇）]]></title>
-      <url>https://helei112g.github.io/2017/07/16/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85%E4%BB%8E%E9%9B%B6%E5%81%9A%E4%B8%80%E4%B8%AA%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8%EF%BC%88%E5%90%8E%E7%AB%AF%E7%AF%87%EF%BC%89/</url>
+      <url>http://dayutalk.cn/2017/07/16/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85%E4%BB%8E%E9%9B%B6%E5%81%9A%E4%B8%80%E4%B8%AA%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8%EF%BC%88%E5%90%8E%E7%AB%AF%E7%AF%87%EF%BC%89/</url>
       <content type="html"><![CDATA[<p>后端开发，不手摸手，也不嘴对嘴。只想写好代码<br><a id="more"></a></p>
 <p>先来上一张前端页面的效果图（Vue + Vux + Vuex + Vue-Router）。<br><img src="http://ol59nqr1i.bkt.clouddn.com/x-app-1.gif" alt="image"></p>
 <p><strong> 第一次做gif 没什么经验，太大了。加载慢 </strong></p>
@@ -1156,13 +1156,13 @@
 <p>如果你对我的内容感兴趣，请关注我的微信公众号：</p>
 <p>公众号：<code>icanfo</code></p>
 <p><img src="http://ol59nqr1i.bkt.clouddn.com/mp-qr.jpg" alt="image"></p>
-<p>个人博客：<a href="https://helei112g.github.io/">https://helei112g.github.io/</a></p>
+<p>个人博客：<a href="https://helei112g.github.io/" target="_blank" rel="external">https://helei112g.github.io/</a></p>
 ]]></content>
     </entry>
     
     <entry>
       <title><![CDATA[后端开发者从零做一个移动应用（一）]]></title>
-      <url>https://helei112g.github.io/2017/06/24/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85%E4%BB%8E%E9%9B%B6%E5%81%9A%E4%B8%80%E4%B8%AA%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+      <url>http://dayutalk.cn/2017/06/24/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85%E4%BB%8E%E9%9B%B6%E5%81%9A%E4%B8%80%E4%B8%AA%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8%EF%BC%88%E4%B8%80%EF%BC%89/</url>
       <content type="html"><![CDATA[<p>移动互联网时代，我不想只当一个后端工程师<br><a id="more"></a></p>
 <p>是时候学习一些新的东西了！</p>
 <p>一直以来想要学习一些前端的知识，扩宽自己的技术栈，但是一直以来对前端都是进行了解，没有用一个产品把这些东西给展示出来。最近终于痛定思痛，做了一个 android应用，目前的产品确实很一般，但决定以此为起步，逐步完善、逐步提高。</p>
@@ -1189,13 +1189,13 @@
 <p>如果你对我的内容感兴趣，请关注我的微信公众号：</p>
 <p>公众号：<code>icanfo</code></p>
 <p><img src="http://ol59nqr1i.bkt.clouddn.com/mp-qr.jpg" alt="image"></p>
-<p>个人博客：<a href="https://helei112g.github.io/">https://helei112g.github.io/</a></p>
+<p>个人博客：<a href="https://helei112g.github.io/" target="_blank" rel="external">https://helei112g.github.io/</a></p>
 ]]></content>
     </entry>
     
     <entry>
       <title><![CDATA[推荐三款我常备开发辅助神器]]></title>
-      <url>https://helei112g.github.io/2017/05/02/%E6%8E%A8%E8%8D%90%E4%B8%89%E6%AC%BE%E6%88%91%E5%B8%B8%E5%A4%87%E5%BC%80%E5%8F%91%E8%BE%85%E5%8A%A9%E7%A5%9E%E5%99%A8/</url>
+      <url>http://dayutalk.cn/2017/05/02/%E6%8E%A8%E8%8D%90%E4%B8%89%E6%AC%BE%E6%88%91%E5%B8%B8%E5%A4%87%E5%BC%80%E5%8F%91%E8%BE%85%E5%8A%A9%E7%A5%9E%E5%99%A8/</url>
       <content type="html"><![CDATA[<p>好的工具不但提升我们的开发效率，也为工作带来乐趣。这三款工具你绝对值得拥有。<br><a id="more"></a></p>
 <p>五一假期过完了，大家都去哪些地方浪了？上班第一天是不是倍感无趣？哈哈，不要紧，今天我来给大家推荐几个神器，让你明天神清气爽，这可是程序员开发必备之良品呀。</p>
 <hr>
@@ -1232,18 +1232,18 @@
 <p>目前已经集成：支付宝支付、微信支付、招商一网通支付。如果你在开发中被各个第三方支付提供的demo搞得焦头烂额，我相信它能够帮助到你。</p>
 <hr>
 <p>本文写作时间：3小时（这效率……我也是醉了!）</p>
-<p>我是：何磊，主要分享技术、生活。公众号：<code>icanfo</code>。个人博客：<a href="https://helei112g.github.io/">https://helei112g.github.io/</a></p>
+<p>我是：何磊，主要分享技术、生活。公众号：<code>icanfo</code>。个人博客：<a href="https://helei112g.github.io/" target="_blank" rel="external">https://helei112g.github.io/</a></p>
 <p><img src="http://ol59nqr1i.bkt.clouddn.com/mp-qr.jpg" alt="image"></p>
 ]]></content>
     </entry>
     
     <entry>
       <title><![CDATA[Payment：支付的回调统一处理]]></title>
-      <url>https://helei112g.github.io/2017/05/01/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E7%9A%84%E5%9B%9E%E8%B0%83%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86/</url>
+      <url>http://dayutalk.cn/2017/05/01/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E7%9A%84%E5%9B%9E%E8%B0%83%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86/</url>
       <content type="html"><![CDATA[<p>有20天没有更新了，主要原因有二：其一这期间对自己的职业规划做了一些调整；其二生了一场小病。所以大家一定要保重身体，平时得多锻炼锻炼了。<br><a id="more"></a></p>
 <p>根据大家反馈，大家对 <code>Payment</code> 还是很认同，这让我很开心。五一花了两天时间把招商一网通集成进来了。希望能够帮助到更多的人。</p>
 <hr>
-<p><strong>Payment使用文档</strong>：<a href="https://helei112g.github.io/categories/payment-3/">https://helei112g.github.io/categories/payment-3/</a></p>
+<p><strong>Payment使用文档</strong>：<a href="https://helei112g.github.io/categories/payment-3/" target="_blank" rel="external">https://helei112g.github.io/categories/payment-3/</a></p>
 <p><strong>项目GitHub地址</strong>：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
 <p>言归正传，这篇拖了很久了，借着五一假期的最后一天，搞定它！先上一个支付的一般流程图。</p>
 <p><img src="http://ol59nqr1i.bkt.clouddn.com/pay_path.jpg" alt="image"><br><em>图片来源：支付宝</em></p>
@@ -1278,7 +1278,7 @@
     
     <entry>
       <title><![CDATA[团队开发Git分支管理策略]]></title>
-      <url>https://helei112g.github.io/2017/04/14/%E5%9B%A2%E9%98%9F%E5%BC%80%E5%8F%91Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5/</url>
+      <url>http://dayutalk.cn/2017/04/14/%E5%9B%A2%E9%98%9F%E5%BC%80%E5%8F%91Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5/</url>
       <content type="html"><![CDATA[<p>开发生涯的前三年都是使用 <code>svn</code>，回首放佛如前世。自从用了 <code>git</code> ，整个人都神经了。<br><a id="more"></a></p>
 <p>下面的内容肯定不是什么教你如何用git提交代码，合并分支之类的。现在本人要<strong>从写术的层面提升一下自己文章的品质到道的层面</strong>。</p>
 <h1 id="使用git带来的分支疑惑"><a href="#使用git带来的分支疑惑" class="headerlink" title="使用git带来的分支疑惑"></a>使用git带来的分支疑惑</h1><p><code>git</code> 为什么好，为什么要用 <code>git</code>，这不是我本文想要说明的问题。</p>
@@ -1336,16 +1336,16 @@
 <li>[2]<a href="http://www.oschina.net/translate/a-successful-git-branching-model?lang=chs&amp;page=1" target="_blank" rel="external">介绍一个成功的 Git 分支模型</a></li>
 </ul>
 <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>我是何磊，主要工作就是写代码，持续创业者（之所以持续是因为到现在还没有干成功过一件事）。如果你有兴趣欢迎关注我，我会分享技术，还有生活，当然还有我创业的故事（说出我的痛，让你开心一下）。</p>
-<p>因为自己的<a href="https://helei112g.github.io/">博客</a>没有留言功能，同时也需要大家记住域名很麻烦，因此我开通了这个公众号，希望在这里遇见你：</p>
+<p>因为自己的<a href="https://helei112g.github.io/" target="_blank" rel="external">博客</a>没有留言功能，同时也需要大家记住域名很麻烦，因此我开通了这个公众号，希望在这里遇见你：</p>
 <p><img src="http://ol59nqr1i.bkt.clouddn.com/mp-qr.jpg" alt="image"></p>
 ]]></content>
     </entry>
     
     <entry>
       <title><![CDATA[Payment：微信支付发起支付请求文档]]></title>
-      <url>https://helei112g.github.io/2017/04/10/Payment%EF%BC%9A%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E5%8F%91%E8%B5%B7%E6%94%AF%E4%BB%98%E8%AF%B7%E6%B1%82%E6%96%87%E6%A1%A3/</url>
+      <url>http://dayutalk.cn/2017/04/10/Payment%EF%BC%9A%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E5%8F%91%E8%B5%B7%E6%94%AF%E4%BB%98%E8%AF%B7%E6%B1%82%E6%96%87%E6%A1%A3/</url>
       <content type="html"><![CDATA[<p>文档更新太慢，自己都忍不住要抱怨了。可能越来越慢了<br><a id="more"></a></p>
-<p><strong><code>Payment 3.0</code></strong> 微信的配置设置文档请 <a href="https://helei112g.github.io/2017/03/28/Payment%EF%BC%9A%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E8%AF%B4%E6%98%8E/">点击这里</a></p>
+<p><strong><code>Payment 3.0</code></strong> 微信的配置设置文档请 <a href="https://helei112g.github.io/2017/03/28/Payment%EF%BC%9A%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E8%AF%B4%E6%98%8E/" target="_blank" rel="external">点击这里</a></p>
 <p><strong>项目GitHub地址</strong>：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
 <p>为了调用方便，提供了统一的 <code>Client\Charge</code> 类来发起支付。需要设置的参数</p>
 <table>
@@ -1495,7 +1495,7 @@
     
     <entry>
       <title><![CDATA[php工程狮感知的前端工作流程]]></title>
-      <url>https://helei112g.github.io/2017/04/01/php%E5%B7%A5%E7%A8%8B%E7%8B%AE%E6%84%9F%E7%9F%A5%E7%9A%84%E5%89%8D%E7%AB%AF%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B/</url>
+      <url>http://dayutalk.cn/2017/04/01/php%E5%B7%A5%E7%A8%8B%E7%8B%AE%E6%84%9F%E7%9F%A5%E7%9A%84%E5%89%8D%E7%AB%AF%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B/</url>
       <content type="html"><![CDATA[<p>这个时代不懂点前端知识，真的没有办法生存。就算不会写，也得了解它的原理吧！<br><a id="more"></a></p>
 <p>最近做了一些总结，之前都是迷迷糊糊，搞不清楚前端之前的相关定位。好好梳理了一下。错误之处请各位指正。</p>
 <p>本文主要说的是 JavaScript 工作流程</p>
@@ -1555,7 +1555,7 @@
     
     <entry>
       <title><![CDATA[Payment：微信支付配置文件设置说明]]></title>
-      <url>https://helei112g.github.io/2017/03/28/Payment%EF%BC%9A%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E8%AF%B4%E6%98%8E/</url>
+      <url>http://dayutalk.cn/2017/03/28/Payment%EF%BC%9A%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E8%AF%B4%E6%98%8E/</url>
       <content type="html"><![CDATA[<p>终于写到微信了。加油干，撸起袖子奔小康。<br><a id="more"></a></p>
 <p><strong>项目GitHub地址</strong>：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
 <p>微信支付个人觉得在帐号设置上有些麻烦，帐号太多啦，支付宝目前就是一个应用基本涵盖了所有的接口开发。</p>
@@ -1683,7 +1683,7 @@
     
     <entry>
       <title><![CDATA[Guetzli 图片压缩到底有多牛]]></title>
-      <url>https://helei112g.github.io/2017/03/28/Guetzli%20%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9%E5%88%B0%E5%BA%95%E6%9C%89%E5%A4%9A%E7%89%9B/</url>
+      <url>http://dayutalk.cn/2017/03/28/Guetzli%20%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9%E5%88%B0%E5%BA%95%E6%9C%89%E5%A4%9A%E7%89%9B/</url>
       <content type="html"><![CDATA[<p>忙里偷闲，把一张图片用 guetzli 压缩了13次。你要不要来看看结果<br><a id="more"></a></p>
 <p>在上一篇文章中，介绍了 guetzli 的安装。伴随 1.0.1 版本移除 gflags ，安装也变的异常简单了。</p>
 <p>本篇带领大家看一下他的压缩效果。我下面放几张图。大家可以看看效果。看谁能够识别那张图是压缩了的。</p>
@@ -1713,7 +1713,7 @@
     
     <entry>
       <title><![CDATA[如何在 CentOs7 中安装guetzli]]></title>
-      <url>https://helei112g.github.io/2017/03/21/%E5%A6%82%E4%BD%95%E5%9C%A8-CentOs7-%E4%B8%AD%E5%AE%89%E8%A3%85guetzli/</url>
+      <url>http://dayutalk.cn/2017/03/21/%E5%A6%82%E4%BD%95%E5%9C%A8-CentOs7-%E4%B8%AD%E5%AE%89%E8%A3%85guetzli/</url>
       <content type="html"><![CDATA[<p>CentOs7 中安装 <code>guetzli</code> 教程，我的承诺，今天兑现。带你上车<br><a id="more"></a></p>
 <p>周六的时候收到 36kr 推送的一篇文章： <a href="http://36kr.com/p/5067258.html" target="_blank" rel="external">Google开源新算法，可将JPEG文件缩小35%</a></p>
 <p>测试了结果，惊的我目瞪口呆。如果非要我用一个词形容的话：</p>
@@ -1787,10 +1787,10 @@
     
     <entry>
       <title><![CDATA[Payment：接入支付宝当面付（扫码支付与条码支付）教程]]></title>
-      <url>https://helei112g.github.io/2017/03/15/Payment%EF%BC%9A%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E5%BD%93%E9%9D%A2%E4%BB%98%EF%BC%88%E6%89%AB%E7%A0%81%E6%94%AF%E4%BB%98%E4%B8%8E%E6%9D%A1%E7%A0%81%E6%94%AF%E4%BB%98%EF%BC%89%E6%95%99%E7%A8%8B/</url>
+      <url>http://dayutalk.cn/2017/03/15/Payment%EF%BC%9A%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E5%BD%93%E9%9D%A2%E4%BB%98%EF%BC%88%E6%89%AB%E7%A0%81%E6%94%AF%E4%BB%98%E4%B8%8E%E6%9D%A1%E7%A0%81%E6%94%AF%E4%BB%98%EF%BC%89%E6%95%99%E7%A8%8B/</url>
       <content type="html"><![CDATA[<p>越写越觉得支付类的文档写这么细，会不会反而让大家觉得很复杂呀？其实都是同样的调用方式</p>
 <p>这一篇，将把支付宝剩下的扫码支付与条码支付全部写清楚。<br><a id="more"></a></p>
-<p><strong><code>Payment 3.0</code></strong> 支付宝的配置设置文档请 <a href="https://helei112g.github.io/2017/03/09/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E6%95%99%E7%A8%8B/">点击这里</a></p>
+<p><strong><code>Payment 3.0</code></strong> 支付宝的配置设置文档请 <a href="https://helei112g.github.io/2017/03/09/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E6%95%99%E7%A8%8B/" target="_blank" rel="external">点击这里</a></p>
 <p><strong>项目GitHub地址</strong>：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
 <p>支付宝的当面付，包括扫码支付与条码支付。</p>
 <ul>
@@ -1891,7 +1891,7 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Common</span>\<span class="title">PayException</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Client</span>\<span class="title">Charge</span>;</span><br><span class="line"></span><br><span class="line">$config = <span class="keyword">require_once</span>(<span class="string">'./aliconfig.php'</span>);<span class="comment">// 支付宝的配置信息</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$channel = <span class="string">'ali_qr'</span>;<span class="comment">// ali_bar</span></span><br><span class="line">$payData = [</span><br><span class="line">    <span class="string">'body'</span> =&gt; <span class="string">'一个苹果'</span>,</span><br><span class="line">    <span class="string">'subject'</span> =&gt; <span class="string">'牛逼公司--付款吧'</span>,</span><br><span class="line">    <span class="string">'order_no'</span> =&gt; <span class="string">'NB12312355'</span>,</span><br><span class="line">    <span class="string">'timeout_express'</span> =&gt; <span class="string">'1489241888'</span>,</span><br><span class="line">    <span class="string">'amount'</span> =&gt; <span class="string">'100'</span>,</span><br><span class="line">    <span class="string">'return_param'</span> =&gt; <span class="string">'buy some'</span>,</span><br><span class="line">    <span class="string">'goods_type'</span> =&gt; <span class="number">1</span>,<span class="comment">// 默认值为1，因此也可以省略</span></span><br><span class="line">    <span class="string">'store_id'</span> =&gt; <span class="string">''</span>,<span class="comment">// 没有就不设置</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    $str = Charge::run($channel, $config, $payData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="comment">// 异常处理</span></span><br><span class="line">    <span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> htmlspecialchars($str);</span><br></pre></td></tr></table></figure>
 <p>如果使用的扫码支付，  <code>$channel = &#39;ali_qr&#39;</code></p>
 <p>则返回一个url。大家可以通过将返回的字符串生成一个二维码。即可进行扫码支付。</p>
-<p>另外请记得，如果使用的沙箱请使用对应的沙箱支付宝来扫码。关于沙箱的介绍。<a href="https://helei112g.github.io/2017/03/12/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E6%95%99%E7%A8%8B/">看这里</a></p>
+<p>另外请记得，如果使用的沙箱请使用对应的沙箱支付宝来扫码。关于沙箱的介绍。<a href="https://helei112g.github.io/2017/03/12/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E6%95%99%E7%A8%8B/" target="_blank" rel="external">看这里</a></p>
 <p>如果使用的条码支付，  <code>$channel = &#39;ali_bar&#39;</code></p>
 <p>必须设置以下两个字段</p>
 <ul>
@@ -1913,10 +1913,10 @@
     
     <entry>
       <title><![CDATA[Payment：支付宝移动支付服务端教程]]></title>
-      <url>https://helei112g.github.io/2017/03/14/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%95%99%E7%A8%8B/</url>
+      <url>http://dayutalk.cn/2017/03/14/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%95%99%E7%A8%8B/</url>
       <content type="html"><![CDATA[<p>默默的写文档，为什么要写呢？因为我想要被你们点赞，被你们打赏。</p>
 <a id="more"></a>
-<p><strong><code>Payment 3.0</code></strong> 支付宝的配置设置文档请 <a href="https://helei112g.github.io/2017/03/09/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E6%95%99%E7%A8%8B/">点击这里</a></p>
+<p><strong><code>Payment 3.0</code></strong> 支付宝的配置设置文档请 <a href="https://helei112g.github.io/2017/03/09/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E6%95%99%E7%A8%8B/" target="_blank" rel="external">点击这里</a></p>
 <p><strong>项目GitHub地址</strong>：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
 <p>移动支付，适用场景:</p>
 <blockquote>
@@ -2000,7 +2000,7 @@
 <ul>
 <li><strong><a href="https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.q2sevn&amp;treeId=204&amp;articleId=105295&amp;docType=1" target="_blank" rel="external">Ios集成流程</a></strong></li>
 </ul>
-<p>这篇文章真的太偷懒了。完全就是把 <a href="https://helei112g.github.io/2017/03/12/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E6%95%99%E7%A8%8B/">手机网站支付</a> 拷贝过来了而已。</p>
+<p>这篇文章真的太偷懒了。完全就是把 <a href="https://helei112g.github.io/2017/03/12/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E6%95%99%E7%A8%8B/" target="_blank" rel="external">手机网站支付</a> 拷贝过来了而已。</p>
 <p>唯一的差别在于  <code>$channel</code> 参数的不同。</p>
 <p><code>$channel</code> 可取值：</p>
 <table>
@@ -2036,7 +2036,7 @@
 <blockquote>
 <p>还剩下支付宝的当面付，包括：扫码支付  条码支付  将会在下一篇全部写完。 </p>
 </blockquote>
-<p><a href="https://helei112g.github.io/2017/03/15/Payment%EF%BC%9A%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E5%BD%93%E9%9D%A2%E4%BB%98%EF%BC%88%E6%89%AB%E7%A0%81%E6%94%AF%E4%BB%98%E4%B8%8E%E6%9D%A1%E7%A0%81%E6%94%AF%E4%BB%98%EF%BC%89%E6%95%99%E7%A8%8B/">点击这里看当面付</a> 当面付包括：扫码支付  条码支付</p>
+<p><a href="https://helei112g.github.io/2017/03/15/Payment%EF%BC%9A%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E5%BD%93%E9%9D%A2%E4%BB%98%EF%BC%88%E6%89%AB%E7%A0%81%E6%94%AF%E4%BB%98%E4%B8%8E%E6%9D%A1%E7%A0%81%E6%94%AF%E4%BB%98%EF%BC%89%E6%95%99%E7%A8%8B/" target="_blank" rel="external">点击这里看当面付</a> 当面付包括：扫码支付  条码支付</p>
 <hr>
 <p>如果你有不清楚的或者愿意交流的地方，请联系我：</p>
 <p><strong>邮箱</strong>：dayugog@gmail.com</p>
@@ -2050,15 +2050,15 @@
     
     <entry>
       <title><![CDATA[Payment：支付宝手机网站支付教程]]></title>
-      <url>https://helei112g.github.io/2017/03/12/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E6%95%99%E7%A8%8B/</url>
+      <url>http://dayutalk.cn/2017/03/12/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E6%95%99%E7%A8%8B/</url>
       <content type="html"><![CDATA[<p>支付宝的H5支付体验真不错（支付宝叫他手机网站支付）。</p>
 <p>反观微信支付干嘛要把H5支付藏起来？而且体验还那么差。<br><a id="more"></a></p>
-<p><strong><code>Payment 3.0</code></strong> 支付宝的配置设置文档请 <a href="https://helei112g.github.io/2017/03/09/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E6%95%99%E7%A8%8B/">点击这里</a></p>
+<p><strong><code>Payment 3.0</code></strong> 支付宝的配置设置文档请 <a href="https://helei112g.github.io/2017/03/09/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E6%95%99%E7%A8%8B/" target="_blank" rel="external">点击这里</a></p>
 <p><strong>项目GitHub地址</strong>：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
 <p>从本篇开始，将用支付宝的沙箱方式进行演示，在项目的 <code>payment/examples</code> 中我已经提供了我的沙箱帐号。</p>
 <p>新版接口已经同时支持 RSA 与 RSA2 。更换签名方式时，注意公钥的变化，在demo中我进行了注释。</p>
 <p>另外支付宝为了提升支付体验，可以将 <code>手机网站支付转Native支付</code> ，对于混合应用是非常好的体验。这部分服务器端的业务逻辑无须变动，只需要客户端更新到最新的 <a href="https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.71N4co&amp;treeId=203&amp;articleId=106493&amp;docType=1" target="_blank" rel="external">详情地址</a></p>
-<p>还是先讲手机网站支付需要设置哪些参数，后面用代码演示。代码部分大家会发现跟 <a href="https://helei112g.github.io/2017/03/11/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5%E6%95%99%E7%A8%8B/"><code>即时到账</code></a> 支付的使用完全一致。他们的不同之处仅仅是下单参数的区别。</p>
+<p>还是先讲手机网站支付需要设置哪些参数，后面用代码演示。代码部分大家会发现跟 <a href="https://helei112g.github.io/2017/03/11/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5%E6%95%99%E7%A8%8B/" target="_blank" rel="external"><code>即时到账</code></a> 支付的使用完全一致。他们的不同之处仅仅是下单参数的区别。</p>
 <table>
 <thead>
 <tr>
@@ -2163,7 +2163,7 @@
 </tbody>
 </table>
 <p>另外这里返回的依然是一个url。大家根据自己的业务进行合理的处理。<code>htmlspecialchars()</code> 函数的目的还是为了转义，正式使用时，请注意。</p>
-<p>关于异步通知部分，会有专门的文章讲解，这里暂时略过。请关注后面的文章。接下来会说到最热门的<a href="https://helei112g.github.io/2017/03/14/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%95%99%E7%A8%8B/">移动支付</a></p>
+<p>关于异步通知部分，会有专门的文章讲解，这里暂时略过。请关注后面的文章。接下来会说到最热门的<a href="https://helei112g.github.io/2017/03/14/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%95%99%E7%A8%8B/" target="_blank" rel="external">移动支付</a></p>
 <hr>
 <p>如果你有不清楚的或者愿意交流的地方，请联系我：</p>
 <p><strong>邮箱</strong>：dayugog@gmail.com</p>
@@ -2196,11 +2196,11 @@
     
     <entry>
       <title><![CDATA[Payment：支付宝即时到账接口接入教程]]></title>
-      <url>https://helei112g.github.io/2017/03/11/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5%E6%95%99%E7%A8%8B/</url>
+      <url>http://dayutalk.cn/2017/03/11/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5%E6%95%99%E7%A8%8B/</url>
       <content type="html"><![CDATA[<p>记住，如果觉得文档写得不清楚，一定要告诉我。励志写好文档为大家服务！</p>
 <a id="more"></a>
 <hr>
-<p><strong><code>Payment 3.0</code></strong> 支付宝的配置设置文档请 <a href="https://helei112g.github.io/2017/03/09/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E6%95%99%E7%A8%8B/">点击这里</a></p>
+<p><strong><code>Payment 3.0</code></strong> 支付宝的配置设置文档请 <a href="https://helei112g.github.io/2017/03/09/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E6%95%99%E7%A8%8B/" target="_blank" rel="external">点击这里</a></p>
 <p><strong>项目GitHub地址</strong>：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
 <p>支付宝从新版本开始，提供了沙箱方式，方便进行调试。但是，即时到账支付宝没有提供沙箱模式。因此大家在使用过程中，注意设置配置。</p>
 <p>我在项目中提供的初始配置也不能用于测试 <strong>即时到账接口</strong>。</p>
@@ -2335,7 +2335,7 @@
 </tr>
 </tbody>
 </table>
-<p>接下来将说道<a href="https://helei112g.github.io/2017/03/12/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E6%95%99%E7%A8%8B/">手机网站支付</a>，会给大家说到沙箱的问题</p>
+<p>接下来将说道<a href="https://helei112g.github.io/2017/03/12/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E6%95%99%E7%A8%8B/" target="_blank" rel="external">手机网站支付</a>，会给大家说到沙箱的问题</p>
 <hr>
 <p>如果你有不清楚的或者愿意交流的地方，请联系我：</p>
 <p><strong>邮箱</strong>：dayugog@gmail.com</p>
@@ -2349,7 +2349,7 @@
     
     <entry>
       <title><![CDATA[Payment：支付宝支付配置文件设置教程]]></title>
-      <url>https://helei112g.github.io/2017/03/09/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E6%95%99%E7%A8%8B/</url>
+      <url>http://dayutalk.cn/2017/03/09/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E6%95%99%E7%A8%8B/</url>
       <content type="html"><![CDATA[<p>终于把3.0版本做好了。从今天开始好好写文档，让大家做支付做的开心点。<br><a id="more"></a></p>
 <p>项目GitHub地址：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
 <p>从2016年6月payment做出来，到这一版本（3.0），坚持了快一年啦。感谢这期间给我支持（打赏与协作）的人。</p>
@@ -2495,7 +2495,7 @@
 <p><strong><code>return_url</code></strong>  当前主要是即时到账、手机网站支付两个接口会用到，在支付成功后，跳转到哪一个链接。也必须是以 HTTP/HTTPS 开头的url。可以理解为同步通知，但请不要以它的结果为准。为了安全还是应该以异步为准。</p>
 <p><strong><code>return_raw</code></strong>  之前的版本都没有该参数，是3.0新加入的，它的主要目的是让调用者控制自己拿到什么样的数据。如果设置为true。SDK 则只会向支付宝发出请求，收到数据后进行验签，通过后，会以数组的形式将所有支付宝返回的数据返回给客户端。</p>
 <p>如果设置为false ，则会抛弃支付宝的某些字段。并且会对某些字段名称进行重新映射，这种方式带来的好处是，可用确保支付宝、微信返回的数据是基本一致的，但是可能导致调用者损失部分信息。这里大家根据实际情况进行衡量。</p>
-<p>至此，支付宝的配置全部讲解完毕。  去看看如何完成<a href="https://helei112g.github.io/2017/03/11/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5%E6%95%99%E7%A8%8B/">即时到账</a>吧</p>
+<p>至此，支付宝的配置全部讲解完毕。  去看看如何完成<a href="https://helei112g.github.io/2017/03/11/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5%E6%95%99%E7%A8%8B/" target="_blank" rel="external">即时到账</a>吧</p>
 <p>如果你有不清楚的或者愿意交流的地方，请联系我：</p>
 <p><strong>邮箱</strong>：dayugog@gmail.com</p>
 <p>如果你觉得这个项目有帮助到你，请打赏我，让我有动力持续下去<a href="#">左边微信，右边支付宝</a>：</p>
@@ -2508,7 +2508,7 @@
     
     <entry>
       <title><![CDATA[PHP中浮点数位数截取性能大比拼]]></title>
-      <url>https://helei112g.github.io/2017/02/16/PHP%E4%B8%AD%E6%B5%AE%E7%82%B9%E6%95%B0%E4%BD%8D%E6%95%B0%E6%88%AA%E5%8F%96%E6%80%A7%E8%83%BD%E5%A4%A7%E6%AF%94%E6%8B%BC/</url>
+      <url>http://dayutalk.cn/2017/02/16/PHP%E4%B8%AD%E6%B5%AE%E7%82%B9%E6%95%B0%E4%BD%8D%E6%95%B0%E6%88%AA%E5%8F%96%E6%80%A7%E8%83%BD%E5%A4%A7%E6%AF%94%E6%8B%BC/</url>
       <content type="html"><![CDATA[<p>本文没什么好说的，点进来看吧… …<br><a id="more"></a></p>
 <p>最近工作中，在处理电商用户下单模块的时候，之前遗留系统保留的是三位小数。这里带来了一个问题：<br>如果用户的订单价格是：6.666元，那么在向支付宝或者微信发起支付时，第三方只会保留两位数，也就是用户实际付款：6.66元。</p>
 <p>那么问题来了，支付成功第三方回调系统接口，在接口中的逻辑需要比对支付的金额，会发现 6.666≠6.66，然后后面的逻辑无法运行，处理失败。</p>
@@ -2531,7 +2531,7 @@
     
     <entry>
       <title><![CDATA[Swoole入门指南：PHP7安装Swoole详细教程（一）]]></title>
-      <url>https://helei112g.github.io/2017/02/08/Swoole%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%EF%BC%9APHP7%E5%AE%89%E8%A3%85Swoole%E8%AF%A6%E7%BB%86%E6%95%99%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+      <url>http://dayutalk.cn/2017/02/08/Swoole%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%EF%BC%9APHP7%E5%AE%89%E8%A3%85Swoole%E8%AF%A6%E7%BB%86%E6%95%99%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89/</url>
       <content type="html"><![CDATA[<p>本教程一步步深入swoole，通过demo讲解它的学习与使用方法。<br><a id="more"></a></p>
 <p>好久未更新了，不是懒呃，是太忙啦！终于偷得浮生几日闲。<br>这一段时间准备为大家带来swoole的入门教程，感受一下php的nodeJs强悍之处。</p>
 <p>所有的示例代码均放在了github上：<a href="https://github.com/helei112g/learn-swoole" target="_blank" rel="external">learn-swoole</a></p>
@@ -2595,7 +2595,7 @@
     
     <entry>
       <title><![CDATA[vagrant系列五：Vagrant使用中遇到的坑]]></title>
-      <url>https://helei112g.github.io/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E4%BA%94%EF%BC%9AVagrant%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/</url>
+      <url>http://dayutalk.cn/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E4%BA%94%EF%BC%9AVagrant%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/</url>
       <content type="html"><![CDATA[<p>这篇文章是在windows上使用了vagrant半年后，突然切换到mac上来，遇到了各种坑，今天补了这篇文章。希望对你有帮助。</p>
 <a id="more"></a>
 <h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><p>之前写了一系列的vagrant使用教程，当时写这个教程的时候实在windows的环境下。最近再mac上使用，遇到了一些麻烦。</p>
@@ -2627,7 +2627,7 @@
     
     <entry>
       <title><![CDATA[vagrant系列四：Vagrant搭建redis与redis的监控程序redis-stat]]></title>
-      <url>https://helei112g.github.io/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E5%9B%9B%EF%BC%9AVagrant%E6%90%AD%E5%BB%BAredis%E4%B8%8Eredis%E7%9A%84%E7%9B%91%E6%8E%A7%E7%A8%8B%E5%BA%8Fredis-stat/</url>
+      <url>http://dayutalk.cn/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E5%9B%9B%EF%BC%9AVagrant%E6%90%AD%E5%BB%BAredis%E4%B8%8Eredis%E7%9A%84%E7%9B%91%E6%8E%A7%E7%A8%8B%E5%BA%8Fredis-stat/</url>
       <content type="html"><![CDATA[<p>redis经常会被用到<br><a id="more"></a></p>
 <p><strong>重要提示，从3.2版本后，redis需要设置密码才能够被外部网络访问。</strong><br>所以如果你发现可以链接上redis，但是无法写入或者读取那么请检查是否使用了密码方式。</p>
 <h1 id="redis的安装"><a href="#redis的安装" class="headerlink" title="redis的安装"></a>redis的安装</h1><p>哎，写到这儿，说一句，诅咒联通这网络，联通网络一上，打开vpn，照样不能访问外网，联baidu都一卡一卡的。</p>
@@ -2682,7 +2682,7 @@
     
     <entry>
       <title><![CDATA[vagrant系列三：Vagrant搭建的php7环境]]></title>
-      <url>https://helei112g.github.io/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E4%B8%89%EF%BC%9AVagrant%E6%90%AD%E5%BB%BA%E7%9A%84php7%E7%8E%AF%E5%A2%83/</url>
+      <url>http://dayutalk.cn/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E4%B8%89%EF%BC%9AVagrant%E6%90%AD%E5%BB%BA%E7%9A%84php7%E7%8E%AF%E5%A2%83/</url>
       <content type="html"><![CDATA[<p>本文实战教你如何搭建自己的开发环境。希望大家通过本文实战后，可以根据自己的情况搭建任意想要的环境。<br><a id="more"></a></p>
 <p>前面已经把vagrant的基础知识已经基本过了一遍 了，相信只要按着教程来，你已经搭建好了自己的基础环境。接下来说一说如何搭建php7的开发环境。</p>
 <blockquote>
@@ -2755,7 +2755,7 @@
     
     <entry>
       <title><![CDATA[vagrant系列二：Vagrant的配置文件vagrantfile详解]]></title>
-      <url>https://helei112g.github.io/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E4%BA%8C%EF%BC%9AVagrant%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6vagrantfile%E8%AF%A6%E8%A7%A3/</url>
+      <url>http://dayutalk.cn/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E4%BA%8C%EF%BC%9AVagrant%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6vagrantfile%E8%AF%A6%E8%A7%A3/</url>
       <content type="html"><![CDATA[<p>通过配置文件轻松的完成一台机器的配置，使用过vm然后再来使用这个，你就会惊叹怎会如此方便。</p>
 <a id="more"></a>
 <p>上一篇文章完整的讲叙了如何安装一个vagrant的环境。这里主要说一说vagrant的配置文件Vagrantfile。我在尝试各种技术的时候，常常苦恼于很多时候没有教程把相关的配置信息说明完整。所以在我的博客里，我一定会完整的把这块给补上。</p>
@@ -2784,7 +2784,7 @@
     
     <entry>
       <title><![CDATA[vagrant系列一：Vagrant的安装与初识]]></title>
-      <url>https://helei112g.github.io/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E4%B8%80%EF%BC%9AVagrant%E7%9A%84%E5%AE%89%E8%A3%85/</url>
+      <url>http://dayutalk.cn/2016/10/30/vagrant%E7%B3%BB%E5%88%97%E4%B8%80%EF%BC%9AVagrant%E7%9A%84%E5%AE%89%E8%A3%85/</url>
       <content type="html"><![CDATA[<p>本系列文章之前首发在csdn上。觉得还不错现在迁移过来。本文主要介绍安装与一些简单介绍。后续会有更深入的探讨。<br><a id="more"></a></p>
 <blockquote>
 <p>实际上Vagrant只是一个让你可以方便设置你想要的虚拟机的便携式工具，它底层支持VirtualBox、VMware甚至AWS作为虚拟机系统，本书中我们将使用VirtualBox来进行说明，所以第一步需要先安裝Vagrant和VirtualBox。</p>
@@ -2885,7 +2885,7 @@
     
     <entry>
       <title><![CDATA[PHP设计模式：模板方法真的很有用]]></title>
-      <url>https://helei112g.github.io/2016/09/09/PHP%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%9A%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E7%9C%9F%E7%9A%84%E5%BE%88%E6%9C%89%E7%94%A8/</url>
+      <url>http://dayutalk.cn/2016/09/09/PHP%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%9A%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E7%9C%9F%E7%9A%84%E5%BE%88%E6%9C%89%E7%94%A8/</url>
       <content type="html"><![CDATA[<p>模版方法很好的提现了继承的思想，我用它为核心完成了支付集成的开源项目，在使用过程中受益匪浅。<br><a id="more"></a></p>
 <p>在设计模式分类中，模板方法被分在 <strong>行为型模式</strong></p>
 <p>在我最近的项目中我也经常使用。然后在看YII的源码时，它的身影也随处可见。忍不住想要将它说一说。希望能够帮助大家解决一些开发中灵活扩展的问题。</p>
@@ -2926,7 +2926,7 @@
     
     <entry>
       <title><![CDATA[PHP接入微信企业付款功能]]></title>
-      <url>https://helei112g.github.io/2016/08/16/PHP%E6%8E%A5%E5%85%A5%E5%BE%AE%E4%BF%A1%E4%BC%81%E4%B8%9A%E4%BB%98%E6%AC%BE%E5%8A%9F%E8%83%BD/</url>
+      <url>http://dayutalk.cn/2016/08/16/PHP%E6%8E%A5%E5%85%A5%E5%BE%AE%E4%BF%A1%E4%BC%81%E4%B8%9A%E4%BB%98%E6%AC%BE%E5%8A%9F%E8%83%BD/</url>
       <content type="html"><![CDATA[<p>可以利用该接口，完成转账功能，目前仅微信支持，支付宝已关闭。<br><a id="more"></a></p>
 <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.0版本</a></p>
 <p>这个功能与支付宝的批量付款到支付宝帐号功能类似。但是当前支付宝这个接口已经停止审核了。</p>
@@ -3065,14 +3065,14 @@
     
     <entry>
       <title><![CDATA[PHP接入微信退款接口]]></title>
-      <url>https://helei112g.github.io/2016/08/16/PHP%E6%8E%A5%E5%85%A5%E5%BE%AE%E4%BF%A1%E9%80%80%E6%AC%BE%E6%8E%A5%E5%8F%A3/</url>
+      <url>http://dayutalk.cn/2016/08/16/PHP%E6%8E%A5%E5%85%A5%E5%BE%AE%E4%BF%A1%E9%80%80%E6%AC%BE%E6%8E%A5%E5%8F%A3/</url>
       <content type="html"><![CDATA[<p>买的东西不喜欢了，想要还给商家，申请后商家自动退换购买商品时的买家支付的费用。<br><a id="more"></a></p>
 <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.0版本</a> </p>
-<p>微信的退款操作，通过封装与前面<a href="https://helei112g.github.io/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%9C%89%E5%AF%86%E9%80%80%E6%AC%BE%E6%8E%A5%E5%8F%A3/">支付宝退款</a>除了配置文件，基本一样。</p>
+<p>微信的退款操作，通过封装与前面<a href="https://helei112g.github.io/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%9C%89%E5%AF%86%E9%80%80%E6%AC%BE%E6%8E%A5%E5%8F%A3/" target="_blank" rel="external">支付宝退款</a>除了配置文件，基本一样。</p>
 <p>退款代码如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">RefundContext</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Common</span>\<span class="title">PayException</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Payment</span>\<span class="title">Config</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//  生成退款单号 便于测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPayid</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> date(<span class="string">'Ymdhis'</span>, time()).substr(floor(microtime()*<span class="number">1000</span>),<span class="number">0</span>,<span class="number">1</span>).rand(<span class="number">0</span>,<span class="number">9</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$config = [</span><br><span class="line">    <span class="string">'app_id'</span>    =&gt; <span class="string">'wxa244db59a34996fc'</span>,  <span class="comment">// 公众账号ID</span></span><br><span class="line">    <span class="string">'mch_id'</span>    =&gt; <span class="string">'1331302101'</span>,<span class="comment">// 商户id</span></span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'adslkfjiKQJLAIQLJ393201482333333'</span>,<span class="comment">// md5 秘钥</span></span><br><span class="line"></span><br><span class="line">    <span class="string">'notify_url'</span>    =&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">'time_expire'</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 涉及资金流动时 退款  转款，需要提供该文件</span></span><br><span class="line">    <span class="string">'cert_path'</span> =&gt; dirname(<span class="keyword">__FILE__</span>) . DIRECTORY_SEPARATOR . <span class="string">'wx'</span> . DIRECTORY_SEPARATOR . <span class="string">'apiclient_cert.pem'</span>,</span><br><span class="line">    <span class="string">'key_path'</span>  =&gt; dirname(<span class="keyword">__FILE__</span>) . DIRECTORY_SEPARATOR . <span class="string">'wx'</span> . DIRECTORY_SEPARATOR . <span class="string">'apiclient_key.pem'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 退款数据</span></span><br><span class="line">$reundData = [</span><br><span class="line">    <span class="string">'refund_no'</span> =&gt; createPayid(),</span><br><span class="line">    <span class="string">'refund_data'</span>   =&gt; [</span><br><span class="line">        [<span class="string">'transaction_id'</span> =&gt; <span class="string">'4007572001201607098672633287'</span>, <span class="string">'amount'</span>   =&gt; <span class="string">'5'</span>, <span class="string">'refund_fee'</span> =&gt; <span class="string">'5'</span>, <span class="string">'reason'</span> =&gt; <span class="string">'微信测试金额退款'</span>],</span><br><span class="line">    ],</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">$refund = <span class="keyword">new</span> RefundContext();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 微信退款</span></span><br><span class="line">    $type = Config::WEIXIN;</span><br><span class="line">    $refund-&gt;initRefund(Config::WEIXIN, $wxconfig);</span><br><span class="line"></span><br><span class="line">    $ret = $refund-&gt;refund($reundData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var_dump($ret);</span><br></pre></td></tr></table></figure></p>
 <p>当前sdk支付宝可一次退款多笔数据。微信仅能每次退款1笔（如果想要实现一次退订多笔订单，可在客户端通过循环来处理。）</p>
 <p>接下来解释下相关的配置信息</p>
-<p>微信的配置文件解释参考 <a href="https://helei112g.github.io/2016/08/10/%E5%BE%AE%E4%BF%A1%E7%9A%84%E4%B8%89%E7%A7%8D%E6%94%AF%E4%BB%98%E6%96%B9%E5%BC%8F%E6%8E%A5%E5%85%A5%EF%BC%9AAPP%E6%94%AF%E4%BB%98%E3%80%81%E5%85%AC%E4%BC%97%E5%8F%B7%E6%94%AF%E4%BB%98%E3%80%81%E6%89%AB%E7%A0%81%E6%94%AF%E4%BB%98/">微信的三种支付方式接入：APP支付、公众号支付、扫码支付</a> 中的微信配置信息。</p>
+<p>微信的配置文件解释参考 <a href="https://helei112g.github.io/2016/08/10/%E5%BE%AE%E4%BF%A1%E7%9A%84%E4%B8%89%E7%A7%8D%E6%94%AF%E4%BB%98%E6%96%B9%E5%BC%8F%E6%8E%A5%E5%85%A5%EF%BC%9AAPP%E6%94%AF%E4%BB%98%E3%80%81%E5%85%AC%E4%BC%97%E5%8F%B7%E6%94%AF%E4%BB%98%E3%80%81%E6%89%AB%E7%A0%81%E6%94%AF%E4%BB%98/" target="_blank" rel="external">微信的三种支付方式接入：APP支付、公众号支付、扫码支付</a> 中的微信配置信息。</p>
 <h1 id="请求参数"><a href="#请求参数" class="headerlink" title="请求参数"></a>请求参数</h1><table>
 <thead>
 <tr>
@@ -3193,7 +3193,7 @@
     
     <entry>
       <title><![CDATA[微信支付订单、退款订单、转款订单的查询]]></title>
-      <url>https://helei112g.github.io/2016/08/10/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E8%AE%A2%E5%8D%95%E3%80%81%E9%80%80%E6%AC%BE%E8%AE%A2%E5%8D%95%E3%80%81%E8%BD%AC%E6%AC%BE%E8%AE%A2%E5%8D%95%E7%9A%84%E6%9F%A5%E8%AF%A2/</url>
+      <url>http://dayutalk.cn/2016/08/10/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E8%AE%A2%E5%8D%95%E3%80%81%E9%80%80%E6%AC%BE%E8%AE%A2%E5%8D%95%E3%80%81%E8%BD%AC%E6%AC%BE%E8%AE%A2%E5%8D%95%E7%9A%84%E6%9F%A5%E8%AF%A2/</url>
       <content type="html"><![CDATA[<p>主要介绍相关订单的查询，简化针对不同类型订单（支付的、退单的、转款的）的查询工作。<br><a id="more"></a></p>
 <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a></p>
 <p>微信并未提供一个统一的查询接口。对应每种查询均需要不同的api。为了便于大家在项目中使用，忽略细节。对以上三种进行了封装。通过工厂的方式降低调用成本。</p>
@@ -3456,7 +3456,7 @@
     
     <entry>
       <title><![CDATA[微信的三种支付方式接入：APP支付、公众号支付、扫码支付]]></title>
-      <url>https://helei112g.github.io/2016/08/10/%E5%BE%AE%E4%BF%A1%E7%9A%84%E4%B8%89%E7%A7%8D%E6%94%AF%E4%BB%98%E6%96%B9%E5%BC%8F%E6%8E%A5%E5%85%A5%EF%BC%9AAPP%E6%94%AF%E4%BB%98%E3%80%81%E5%85%AC%E4%BC%97%E5%8F%B7%E6%94%AF%E4%BB%98%E3%80%81%E6%89%AB%E7%A0%81%E6%94%AF%E4%BB%98/</url>
+      <url>http://dayutalk.cn/2016/08/10/%E5%BE%AE%E4%BF%A1%E7%9A%84%E4%B8%89%E7%A7%8D%E6%94%AF%E4%BB%98%E6%96%B9%E5%BC%8F%E6%8E%A5%E5%85%A5%EF%BC%9AAPP%E6%94%AF%E4%BB%98%E3%80%81%E5%85%AC%E4%BC%97%E5%8F%B7%E6%94%AF%E4%BB%98%E3%80%81%E6%89%AB%E7%A0%81%E6%94%AF%E4%BB%98/</url>
       <content type="html"><![CDATA[<p>微信支付：app支付、公众号支付、扫码支付使用文档。<br><a id="more"></a></p>
 <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p>微信的支付逻辑与支付宝的支付有一些差别。为了让客户端忽略这些差别，统一调用。本sdk做了对应处理。</p>
@@ -3590,13 +3590,13 @@
     
     <entry>
       <title><![CDATA[PHP接入支付宝有密批量转款接口]]></title>
-      <url>https://helei112g.github.io/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%9C%89%E5%AF%86%E6%89%B9%E9%87%8F%E8%BD%AC%E6%AC%BE%E6%8E%A5%E5%8F%A3/</url>
+      <url>http://dayutalk.cn/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%9C%89%E5%AF%86%E6%89%B9%E9%87%8F%E8%BD%AC%E6%AC%BE%E6%8E%A5%E5%8F%A3/</url>
       <content type="html"><![CDATA[<p>转款接口，支付宝已经停止审核啦，目前可以用微信的企业付款。<br><a id="more"></a></p>
 <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p>这个接口蛮有用的，不过现阶段支付宝已经停止审核啦！微信的转账功能还可以继续使用。企业可以转账到其他支付宝账户。对于企业活动非常有帮助，比如：购买返现呀！</p>
 <p>虽然现在已经不接收新的审核，但是我还是将该功能进行了集成，因为指不定什么时候又开放了，毕竟微信都有这个功能，支付宝不搞出来，实在说不过去。</p>
 <h1 id="SDK调用"><a href="#SDK调用" class="headerlink" title="SDK调用"></a>SDK调用</h1><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 支付宝配置信息</span></span><br><span class="line">$aliconfig = [</span><br><span class="line">    <span class="string">'partner'</span>   =&gt; <span class="string">'2088xxxxx'</span>,</span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'xxxxxxxxxxxx'</span>,</span><br><span class="line">    <span class="string">'rsa_private_key'</span>   =&gt; dirname(<span class="keyword">__FILE__</span>) . <span class="string">'/rsa_private_key.pem'</span>,</span><br><span class="line">    <span class="string">"notify_url"</span>	=&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">"return_url"</span>	=&gt; <span class="string">'http://test.helei.com/return-url.html'</span>,</span><br><span class="line">    <span class="string">"time_expire"</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 转款接口，必须配置以下两项</span></span><br><span class="line">    <span class="string">'account'</span>   =&gt; <span class="string">'xxxxxxx@126.com'</span>,</span><br><span class="line">    <span class="string">'account_name'</span> =&gt; <span class="string">'xxxxxxxxxxxx'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">//  生成转款单号 便于测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPayid</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> date(<span class="string">'Ymdhis'</span>, time()).substr(floor(microtime()*<span class="number">1000</span>),<span class="number">0</span>,<span class="number">1</span>).rand(<span class="number">0</span>,<span class="number">9</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 转款数据</span></span><br><span class="line">$transData = [</span><br><span class="line">    <span class="string">'trans_no'</span> =&gt; createPayid(),</span><br><span class="line">    <span class="string">'trans_data'</span>   =&gt; [</span><br><span class="line">        [</span><br><span class="line">            <span class="string">'serial_no'</span> =&gt; createPayid(),</span><br><span class="line">            <span class="string">'user_account'</span> =&gt; <span class="string">'dayugog@gmail.com'</span>,</span><br><span class="line">            <span class="string">'user_name'</span> =&gt; <span class="string">'愚不可及'</span>,</span><br><span class="line">            <span class="string">'trans_fee'</span> =&gt; <span class="string">'0.01'</span>,</span><br><span class="line">            <span class="string">'desc'</span>  =&gt; <span class="string">'测试批量转款'</span>,</span><br><span class="line">        ]</span><br><span class="line">    ],</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">$refund = <span class="keyword">new</span> TransferContext();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    $refund-&gt;initTransfer(Config::ALI, $aliconfig);</span><br><span class="line">    $ret = $refund-&gt;transfer($transData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 跳转支付宝</span></span><br><span class="line">header(<span class="string">"Location:&#123;$ret&#125;"</span>);</span><br></pre></td></tr></table></figure>
-<p>这个接口也是需要管理员输入支付密码，才能够完成，完成后也会回调。回调过程请参考 <a href="https://helei112g.github.io/2016/07/29/%E6%94%AF%E4%BB%98%E7%9A%84%E5%9B%9E%E8%B0%83%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86/">支付的回调统一处理</a> 已经说明。</p>
+<p>这个接口也是需要管理员输入支付密码，才能够完成，完成后也会回调。回调过程请参考 <a href="https://helei112g.github.io/2016/07/29/%E6%94%AF%E4%BB%98%E7%9A%84%E5%9B%9E%E8%B0%83%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86/" target="_blank" rel="external">支付的回调统一处理</a> 已经说明。</p>
 <h1 id="请求参数"><a href="#请求参数" class="headerlink" title="请求参数"></a>请求参数</h1><table>
 <thead>
 <tr>
@@ -3670,7 +3670,7 @@
     
     <entry>
       <title><![CDATA[PHP接入支付宝有密退款接口]]></title>
-      <url>https://helei112g.github.io/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%9C%89%E5%AF%86%E9%80%80%E6%AC%BE%E6%8E%A5%E5%8F%A3/</url>
+      <url>http://dayutalk.cn/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%9C%89%E5%AF%86%E9%80%80%E6%AC%BE%E6%8E%A5%E5%8F%A3/</url>
       <content type="html"><![CDATA[<p>可针对订单完成退款操作，但是需要输入密码。不是谁都可以操作。微信退款则可以根据密钥文件自动完成，无须人为干预。<br><a id="more"></a></p>
 <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p>这个接口主要用于退款操作。之前没有接入该功能时，商城用户如果想要退款，我们需要先查到对应用户的支付流水号，然后写退款申请给财务，财务到支付宝进行查询。完了之后原路退回。然后告诉程序，程序再去修改订单状态。</p>
@@ -3679,7 +3679,7 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 支付宝配置信息</span></span><br><span class="line">$aliconfig = [</span><br><span class="line">    <span class="string">'partner'</span>   =&gt; <span class="string">'2088xxxxx'</span>,</span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'xxxxxxxxxxxx'</span>,</span><br><span class="line">    <span class="string">'rsa_private_key'</span>   =&gt; dirname(<span class="keyword">__FILE__</span>) . <span class="string">'/rsa_private_key.pem'</span>,</span><br><span class="line">    <span class="string">"notify_url"</span>	=&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">"return_url"</span>	=&gt; <span class="string">'http://test.helei.com/return-url.html'</span>,</span><br><span class="line">    <span class="string">"time_expire"</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">//  生成退款单号 便于测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPayid</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> date(<span class="string">'Ymdhis'</span>, time()).substr(floor(microtime()*<span class="number">1000</span>),<span class="number">0</span>,<span class="number">1</span>).rand(<span class="number">0</span>,<span class="number">9</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 退款数据</span></span><br><span class="line">$reundData = [</span><br><span class="line">    <span class="string">'refund_no'</span> =&gt; createPayid(),</span><br><span class="line">    <span class="string">'refund_data'</span>   =&gt; [</span><br><span class="line">        [<span class="string">'transaction_id'</span> =&gt; <span class="string">'2016011421001004330041239366'</span>, <span class="string">'amount'</span>   =&gt; <span class="string">'0.01'</span>, <span class="string">'refund_fee'</span> =&gt; <span class="string">'0.01'</span>, <span class="string">'reason'</span> =&gt; <span class="string">'测试退款1'</span>],</span><br><span class="line">        [<span class="string">'transaction_id'</span> =&gt; <span class="string">'2016031521001004330271745693'</span>, <span class="string">'amount'</span>   =&gt; <span class="string">'0.01'</span>, <span class="string">'refund_fee'</span> =&gt; <span class="string">'0.01'</span>, <span class="string">'reason'</span> =&gt; <span class="string">'测试退款2'</span>],</span><br><span class="line">    ],</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$refund = <span class="keyword">new</span> RefundContext();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    $refund-&gt;initRefund(Config::ALI, $aliconfig);</span><br><span class="line">    $ret = $refund-&gt;refund($reundData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 跳转支付宝</span></span><br><span class="line">header(<span class="string">"Location:&#123;$ret&#125;"</span>);</span><br></pre></td></tr></table></figure>
 <p>以上请求发送完毕后，会跳转到生成的url。界面如下：</p>
 <p><img src="https://helei112g.github.io/images/ali-refund.png" alt="image"></p>
-<p>这时候，只需要要输入支付密码。就可完成退款。确认完毕后会自动完成异步通知。异步通知数据内容在 <a href="https://helei112g.github.io/2016/07/29/%E6%94%AF%E4%BB%98%E7%9A%84%E5%9B%9E%E8%B0%83%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86/">支付的回调统一处理</a> 已经说明。</p>
+<p>这时候，只需要要输入支付密码。就可完成退款。确认完毕后会自动完成异步通知。异步通知数据内容在 <a href="https://helei112g.github.io/2016/07/29/%E6%94%AF%E4%BB%98%E7%9A%84%E5%9B%9E%E8%B0%83%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86/" target="_blank" rel="external">支付的回调统一处理</a> 已经说明。</p>
 <p>备注：支付宝支持一次退款多笔。也可单次退款一笔，请自行根据情况进行设置。</p>
 <h1 id="请求参数"><a href="#请求参数" class="headerlink" title="请求参数"></a>请求参数</h1><table>
 <thead>
@@ -3748,7 +3748,7 @@
     
     <entry>
       <title><![CDATA[PHP接入支付宝单笔订单查询接口]]></title>
-      <url>https://helei112g.github.io/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E5%8D%95%E7%AC%94%E8%AE%A2%E5%8D%95%E6%9F%A5%E8%AF%A2%E6%8E%A5%E5%8F%A3/</url>
+      <url>http://dayutalk.cn/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E5%8D%95%E7%AC%94%E8%AE%A2%E5%8D%95%E6%9F%A5%E8%AF%A2%E6%8E%A5%E5%8F%A3/</url>
       <content type="html"><![CDATA[<p>查询支付宝订单状态<br><a id="more"></a></p>
 <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p>巴西奥运会来了，刚好我又是做体育行业的互联网。哎！这个月又要加班成狗了。最近遇到好多莫名其妙的问题，待我忙完这段，再跟大家分享下。今天还是继续说说 <a href="https://github.com/helei112g/payment" target="_blank" rel="external">Payment项目</a><br>今天主要说说支付宝订单查询接口。</p>
@@ -3756,7 +3756,7 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 支付宝配置信息</span></span><br><span class="line">$aliconfig = [</span><br><span class="line">    <span class="string">'partner'</span>   =&gt; <span class="string">'2088xxxxx'</span>,</span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'xxxxxxxxxxxx'</span>,</span><br><span class="line">    <span class="string">'rsa_private_key'</span>   =&gt; dirname(<span class="keyword">__FILE__</span>) . <span class="string">'/rsa_private_key.pem'</span>,</span><br><span class="line">    <span class="string">"notify_url"</span>	=&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">"return_url"</span>	=&gt; <span class="string">'http://test.helei.com/return-url.html'</span>,</span><br><span class="line">    <span class="string">"time_expire"</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$data = [</span><br><span class="line">    <span class="comment">// 通过支付宝交易号查询，  推荐  效率更高</span></span><br><span class="line">    <span class="string">'transaction_id'</span>    =&gt; <span class="string">'2016011421001004330041239366'</span>,<span class="comment">// 支付宝</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 通过订单号查询</span></span><br><span class="line">    <span class="string">'order_no'</span>    =&gt; <span class="string">'2016011402433464'</span>,<span class="comment">// 支付宝</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">$query = <span class="keyword">new</span> QueryContext();</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 支付宝查询</span></span><br><span class="line">    $query-&gt;initQuery(Config::ALI, $aliconfig);</span><br><span class="line">    $ret = $query-&gt;query($data);</span><br><span class="line"></span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var_dump($ret);</span><br></pre></td></tr></table></figure>
 <p>非常简单，只需要提供支付宝的流水号，或者商家自己生成的订单号，就可完成订单详情的查询，当然前提是，依然要去签约这个接口（觉得支付宝真扯淡，都能够支付了，为什么查询还要单独签约？这一点微信比它强）</p>
 <p>如果同时提供了 <code>transaction_id</code> 跟 <code>order_no</code> 这两个参数，会优先使用 <code>transaction_id</code> ,因为他的效率要高的多。</p>
-<p>代码完成了下面分别解释下请求的参数。以及返回参数。关于支付宝的配置参数，请参考 <a href="https://helei112g.github.io/2016/07/29/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E3%80%81%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%8E%A5%E5%8F%A3/">PHP接入支付宝手机网站支付、移动支付接口</a></p>
+<p>代码完成了下面分别解释下请求的参数。以及返回参数。关于支付宝的配置参数，请参考 <a href="https://helei112g.github.io/2016/07/29/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E3%80%81%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%8E%A5%E5%8F%A3/" target="_blank" rel="external">PHP接入支付宝手机网站支付、移动支付接口</a></p>
 <h1 id="请求参数"><a href="#请求参数" class="headerlink" title="请求参数"></a>请求参数</h1><p>查询订单的参数非常简单。这里能够查询的仅指：支付成功后的订单</p>
 <table>
 <thead>
@@ -3888,10 +3888,10 @@
     
     <entry>
       <title><![CDATA[支付的回调统一处理]]></title>
-      <url>https://helei112g.github.io/2016/07/29/%E6%94%AF%E4%BB%98%E7%9A%84%E5%9B%9E%E8%B0%83%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86/</url>
+      <url>http://dayutalk.cn/2016/07/29/%E6%94%AF%E4%BB%98%E7%9A%84%E5%9B%9E%E8%B0%83%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86/</url>
       <content type="html"><![CDATA[<p>支付成功的订单，都需要通过第三方的回调来告知自身服务器，任务已经完成，为了让使用者专注自身的业务，这个接口封装了一些基础处理，如：验签、数据解析等<br><a id="more"></a></p>
 <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
-<p>经过这一段时间，终于把支付宝支付相关接口完成了。文档将陆续更新。这里先把回调的文档补充完成。这样结合之前 提供的 <a href="https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/">支付宝即时到帐接口</a> 才能形成一个闭环。完成一次完整的支付流程。</p>
+<p>经过这一段时间，终于把支付宝支付相关接口完成了。文档将陆续更新。这里先把回调的文档补充完成。这样结合之前 提供的 <a href="https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/" target="_blank" rel="external">支付宝即时到帐接口</a> 才能形成一个闭环。完成一次完整的支付流程。</p>
 <h1 id="回调接口介绍"><a href="#回调接口介绍" class="headerlink" title="回调接口介绍"></a>回调接口介绍</h1><blockquote>
 <p>支付服务商(支付宝、微信、PayPal等)处理完支付数据后。会将处理的结果数据通过服务器主动通知的方式通知给商户网站。这些处理结果数据就是服务器异步通知参数。</p>
 </blockquote>
@@ -4195,12 +4195,12 @@
     
     <entry>
       <title><![CDATA[PHP接入支付宝手机网站支付、移动支付接口]]></title>
-      <url>https://helei112g.github.io/2016/07/29/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E3%80%81%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%8E%A5%E5%8F%A3/</url>
+      <url>http://dayutalk.cn/2016/07/29/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E3%80%81%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%8E%A5%E5%8F%A3/</url>
       <content type="html"><![CDATA[<p>支付宝手机网站、移动支付（app）接口。统一的接入方式，便于项目管理<br><a id="more"></a></p>
 <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p>前面已经说完了 PHP接入支付宝 即时到帐接口</p>
 <p>回调接口也已经完成。这篇主要讲 <strong>手机网站支付</strong> 、 <strong>移动支付</strong> 接口的调用。调用方式与即时到帐 基本一样。</p>
-<p>关于代码部分的详细解释，请 参看 <a href="https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/">PHP接入支付宝 即时到帐接口</a></p>
+<p>关于代码部分的详细解释，请 参看 <a href="https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/" target="_blank" rel="external">PHP接入支付宝 即时到帐接口</a></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 订单数组</span></span><br><span class="line">$orderData = [</span><br><span class="line">    <span class="string">"order_no"</span>	=&gt; createPayid(),</span><br><span class="line">    <span class="string">"amount"</span>	=&gt; <span class="string">'0.01'</span>,<span class="comment">// 单位为元 ,最小为0.01</span></span><br><span class="line">    <span class="string">"client_ip"</span>	=&gt; <span class="string">'127.0.0.1'</span>,</span><br><span class="line">    <span class="string">"subject"</span>	=&gt; <span class="string">'      测试支付'</span>,</span><br><span class="line">    <span class="string">"body"</span>	=&gt; <span class="string">'支付接口测试'</span>,</span><br><span class="line">    <span class="string">"show_url"</span>  =&gt; <span class="string">'http://mall.tiyushe.com/goods/23.html'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 支付宝配置信息</span></span><br><span class="line">$aliconfig = [</span><br><span class="line">    <span class="string">'partner'</span>   =&gt; <span class="string">'2088xxxxx'</span>,</span><br><span class="line">    <span class="string">'md5_key'</span>   =&gt; <span class="string">'xxxxxxxxxxxx'</span>,</span><br><span class="line">    <span class="string">'rsa_private_key'</span>   =&gt; dirname(<span class="keyword">__FILE__</span>) . <span class="string">'/rsa_private_key.pem'</span>,</span><br><span class="line">    <span class="string">"notify_url"</span>	=&gt; <span class="string">'http://test.helei.com/pay-notify.html'</span>,</span><br><span class="line">    <span class="string">"return_url"</span>	=&gt; <span class="string">'http://test.helei.com/return-url.html'</span>,</span><br><span class="line">    <span class="string">"time_expire"</span>	=&gt; <span class="string">'14'</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例化环境类</span></span><br><span class="line"></span><br><span class="line">$charge = <span class="keyword">new</span> ChargeContext();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 支付宝即时到帐接口</span></span><br><span class="line">    <span class="comment">// $type = Config::ALI_CHANNEL_WEB;</span></span><br><span class="line">    <span class="comment">// $charge-&gt;initCharge($type, $aliconfig);</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 支付宝 手机网站支接口</span></span><br><span class="line">    <span class="comment">// $type = Config::ALI_CHANNEL_WAP;</span></span><br><span class="line">    <span class="comment">// $charge-&gt;initCharge($type, $aliconfig);</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 支付宝 移动支付接口</span></span><br><span class="line">    $type = Config::ALI_CHANNEL_APP;</span><br><span class="line">    $charge-&gt;initCharge($type, $aliconfig);</span><br><span class="line">    $ret = $charge-&gt;charge($payData);</span><br><span class="line">&#125; <span class="keyword">catch</span> (PayException $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;errorMessage();<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ($type === Config::ALI_CHANNEL_APP) &#123;</span><br><span class="line">    var_dump($ret);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 跳转支付宝</span></span><br><span class="line">    header(<span class="string">"Location:&#123;$ret&#125;"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>oK！大家仔细看代码。唯一不同的，仅仅是支付的方式这个常量。<br>目前常量的含义</p>
 <ul>
@@ -4318,7 +4318,7 @@
     
     <entry>
       <title><![CDATA[php设计模式：策略模式的实际应用]]></title>
-      <url>https://helei112g.github.io/2016/07/23/php%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%9A%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8/</url>
+      <url>http://dayutalk.cn/2016/07/23/php%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%9A%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8/</url>
       <content type="html"><![CDATA[<p>多学两个设计模式总是好的，自己不写，但是总要看别人的代码吧？<br><a id="more"></a></p>
 <p>最近写了一个集成各家支付的开源项目（支付宝与微信）。<a href="https://github.com/helei112g/payment" target="_blank" rel="external">项目地址</a>。让调用支付变得更加简单、统一。目前已经在<a href="http://mall.tiyushe.com/" target="_blank" rel="external">公司商城</a>推行使用，上海<a href="http://yimishiji.com/" target="_blank" rel="external">一米市集</a>也采用了这个支付集成项目。</p>
 <p>我可不是打广告哦，只是为了让大家可以有一个只管的了解渠道。可以去看看。</p>
@@ -4357,7 +4357,7 @@
     
     <entry>
       <title><![CDATA[支付宝：即时到账接口接入]]></title>
-      <url>https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/</url>
+      <url>http://dayutalk.cn/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/</url>
       <content type="html"><![CDATA[<p>支付宝即时到账接口，简化支付宝本身文档一大堆的配置。让工作变得轻松<br><a id="more"></a></p>
 <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p><strong>特别声明：</strong></p>
@@ -4504,14 +4504,14 @@
 </ul>
 <p><img src="https://helei112g.github.io/images/ali-qr.png" alt="image"></p>
 <blockquote>
-<p><a href="https://helei112g.github.io/categories/payment/">项目文档首页</a></p>
+<p><a href="https://helei112g.github.io/categories/payment/" target="_blank" rel="external">项目文档首页</a></p>
 </blockquote>
 ]]></content>
     </entry>
     
     <entry>
       <title><![CDATA[支付宝、微信支付接入集成]]></title>
-      <url>https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%E3%80%81%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E6%8E%A5%E5%85%A5%E9%9B%86%E6%88%90/</url>
+      <url>http://dayutalk.cn/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%E3%80%81%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E6%8E%A5%E5%85%A5%E9%9B%86%E6%88%90/</url>
       <content type="html"><![CDATA[<p>没有摘要，请看正文<br><a id="more"></a></p>
 <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 项目2.x版本</a> </p>
 <p>从开始写代码以来，一直就与支付打交道。终于到今天，我忍无可忍啦！每次都要重新写，重新调（主要换工作后，不能把前东家的代码给拷贝走）。好吧，写一份放到github上，以后啥时候用都有了，还方便做外包（哈哈哈……）</p>
@@ -4531,23 +4531,23 @@
 <h1 id="功能介绍"><a href="#功能介绍" class="headerlink" title="功能介绍"></a>功能介绍</h1><p>说这么多废话没什么卵用，还是先介绍下本SDK支持的支付接口</p>
 <ol>
 <li>支付宝支付<ul>
-<li><a href="https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/">支付宝即时到帐</a></li>
-<li><a href="https://helei112g.github.io/2016/07/29/%E6%94%AF%E4%BB%98%E7%9A%84%E5%9B%9E%E8%B0%83%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86/">支付宝异步通知回调</a></li>
-<li><a href="https://helei112g.github.io/2016/07/29/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E3%80%81%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%8E%A5%E5%8F%A3/">支付宝手机网站</a></li>
-<li><a href="https://helei112g.github.io/2016/07/29/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E3%80%81%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%8E%A5%E5%8F%A3/">支付宝移动支付</a></li>
-<li><a href="https://helei112g.github.io/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%9C%89%E5%AF%86%E9%80%80%E6%AC%BE%E6%8E%A5%E5%8F%A3/">支付宝有密退款</a></li>
-<li><a href="https://helei112g.github.io/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%9C%89%E5%AF%86%E6%89%B9%E9%87%8F%E8%BD%AC%E6%AC%BE%E6%8E%A5%E5%8F%A3/">支付宝有密批量付款</a></li>
-<li><a href="https://helei112g.github.io/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E5%8D%95%E7%AC%94%E8%AE%A2%E5%8D%95%E6%9F%A5%E8%AF%A2%E6%8E%A5%E5%8F%A3/">支付宝订单查询</a></li>
+<li><a href="https://helei112g.github.io/2016/07/18/%E6%94%AF%E4%BB%98%E5%AE%9D%EF%BC%9A%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5/" target="_blank" rel="external">支付宝即时到帐</a></li>
+<li><a href="https://helei112g.github.io/2016/07/29/%E6%94%AF%E4%BB%98%E7%9A%84%E5%9B%9E%E8%B0%83%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86/" target="_blank" rel="external">支付宝异步通知回调</a></li>
+<li><a href="https://helei112g.github.io/2016/07/29/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E3%80%81%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%8E%A5%E5%8F%A3/" target="_blank" rel="external">支付宝手机网站</a></li>
+<li><a href="https://helei112g.github.io/2016/07/29/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E3%80%81%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%8E%A5%E5%8F%A3/" target="_blank" rel="external">支付宝移动支付</a></li>
+<li><a href="https://helei112g.github.io/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%9C%89%E5%AF%86%E9%80%80%E6%AC%BE%E6%8E%A5%E5%8F%A3/" target="_blank" rel="external">支付宝有密退款</a></li>
+<li><a href="https://helei112g.github.io/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E6%9C%89%E5%AF%86%E6%89%B9%E9%87%8F%E8%BD%AC%E6%AC%BE%E6%8E%A5%E5%8F%A3/" target="_blank" rel="external">支付宝有密批量付款</a></li>
+<li><a href="https://helei112g.github.io/2016/08/03/PHP%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E5%8D%95%E7%AC%94%E8%AE%A2%E5%8D%95%E6%9F%A5%E8%AF%A2%E6%8E%A5%E5%8F%A3/" target="_blank" rel="external">支付宝订单查询</a></li>
 </ul>
 </li>
 </ol>
 <ol>
 <li>微信支付    <ul>
-<li><a href="https://helei112g.github.io/2016/08/10/%E5%BE%AE%E4%BF%A1%E7%9A%84%E4%B8%89%E7%A7%8D%E6%94%AF%E4%BB%98%E6%96%B9%E5%BC%8F%E6%8E%A5%E5%85%A5%EF%BC%9AAPP%E6%94%AF%E4%BB%98%E3%80%81%E5%85%AC%E4%BC%97%E5%8F%B7%E6%94%AF%E4%BB%98%E3%80%81%E6%89%AB%E7%A0%81%E6%94%AF%E4%BB%98/">微信公众号支付\微信扫码支付\APP支付 接口</a></li>
-<li><a href="https://helei112g.github.io/2016/08/10/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E8%AE%A2%E5%8D%95%E3%80%81%E9%80%80%E6%AC%BE%E8%AE%A2%E5%8D%95%E3%80%81%E8%BD%AC%E6%AC%BE%E8%AE%A2%E5%8D%95%E7%9A%84%E6%9F%A5%E8%AF%A2/">订单查询接口/退款订单查询接口/企业付款查询接口</a></li>
-<li><a href="https://helei112g.github.io/2016/08/16/PHP%E6%8E%A5%E5%85%A5%E5%BE%AE%E4%BF%A1%E9%80%80%E6%AC%BE%E6%8E%A5%E5%8F%A3/">微信退款接口</a></li>
-<li><a href="https://helei112g.github.io/2016/07/29/%E6%94%AF%E4%BB%98%E7%9A%84%E5%9B%9E%E8%B0%83%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86/">微信异步通知回调接口</a></li>
-<li><a href="https://helei112g.github.io/2016/08/16/PHP%E6%8E%A5%E5%85%A5%E5%BE%AE%E4%BF%A1%E4%BC%81%E4%B8%9A%E4%BB%98%E6%AC%BE%E5%8A%9F%E8%83%BD/">企业付款接口</a></li>
+<li><a href="https://helei112g.github.io/2016/08/10/%E5%BE%AE%E4%BF%A1%E7%9A%84%E4%B8%89%E7%A7%8D%E6%94%AF%E4%BB%98%E6%96%B9%E5%BC%8F%E6%8E%A5%E5%85%A5%EF%BC%9AAPP%E6%94%AF%E4%BB%98%E3%80%81%E5%85%AC%E4%BC%97%E5%8F%B7%E6%94%AF%E4%BB%98%E3%80%81%E6%89%AB%E7%A0%81%E6%94%AF%E4%BB%98/" target="_blank" rel="external">微信公众号支付\微信扫码支付\APP支付 接口</a></li>
+<li><a href="https://helei112g.github.io/2016/08/10/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E8%AE%A2%E5%8D%95%E3%80%81%E9%80%80%E6%AC%BE%E8%AE%A2%E5%8D%95%E3%80%81%E8%BD%AC%E6%AC%BE%E8%AE%A2%E5%8D%95%E7%9A%84%E6%9F%A5%E8%AF%A2/" target="_blank" rel="external">订单查询接口/退款订单查询接口/企业付款查询接口</a></li>
+<li><a href="https://helei112g.github.io/2016/08/16/PHP%E6%8E%A5%E5%85%A5%E5%BE%AE%E4%BF%A1%E9%80%80%E6%AC%BE%E6%8E%A5%E5%8F%A3/" target="_blank" rel="external">微信退款接口</a></li>
+<li><a href="https://helei112g.github.io/2016/07/29/%E6%94%AF%E4%BB%98%E7%9A%84%E5%9B%9E%E8%B0%83%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86/" target="_blank" rel="external">微信异步通知回调接口</a></li>
+<li><a href="https://helei112g.github.io/2016/08/16/PHP%E6%8E%A5%E5%85%A5%E5%BE%AE%E4%BF%A1%E4%BC%81%E4%B8%9A%E4%BB%98%E6%AC%BE%E5%8A%9F%E8%83%BD/" target="_blank" rel="external">企业付款接口</a></li>
 </ul>
 </li>
 </ol>
@@ -4566,7 +4566,7 @@
     
     <entry>
       <title><![CDATA[1.APP后端开发系列：登陆系统设计中的注意问题]]></title>
-      <url>https://helei112g.github.io/2016/07/12/1-APP%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E7%B3%BB%E5%88%97%EF%BC%9A%E7%99%BB%E9%99%86%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98/</url>
+      <url>http://dayutalk.cn/2016/07/12/1-APP%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E7%B3%BB%E5%88%97%EF%BC%9A%E7%99%BB%E9%99%86%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98/</url>
       <content type="html"><![CDATA[<p>自从接触到app开发以来，遇到很多问题，一直都是一路走，一路解决。希望这些文字能够让大家少走些弯路。<br><a id="more"></a></p>
 <p>想写这个系列很久了，因为之前做这个东西花费了大量的精力，有必要分享出来与大家共享。以前也写了一些关于 <a href="http://blog.csdn.net/hel12he/article/details/47721209" target="_blank" rel="external">APP后端开发的系列文章</a> 由于当初功力不够，很多问题描述不清楚或者解决方案过于复杂、不严谨等。</p>
 <p>这一次查了很多资料，问了很多相关人士。准备再结合自己实际工作中的问题再次进行一些补充。就先从登陆的设计开始吧！</p>
@@ -4636,10 +4636,10 @@
     
     <entry>
       <title><![CDATA[php设计模式：状态模式的使用场景]]></title>
-      <url>https://helei112g.github.io/2016/06/28/php%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%9A%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
+      <url>http://dayutalk.cn/2016/06/28/php%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%9A%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
       <content type="html"><![CDATA[<p>最初为了减少代码中的逻辑判断，使用了该模式，不过大家在实际中还是需要权衡，太多的类未必就比if{…}else{…}更好。</p>
 <a id="more"></a>
-<p>在这儿给大家说点事儿。我的博客搬家到github主页上了。<a href="https://helei112g.github.io">我的博客</a>。以后首发都在github上了。csdn也会继续更新。可能就是稍微慢一下。</p>
+<p>在这儿给大家说点事儿。我的博客搬家到github主页上了。<a href="https://helei112g.github.io" target="_blank" rel="external">我的博客</a>。以后首发都在github上了。csdn也会继续更新。可能就是稍微慢一下。</p>
 <p>另外最近搞了一个支付的开源项目。<a href="https://github.com/helei112g/payment" target="_blank" rel="external">这是项目地址</a>  目前已经支持：</p>
 <ul>
 <li>支付宝的 即时到帐、移动支付、加密退款接口。</li>

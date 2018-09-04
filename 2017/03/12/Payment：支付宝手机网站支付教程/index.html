@@ -12,7 +12,7 @@
   <meta property="og:description" content="" />
   <meta property="og:site_name" content="大愚Talk｜与你把酒言诗"/>
   <meta property="og:type" content="article" />
-  <meta property="og:image" content="https://helei112g.github.ioundefined"/>
+  <meta property="og:image" content="http://dayutalk.cnundefined"/>
   
     <link rel="alternate" href="/atom.xml" title="大愚Talk｜与你把酒言诗" type="application/atom+xml">
   
@@ -111,7 +111,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2017-03-12</span>
-            <span class="time">14:09:09</span>
+            <span class="time">14:56:54</span>
           </span>
           
           <!--  Categories  -->
@@ -135,12 +135,12 @@
         <div class="post-content">
           <p>支付宝的H5支付体验真不错（支付宝叫他手机网站支付）。</p>
 <p>反观微信支付干嘛要把H5支付藏起来？而且体验还那么差。<br><a id="more"></a></p>
-<p><strong><code>Payment 3.0</code></strong> 支付宝的配置设置文档请 <a href="https://helei112g.github.io/2017/03/09/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E6%95%99%E7%A8%8B/">点击这里</a></p>
+<p><strong><code>Payment 3.0</code></strong> 支付宝的配置设置文档请 <a href="https://helei112g.github.io/2017/03/09/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%AF%E4%BB%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%E6%95%99%E7%A8%8B/" target="_blank" rel="external">点击这里</a></p>
 <p><strong>项目GitHub地址</strong>：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
 <p>从本篇开始，将用支付宝的沙箱方式进行演示，在项目的 <code>payment/examples</code> 中我已经提供了我的沙箱帐号。</p>
 <p>新版接口已经同时支持 RSA 与 RSA2 。更换签名方式时，注意公钥的变化，在demo中我进行了注释。</p>
 <p>另外支付宝为了提升支付体验，可以将 <code>手机网站支付转Native支付</code> ，对于混合应用是非常好的体验。这部分服务器端的业务逻辑无须变动，只需要客户端更新到最新的 <a href="https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.71N4co&amp;treeId=203&amp;articleId=106493&amp;docType=1" target="_blank" rel="external">详情地址</a></p>
-<p>还是先讲手机网站支付需要设置哪些参数，后面用代码演示。代码部分大家会发现跟 <a href="https://helei112g.github.io/2017/03/11/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5%E6%95%99%E7%A8%8B/"><code>即时到账</code></a> 支付的使用完全一致。他们的不同之处仅仅是下单参数的区别。</p>
+<p>还是先讲手机网站支付需要设置哪些参数，后面用代码演示。代码部分大家会发现跟 <a href="https://helei112g.github.io/2017/03/11/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5%E6%95%99%E7%A8%8B/" target="_blank" rel="external"><code>即时到账</code></a> 支付的使用完全一致。他们的不同之处仅仅是下单参数的区别。</p>
 <table>
 <thead>
 <tr>
@@ -245,7 +245,7 @@
 </tbody>
 </table>
 <p>另外这里返回的依然是一个url。大家根据自己的业务进行合理的处理。<code>htmlspecialchars()</code> 函数的目的还是为了转义，正式使用时，请注意。</p>
-<p>关于异步通知部分，会有专门的文章讲解，这里暂时略过。请关注后面的文章。接下来会说到最热门的<a href="https://helei112g.github.io/2017/03/14/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%95%99%E7%A8%8B/">移动支付</a></p>
+<p>关于异步通知部分，会有专门的文章讲解，这里暂时略过。请关注后面的文章。接下来会说到最热门的<a href="https://helei112g.github.io/2017/03/14/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E7%A7%BB%E5%8A%A8%E6%94%AF%E4%BB%98%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%95%99%E7%A8%8B/" target="_blank" rel="external">移动支付</a></p>
 <hr>
 <p>如果你有不清楚的或者愿意交流的地方，请联系我：</p>
 <p><strong>邮箱</strong>：dayugog@gmail.com</p>
