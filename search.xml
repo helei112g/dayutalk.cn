@@ -6,7 +6,7 @@
     <entry>
       <title><![CDATA[那些奇葩的第三方支付大总结]]></title>
       <url>http://dayutalk.cn/2018/11/25/%E9%82%A3%E4%BA%9B%E5%A5%87%E8%91%A9%E7%9A%84%E7%AC%AC%E4%B8%89%E6%96%B9%E6%94%AF%E4%BB%98%E5%A4%A7%E6%80%BB%E7%BB%93/</url>
-      <content type="html"><![CDATA[<p>文章摘要，作者太懒了，没写……<br><a id="more"></a></p>
+      <content type="html"><![CDATA[<p>如何做一个通用的支付系统？只有直到了第三方的交易模式，才能更好的抽象<br><a id="more"></a></p>
 <p>这几年的工作生涯一直再与支付打交到，借着 <a href="https://github.com/skr-shop/manuals" target="_blank" rel="external">skr-shop</a> 这个项目来与大家一起分享探索一下支付系统该怎么设计、怎么做。我们先从支付的一些常见流程出发分析出发，找出这些支付的共性，抽象后再去探讨具体的数据库设计、代码结构设计。</p>
 <p>正式开始前还是先做个广告：</p>
 <ul>
@@ -16,7 +16,7 @@
 <blockquote>
 <p>支付整体而言的一个流程是：我给第三方发起了一笔交易，用户通过第三方完成支付，第三方告诉我支付成功，我把用户购买的产品给用户。</p>
 </blockquote>
-<p><img src="img/pay-1.jpg" alt="pay-1"></p>
+<p><img src="https://dayutalk.cn/img/pay-1.jpg" alt="pay-1"></p>
 <p>看似简单的流程，这里边不同的支付结构却有不同的处理。下面以我接触过的一些支付来总结一下</p>
 <h1 id="国内支付"><a href="#国内支付" class="headerlink" title="国内支付"></a>国内支付</h1><p>国内的典型支付代表是：<strong>支付宝</strong>、<strong>微信</strong>、<strong>银行</strong>(以招商银行为例)，由于国内的支付都支持多种渠道的支付方式，为了描述简单，我们均已pc上的支付为例进行讲解。</p>
 <h2 id="支付宝"><a href="#支付宝" class="headerlink" title="支付宝"></a>支付宝</h2><p>支付宝的接入是我觉得最简单的一种支付。对于在PC上的支付能力，支付宝提供了【电脑支付】。当用户下单后，商户系统根据支付宝的规则构建好一个url，用户跳转到这个url后进入到支付宝的支付页面，然后完成支付流程。</p>
@@ -68,11 +68,10 @@
 <p>退款方面也支持商户退款单号可以依赖此进行防重。但是退款的状态也是基于异步来的。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这其中还有一些国际支付，如：<strong>PayPal</strong>、<strong>GooglePay</strong>、<strong>PayTM</strong> 等知名支付机构没有进行介绍，是因为基本它们的流程也都在上面的模式之中。我们后续的代码结构设计、数据库设计都基于满足上面的各种支付模型来完成设计。</p>
 <p>最后，赠送大家一副脑图，帮助大家在接入一家支付时重点需要关注的事情有哪些</p>
-<p><img src="img/pay-2.png" alt="pay-2"></p>
+<p><img src="https://dayutalk.cn/img/pay-2.png" alt="pay-2"></p>
 <p>这是我们几个小伙伴利用业余时间总结自己搞过的项目，如果有写的不对或者不完善的地方，希望大家多多评论，互相学习互相进步～</p>
 <p>项目地址: <a href="https://github.com/skr-shop/manuals" target="_blank" rel="external">https://github.com/skr-shop/manuals</a></p>
-<h1 id="skr-shop项目成员简介"><a href="#skr-shop项目成员简介" class="headerlink" title="skr-shop项目成员简介"></a>skr-shop项目成员简介</h1><p>排名不分先后，字典序</p>
-<table>
+<h1 id="skr-shop项目成员简介"><a href="#skr-shop项目成员简介" class="headerlink" title="skr-shop项目成员简介"></a>skr-shop项目成员简介</h1><table>
 <thead>
 <tr>
 <th>昵称</th>
@@ -88,7 +87,7 @@
 </tr>
 <tr>
 <td>Dayu</td>
-<td>国内大多人使用的PHP第三方支付聚合项目Payment作者，创过业，现于小米科技海外商城组从事商城后端研发工作</td>
+<td>Payment开源项目作者，创过业，现于小米科技海外商城组从事商城后端研发工作</td>
 <td>dayutalk.cn</td>
 </tr>
 <tr>
