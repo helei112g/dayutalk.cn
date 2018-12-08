@@ -103,7 +103,7 @@
 <li>如果熟悉代码应该直接去检查业务代码，如果不熟悉则可以使用 <code>perf</code> 把代码的调用链路打印出来；</li>
 <li>不论是分析代码还是火焰图，到此应该能够很快定位到问题。</li>
 </ol>
-<p>那么本次到底是为什么会出现  <strong>CLOSE_WAIR</strong> 呢？大部分同学应该已经明白了，我这里再补充一下：</p>
+<p>那么本次到底是为什么会出现  <strong>CLOSE_WAIR</strong> 呢？大部分同学应该已经明白了，我这里再简单说明一下：</p>
 <p>由于那一行代码没有对事务进行回滚，导致服务端没有主动发起close。因此 <strong>MySQL负载均衡器</strong> 在达到 60s 的时候主动触发了close操作，但是通过tcp抓包发现，服务端并没有进行回应，这是因为代码中的事务没有处理，因此从而导致大量的端口、连接资源被占用。在贴一下挥手时的抓包数据：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># mysql 主动断开链接</span><br><span class="line">11:38:45.693382 IP 172.18.0.3.3306 &gt; 172.18.0.5.38822: Flags [F.], seq 123, ack 144, win 227, options [nop,nop,TS val 3000355 ecr 2997359], length 0 # MySQL负载均衡器发送fin包给我</span><br><span class="line">11:38:45.740958 IP 172.18.0.5.38822 &gt; 172.18.0.3.3306: Flags [.], ack 124, win 229, options [nop,nop,TS val 3000360 ecr 3000355], length 0 # 我回复ack给它</span><br></pre></td></tr></table></figure>
 <p>希望此文对大家排查线上问题有所帮助。为了便于帮助大家理解，下面附上正确情况下的火焰图与错误情况下的火焰图。大家可以自行对比。</p>
