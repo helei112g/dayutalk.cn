@@ -111,7 +111,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2018-12-08</span>
-            <span class="time">22:11:15</span>
+            <span class="time">22:23:40</span>
           </span>
           
           <!--  Categories  -->
@@ -136,17 +136,17 @@
           <p>这一次重启真的无法解决问题了：一次 <strong>MySQL</strong> 主动关闭，导致服务出现大量 <strong>CLOSE_WAIT</strong> 的全流程排查过程。<br><a id="more"></a></p>
 <p>近日遇到一个线上服务 <strong>socket</strong> 资源被不断打满的情况。通过各种工具分析线上问题,定位到问题代码。这里对该问题发现、修复过程进行一下复盘总结。</p>
 <p>先看两张图。一张图是服务正常时监控到的 <strong>socket</strong> 状态，另一张当然就是异常啦！</p>
-<p><img src="/Users/helei/code/helei.blog/source/img/image-20181208155626513-4255786.png" alt="image-20181208155626513"></p>
+<p><img src="https://dayutalk.cn/img/image-20181208155626513-4255786.png" alt="image-20181208155626513"></p>
 <p align="center"><b>图一：正常时监控</b></p>
 
-<p><img src="/Users/helei/code/helei.blog/source/img/image-20181208160100456-4256060.png" alt="image-20181208160100456"></p>
+<p><img src="https://dayutalk.cn/img/image-20181208160100456-4256060.png" alt="image-20181208160100456"></p>
 <p align="center"><b>图二：异常时监控</b></p>
 
 <p>从图中的表现情况来看，就是从 <strong>04:00</strong> 开始，socket 资源不断上涨，每个谷底时重启后恢复到正常值，然后继续不断上涨不释放，而且每次达到峰值的间隔时间越来越短。</p>
 <p>重启后，排查了日志，没有看到 <strong>panic</strong> ，此时也就没有进一步检查，真的以为重启大法好。</p>
 <h1 id="情况说明"><a href="#情况说明" class="headerlink" title="情况说明"></a>情况说明</h1><p>该服务使用Golang开发，已经上线正常运行将近一年，提供给其它服务调用，主要底层资源有DB/Redis/MQ。</p>
 <p>为了后续说明的方便，将服务的架构图进行一下说明。</p>
-<p><img src="/Users/helei/code/helei.blog/source/img/image-20181208162049386-4257249.png" alt="image-20181208162049386"></p>
+<p><img src="https://dayutalk.cn/img/image-20181208162049386-4257249.png" alt="image-20181208162049386"></p>
 <p align="center"><b>图三：服务架构</b></p>
 
 <p>架构是非常简单。</p>
@@ -165,7 +165,7 @@
 <p>由于监控显示是 <strong>socket</strong> 问题，因此通过 <strong>netstat</strong> 命令查看了当前tcp链接的情况（本地测试，线上实际值大的多）</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/go/src/hello # netstat -na | awk &apos;/^tcp/ &#123;++S[$NF]&#125; END &#123;for(a in S) print a, S[a]&#125;&apos;</span><br><span class="line">LISTEN 2</span><br><span class="line">CLOSE_WAIT 23 # 非常异常</span><br><span class="line">TIME_WAIT 1</span><br></pre></td></tr></table></figure>
 <p>发现绝大部份的链接处于 <strong>CLOSE_WAIT</strong> 状态，这是非常不可思议情况。然后用 <code>netstat -an</code> 命令进行了检查。</p>
-<p><img src="/Users/helei/code/helei.blog/source/img/image-20181208172652155-4261212.png" alt="image-20181208172652155"></p>
+<p><img src="https://dayutalk.cn/img/image-20181208172652155-4261212.png" alt="image-20181208172652155"></p>
 <p align="center"><b>图四：大量的CLOSE_WAIT</b></p>
 
 <blockquote>
@@ -173,7 +173,7 @@
 </blockquote>
 <p>然后开始重点思考为什么会出现大量的mysql连接是  <strong>CLOSE_WAIT</strong> 呢？为了说清楚，我们来插播一点TCP的四次挥手知识。</p>
 <h3 id="TCP四次挥手"><a href="#TCP四次挥手" class="headerlink" title="TCP四次挥手"></a>TCP四次挥手</h3><p>我们来看看 <strong>TCP</strong> 的四次挥手是怎么样的流程：</p>
-<p><img src="/Users/helei/code/helei.blog/source/img/image-20181208175427046-4262867.png" alt="image-20181208175427046"></p>
+<p><img src="https://dayutalk.cn/img/image-20181208175427046-4262867.png" alt="image-20181208175427046"></p>
 <p align="center"><b>图五：TCP四次挥手</b></p>
 
 <p>用中文来描述下这个过程：</p>
@@ -213,7 +213,7 @@
 <li>mysql的事务没有正确处理，例如：rollback 或者 commit</li>
 </ol>
 <p>由于火焰图包含的内容太多，为了让大家看清楚，我把一些不必要的信息进行了折叠。</p>
-<p><img src="/Users/helei/code/helei.blog/source/img/image-20181208212045848-4275245.png" alt="image-20181208212045848"></p>
+<p><img src="https://dayutalk.cn/img/image-20181208212045848-4275245.png" alt="image-20181208212045848"></p>
 <p align="center"><b>图六：有问题的火焰图</b></p>
 
 <p>火焰图很明显看到了开启了事务，但是在余下的部分，并没有看到 <strong>Commit</strong> 或者是<strong>Rollback</strong> 操作。这肯定会操作问题。然后也清楚看到出现问题的是：</p>
@@ -235,18 +235,21 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># mysql 主动断开链接</span><br><span class="line">11:38:45.693382 IP 172.18.0.3.3306 &gt; 172.18.0.5.38822: Flags [F.], seq 123, ack 144, win 227, options [nop,nop,TS val 3000355 ecr 2997359], length 0 # MySQL负载均衡器发送fin包给我</span><br><span class="line">11:38:45.740958 IP 172.18.0.5.38822 &gt; 172.18.0.3.3306: Flags [.], ack 124, win 229, options [nop,nop,TS val 3000360 ecr 3000355], length 0 # 我回复ack给它</span><br></pre></td></tr></table></figure>
 <p>希望此文对大家排查线上问题有所帮助。为了便于帮助大家理解，下面附上正确情况下的火焰图与错误情况下的火焰图。大家可以自行对比。</p>
 <ul>
-<li><a href="../img/right.svg">正确情况下的火焰图</a></li>
-<li><a href="../img/err.svg">错误情况的火焰图</a></li>
+<li><a href="https://dayutalk.cn/img/right.svg">正确情况下的火焰图</a></li>
+<li><a href="https://dayutalk.cn/img/err.svg">错误情况的火焰图</a></li>
 </ul>
 <p>我参考的一篇文章对这种情况提出了两个思考题，我觉得非常有意义，大家自己思考下：</p>
 <ol>
 <li>为什么一台机器几百个  <strong>CLOSE_WAIR</strong>  就导致不可继续访问？我们不是经常说一台机器有 <strong>65535</strong> 个文件描述符可用吗？</li>
 <li>为什么我有负载均衡，而两台部署服务的机器确几乎同时出了  <strong>CLOSE_WAIR</strong> ? </li>
 </ol>
+<hr>
+<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br><p></p>
+
 <p>参考文章：</p>
 <ol>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzI4MjA4ODU0Ng==&amp;mid=402163560&amp;idx=1&amp;sn=5269044286ce1d142cca1b5fed3efab1&amp;3rd=MzA3MDU4NTYzMw==&amp;scene=6#rd" target="_blank" rel="external">https://mp.weixin.qq.com/s?__biz=MzI4MjA4ODU0Ng==&amp;mid=402163560&amp;idx=1&amp;sn=5269044286ce1d142cca1b5fed3efab1&amp;3rd=MzA3MDU4NTYzMw==&amp;scene=6#rd</a></li>
-<li><a href="https://wiki.wireshark.org/TCP%204-times%20close" target="_blank" rel="external">https://wiki.wireshark.org/TCP%204-times%20close</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI4MjA4ODU0Ng==&amp;mid=402163560&amp;idx=1&amp;sn=5269044286ce1d142cca1b5fed3efab1&amp;3rd=MzA3MDU4NTYzMw==&amp;scene=6#rd" target="_blank" rel="external">又见CLOSE_WAIT</a></li>
+<li><a href="https://wiki.wireshark.org/TCP%204-times%20close" target="_blank" rel="external">TCP 4-times close</a></li>
 </ol>
 
         </div>
