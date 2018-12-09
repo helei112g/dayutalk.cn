@@ -238,8 +238,7 @@
 </tr>
 </tbody>
 </table>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -332,8 +331,7 @@
 <li>RDB持久化与AOF持久化可以同时存在，配合使用。</li>
 </ol>
 <p>本文的内容主要是运维上的一些注意点，但我们开发者了解到这些知识，在某些时候有助于我们发现诡异的bug。接下来会介绍Redis的主从复制与集群的知识。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -470,8 +468,7 @@
 <li>Redis每种数据类型低层都对应多种数据结构，修改与扩展对上层无感知。</li>
 </ul>
 <p>第一篇讲了为什么要用Redis，本文又讲了绝大部分命令吧，以及Redis源码中对它们的一些实现，后续开始关注具体实践中的一些操作。希望对大家有帮助，<strong>期待任何形式的批评与鼓励</strong>。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -503,8 +500,7 @@
 <p>Redis的代码开源在GitHub，代码非常简单优雅，任何人都能够吃透它的源码；它的编译安装也是非常的简单，没有任何的系统依赖；有非常活跃的社区，各种客户端的语言支持也是非常完善。另外它还支持事务（没用过）、持久化、主从复制让高可用、分布式成为可能。</p>
 <p><img src="http://ol59nqr1i.bkt.clouddn.com/redis/redis-3.png" alt=""></p>
 <p>做为一个开发者，对于我们使用的东西不能让它成为一个黑盒子，我们应该深入进去，对它更了解、更熟悉。今天简单说了下Redis的使用场景，以及为什么选择了Redis而不是其它。下次对Redis的内部数据结构及常用命令的时间复杂度进行总结。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -529,11 +525,7 @@
 <p><strong>页级锁</strong> 是MySQL中锁定粒度介于行级锁和表级锁中间的一种锁。表级锁速度快，但冲突多，行级冲突少，但速度慢。所以取了折衷的页级，一次锁定相邻的一组记录。BDB支持页级锁。</p>
 <p>这里需要说明的是，悲观锁是一种思想，它的实现是使用了 共享锁与排他锁来实现的。因此悲观锁本身并不是MySQL实现的锁机制，它是我们造出来的一个概念。</p>
 <p>另外，我看到很多文章在讲悲观锁时，只说排他锁是悲观锁机制，没有说共享锁是什么机制，而我认为共享锁也属于悲观锁，具体原因往后看。</p>
-<h1 id="InnoDB中加锁"><a href="#InnoDB中加锁" class="headerlink" title="InnoDB中加锁"></a>InnoDB中加锁</h1><blockquote>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>
-
-</blockquote>
-<p>InnoDB 实现了两种类型的行锁，共享锁（S）与排他锁（X）。然后由于 InnoDB引擎又支持表级锁，所以它内部又有意向共享锁（IS）与意向排他锁（IX）。这两种表锁，都是InnoDB内部自动处理，换句话说我们写代码是无法控制也不需要控制的。我们能控制的是S与X锁。</p>
+<h1 id="InnoDB中加锁"><a href="#InnoDB中加锁" class="headerlink" title="InnoDB中加锁"></a>InnoDB中加锁</h1><p>InnoDB 实现了两种类型的行锁，共享锁（S）与排他锁（X）。然后由于 InnoDB引擎又支持表级锁，所以它内部又有意向共享锁（IS）与意向排他锁（IX）。这两种表锁，都是InnoDB内部自动处理，换句话说我们写代码是无法控制也不需要控制的。我们能控制的是S与X锁。</p>
 <h2 id="为MySQL加锁"><a href="#为MySQL加锁" class="headerlink" title="为MySQL加锁"></a>为MySQL加锁</h2><p>在日常操作中，<strong>UPDATE</strong>、<strong>INSERT</strong>、<strong>DELETE</strong> InnoDB会自动给涉及的数据集加排他锁，一般的 <strong>SELECT</strong> 一般是不加任何锁的。我们可以使用以下方式显示的为 <strong>SELECT</strong> 加锁。</p>
 <ul>
 <li>共享锁：select * from table_name where id =10 lock in share mode;</li>
@@ -826,8 +818,7 @@
 <li>为什么说 <strong>slice</strong> 是引用类型？</li>
 <li>Go中 <strong>slice</strong> 在传入函数时到底是不是引用传递？如果不是，在函数内为什么能修改其值？</li>
 </ol>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -862,7 +853,7 @@
 <p>我们将代码功能进行拆分，将以前的模块拆分成独立的系统，将MySQL进行主从设计，利用Nginx做负载等等。</p>
 <p>那么为什么不一上来就进行拆分呢？因为一开始人手不足，拆分过细，开发周期慢，业务也不需要如此细致的划分。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>架构是一个系统的草图（逻辑+物理角度），它是有生命的，随着业务的变化会不断演进。没有完美的架构只有合适的架构。</p>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -938,8 +929,6 @@
 <p>这里只是为了说明问题，名字上看起来有点诡异(Student 竟然可以是车？上车就是上 Student？)</p>
 <p>这种能力带来的真正让人吃惊的地方是什么？从此以后我可以先写类了，我先根据实际情况把类的功能做好，在某个我具体需要使用的地方，我再定义接口。说的专业点：也就是接口是由使用方根据自己真实需求来定义，并且不用关心是否有其它使用方定义过。</p>
 <p>这样子到底解决了什么开发中的问题？举个例子：我们一个大团队在开发一个商城系统，m端、app端、pc端都有购物车的需求，底层根据不同的需求已经实现了一个Cart类，通过该类可以获取购物车价格、数量等。例如：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Cart <span class="keyword">struct</span> &#123;</span><br><span class="line">	price <span class="keyword">float32</span></span><br><span class="line">	num <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c Cart)</span> <span class="title">GetPrice</span><span class="params">()</span> <span class="title">float32</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> c.price</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c Cart)</span> <span class="title">GetNum</span><span class="params">()</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> c.num</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>
-
 <p>我觉得这才是真正做到了：<code>依赖于接口而不是实现，优先使用组合而不是继承</code></p>
 ]]></content>
     </entry>
@@ -991,8 +980,7 @@
 <li>公司地址：上海市长宁区天山西路789号中山国际广场B座一米市集</li>
 <li>CTO邮箱：alex.chang@yimishiji.com</li>
 </ul>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -1019,8 +1007,7 @@
 <p>你是想在某个领域成为专家，还是成为爱好者，会让结果千差万别。在开始前，先定位自己当前所处位置以及目标。找出二者之间的差距进行弥补。</p>
 <p>我一边觉得庆幸自己在现在意识到了这一切，另一方面又对自己以前的种种无知表示后悔。知识应该由点极面的逐步展开。用php来讲，我肯定第一步是写好php代码，学好面向对象与设计模式，这一部分工作在业务阶段可以很好掌握，那么之后php相关的性能问题、扩展开发问题就需要逐步去深入了解，这就需要去学数据结构、算法、c语言等等知识。这是由php带来的深入方向，对于横向的，就需要去了解linux、mysql、nginx相关的知识点。这样一步步下来完成自己的深度与广度。</p>
 <p><strong>好的知识与技能都不可能短时间学成。让自己变得具有专业性、稀缺性很重要。</strong></p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -1194,8 +1181,7 @@
 <p>前后的差值依然是：<strong>856</strong></p>
 <p>好了到这里，应该看出来了，<strong>yield</strong>无论数组大小，占用均是 <strong>856</strong> ，这是因为它自身，它在你进行迭代的时候才会产生真实数据。</p>
 <p>所以如果你的数据来源非常大，那么用 yield 吧。如果数据来源很小，当然选择一次载入内存。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -1256,8 +1242,7 @@
 <li><a href="https://laike9m.com/blog/huan-zai-yi-huo-bing-fa-he-bing-xing,61/" target="_blank" rel="external">并发和并行的区别</a></li>
 <li><a href="http://www.ha97.com/5095.html" target="_blank" rel="external">系统性能测试想个概念</a></li>
 </ul>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -1312,8 +1297,7 @@
 <p>日志的记录也是系统开发非常重要的部分，这部分没什么太多说的，用规范的格式，存储指定的数据（介质可以是：db、file）。</p>
 <p>系统开发中应该拒绝使用 <code>var_dump</code>、<code>echo</code> 这些方式进行调试，另外建议采用：PhpStorm IDE来进行系统开发。</p>
 <h1 id="后续分享"><a href="#后续分享" class="headerlink" title="后续分享"></a>后续分享</h1><p>接下来会完善一个 <code>x-api</code> 的基本结构，以及php自动化测试部分文档教程，然后后端部分就告一段落。（本系列的分享主要集中在代码层面，不涉及相关系统部署问题）</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -1365,8 +1349,7 @@
 <li>x-control 是vue写的后端管理系统</li>
 <li>x-client 是vue系的客户端界面</li>
 </ul>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -1395,8 +1378,7 @@
 <p>当然css的布局样式，怎么也没有办法绕过去了（我以前最讨厌的东西，各种浮动让我烦躁）。还好现在工作几年有了耐心，然后又出现了 <code>flex</code> 这种新的布局方案。<br>现在css的写法也是种类繁多，我学习了其中一种<code>less</code>，因为使用的开源项目中采用了该技术。</p>
 <h1 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h1><p>最近有些朋友一直再问我，<code>Payment</code> 项目的文档什么时候补全，放心，不会弃坑的。目前已经全部介入支付宝的新版本支付接口。</p>
 <p>后期会先从后段开始写，然后写前端。之后逐步记录每一次迭代时就按照开发顺序来进行。也希望大家能够持续关注这个产品，给我提出更好的意见。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -1436,9 +1418,6 @@
 <p>下载地址：<a href="https://github.com/kyleduo/TinyPNG4Mac" target="_blank" rel="external">https://github.com/kyleduo/TinyPNG4Mac</a></p>
 <h1 id="额外赠品"><a href="#额外赠品" class="headerlink" title="额外赠品"></a>额外赠品</h1><p>最后推荐一个集成第三方支付的开源项目：<a href="https://github.com/helei112g/payment" target="_blank" rel="external">https://github.com/helei112g/payment</a></p>
 <p>目前已经集成：支付宝支付、微信支付、招商一网通支付。如果你在开发中被各个第三方支付提供的demo搞得焦头烂额，我相信它能够帮助到你。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>
-
 ]]></content>
     </entry>
     
@@ -1475,8 +1454,7 @@
 <h1 id="PayNotifyInterface-接口"><a href="#PayNotifyInterface-接口" class="headerlink" title="PayNotifyInterface 接口"></a>PayNotifyInterface 接口</h1><p>最近有很多人在微信中问我，干嘛一定要实现这个接口？我这里举个例子：<br>你出去旅行，到了突然发现ios的手机充电线没带，怎么办？找个便利店买一根好了（因为附近没有苹果店），那么怎么买的充电线确保你手机可以用呢？这个很简单，因为苹果把自己充电线的接口标准公布了，凡事想造苹果手机充电线的按照这个标准造出来的，你都可以用。</p>
 <p>所以接口的作用就是制定一个标准；你们都实现我规定的接口，然后返回布尔值给我，我就可以处理了。至于内部你们想怎么做，是你们的事情。</p>
 <p>通过这个接口完全将签名与商户业务逻辑进行了分离，以后你的调整只围绕这一个类即可。当然这里涉及到的思想有 ioc/di ，这又是另外一个话题，空的时候我们聊聊。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -1539,7 +1517,7 @@
 <li>[2]<a href="http://www.oschina.net/translate/a-successful-git-branching-model?lang=chs&amp;page=1" target="_blank" rel="external">介绍一个成功的 Git 分支模型</a></li>
 </ul>
 <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>我是何磊，主要工作就是写代码，持续创业者（之所以持续是因为到现在还没有干成功过一件事）。如果你有兴趣欢迎关注我，我会分享技术，还有生活，当然还有我创业的故事（说出我的痛，让你开心一下）。</p>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -1624,10 +1602,7 @@
 <p>在上面的参数中，无论微信的哪一种支付都必须提供：</p>
 <ul>
 <li>body</li>
-<li><p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>
-</li>
-<li><p>order_no</p>
-</li>
+<li>order_no</li>
 <li>timeout_express</li>
 <li>amount</li>
 <li>return_param</li>
@@ -1748,10 +1723,9 @@
 <li>[2] <a href="https://cn.vuejs.org/v2/guide/comparison.html" target="_blank" rel="external">Vue 对比其他框架</a></li>
 <li>[3] <a href="https://www.zhihu.com/question/37020798" target="_blank" rel="external">Webpack、Browserify和Gulp三者之间到底是怎样的关系？</a></li>
 <li>[4] <a href="http://es6.ruanyifeng.com/#docs/intro#Babel-转码器" target="_blank" rel="external">Babel-转码器</a></li>
-<li>[5] <a href="http://www.gulpjs.com.cn" target="_blank" rel="external">用自动化构建工具增强你的工作流程！</a></li>
+<li>[5]<a href="http://www.gulpjs.com.cn" target="_blank" rel="external">用自动化构建工具增强你的工作流程！</a></li>
 </ul>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -1975,8 +1949,7 @@
 <p>如果直接下载的是 <code>guetzli</code> 当前最新的代码(git clone <a href="https://github.com/google/guetzli.git)。" target="_blank" rel="external">https://github.com/google/guetzli.git)。</a></p>
 <p>将不再需要 <code>gflags</code> 包了。只需要用 <code>yum install libpng-devel</code> 就好</p>
 <p>然后编译 <code>guetzli</code> ，进入目录，直接 <code>make</code> 就可得到正确结果。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -2223,8 +2196,7 @@
 <p>还剩下支付宝的当面付，包括：扫码支付  条码支付  将会在下一篇全部写完。 </p>
 </blockquote>
 <p><a href="https://helei112g.github.io/2017/03/15/Payment%EF%BC%9A%E6%8E%A5%E5%85%A5%E6%94%AF%E4%BB%98%E5%AE%9D%E5%BD%93%E9%9D%A2%E4%BB%98%EF%BC%88%E6%89%AB%E7%A0%81%E6%94%AF%E4%BB%98%E4%B8%8E%E6%9D%A1%E7%A0%81%E6%94%AF%E4%BB%98%EF%BC%89%E6%95%99%E7%A8%8B/" target="_blank" rel="external">点击这里看当面付</a> 当面付包括：扫码支付  条码支付</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -2368,8 +2340,7 @@
 </blockquote>
 <p><img src="https://zos.alipayobjects.com/rmsportal/CaXHDDXkdxikcZP.png" alt="image"></p>
 <p>所以大家，不要在使用我提供的沙箱帐号时，用你们真实的支付宝帐号去支付，那样子是不会成功的。沙箱的所有功能，都只能使用上面的沙箱帐号去完成。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -2514,8 +2485,7 @@
 </tbody>
 </table>
 <p>接下来将说道<a href="https://helei112g.github.io/2017/03/12/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E6%89%8B%E6%9C%BA%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E6%95%99%E7%A8%8B/" target="_blank" rel="external">手机网站支付</a>，会给大家说到沙箱的问题</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -2667,8 +2637,7 @@
 <p><strong><code>return_raw</code></strong>  之前的版本都没有该参数，是3.0新加入的，它的主要目的是让调用者控制自己拿到什么样的数据。如果设置为true。SDK 则只会向支付宝发出请求，收到数据后进行验签，通过后，会以数组的形式将所有支付宝返回的数据返回给客户端。</p>
 <p>如果设置为false ，则会抛弃支付宝的某些字段。并且会对某些字段名称进行重新映射，这种方式带来的好处是，可用确保支付宝、微信返回的数据是基本一致的，但是可能导致调用者损失部分信息。这里大家根据实际情况进行衡量。</p>
 <p>至此，支付宝的配置全部讲解完毕。  去看看如何完成<a href="https://helei112g.github.io/2017/03/11/Payment%EF%BC%9A%E6%94%AF%E4%BB%98%E5%AE%9D%E5%8D%B3%E6%97%B6%E5%88%B0%E8%B4%A6%E6%8E%A5%E5%8F%A3%E6%8E%A5%E5%85%A5%E6%95%99%E7%A8%8B/" target="_blank" rel="external">即时到账</a>吧</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -2691,8 +2660,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$data = array_fill(0, 1, range(1, 100000, 1.1))[0];</span><br><span class="line"></span><br><span class="line">$start = microtime(true);</span><br><span class="line">foreach ($data as $num) &#123;</span><br><span class="line">    number_format(10000, 2, &apos;.&apos;, &apos;&apos;);</span><br><span class="line">&#125;</span><br><span class="line">$end = microtime(true);</span><br><span class="line">$need = $end - $start;</span><br><span class="line">print(&quot;number_format time: &#123;$need&#125;&quot; . PHP_EOL);</span><br><span class="line"></span><br><span class="line">$start = microtime(true);</span><br><span class="line">foreach ($data as $num) &#123;</span><br><span class="line">    bcadd($num, 0, 2);</span><br><span class="line">&#125;</span><br><span class="line">$end = microtime(true);</span><br><span class="line">$need = $end - $start;</span><br><span class="line">print(&quot;bcadd time: &#123;$need&#125;&quot; . PHP_EOL);</span><br><span class="line"></span><br><span class="line">$start = microtime(true);</span><br><span class="line">foreach ($data as $num) &#123;</span><br><span class="line">    sprintf(&apos;.2%f&apos;, $num);</span><br><span class="line">&#125;</span><br><span class="line">$end = microtime(true);</span><br><span class="line">$need = $end - $start;</span><br><span class="line">print(&quot;sprintf time: &#123;$need&#125;&quot; . PHP_EOL);</span><br></pre></td></tr></table></figure>
 <p>上面的代码运行，会得到以下结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">number_format time: 0.086385011672974</span><br><span class="line">bcadd time: 0.098035097122192</span><br><span class="line">sprintf time: 0.069508075714111</span><br></pre></td></tr></table></figure></p>
 <p>所以通过对比，推荐使用 <code>sprintf</code> 来处理浮点数位数的问题。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -2756,8 +2724,7 @@
 <p>Client: Close.</p>
 </blockquote>
 <p>PS：如果测试环境没有安装 <code>telnet</code> ，请自行google安装。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -2789,8 +2756,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Cmnd_Alias VAGRANT_EXPORTS_ADD = /usr/bin/tee -a /etc/exports</span><br><span class="line">Cmnd_Alias VAGRANT_NFSD = /sbin/nfsd restart</span><br><span class="line">Cmnd_Alias VAGRANT_EXPORTS_REMOVE = /usr/bin/sed -E -e /*/ d -ibak /etc/exports</span><br><span class="line">%admin ALL=(root) NOPASSWD: VAGRANT_EXPORTS_ADD, VAGRANT_NFSD, VAGRANT_EXPORTS_REMOVE</span><br></pre></td></tr></table></figure>
 <p><em>该配置仅针对mac</em></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这类问题还是蛮常见，对于使用很久的用户，轻松解决了，但是对于大多数使用vagrant的新手，这个问题很头痛，可能直接导致放弃使用vagrant吧。为了不让你放弃，我必须写出来帮助大家渡过这道坑。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -2845,8 +2811,7 @@
 <p><img src="http://img.blog.csdn.net/20160413110608484" alt="这里写图片描述"></p>
 <p>然后，他会自带一个web的版本。大家可以通过浏览器来访问，具体方式留给大家自己去查一查，搜一搜吧。</p>
 <p>单机版的redis服务安装与监控，就全部搞定。so easy！！！</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -2919,7 +2884,7 @@
 <p>查看composer的配置文件<br>vim /root/.composer/config.json<br><img src="http://img.blog.csdn.net/20160406233556529" alt="这里写图片描述"><br>看到以上内容，表示配置成功！</p>
 <hr>
 <p>至此，基本的php7环境搭建已经完成了。然后呢，下一次说一说用vagrant搭建redis吧。当然我不会仅仅只说redis的搭建额。到时候看啊吧！</p>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -2948,8 +2913,7 @@
 <p>比如，我要登录到redis中去。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh redis</span><br></pre></td></tr></table></figure></p>
 <p>这么简单就完成登录了。登录成功后，可以使用ping命令，检查一下机器之间是否能够互相通信。</p>
 <p>好吧，本地有了如此利器，你想模拟那样的服务器架构，都可以完成了，只有你的单机足够强大，你可以开20台虚拟机，请随意。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -3050,8 +3014,7 @@
 </tbody>
 </table>
 <p>下一篇，主要讲vagrant的配置，通过配置文件，实现多台虚拟机的启动.能够很方便的实现多台机器。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -3092,8 +3055,7 @@
 <li>很好的进行了代码的复用</li>
 </ul>
 <p>在YII中有很多模板方法的使用，大家可以自己去阅读代码看一看。这种设计模式带来的一个麻烦的地方是查看代码的不方便。<br>比如：经常继承一个类后实现了一些方法，但是这个方法的调用关系一头雾水，如果遇到这种情况，建议去父类看看是否有个方法组织调用了你重写的方法。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -3232,8 +3194,7 @@
 </tr>
 </tbody>
 </table>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -3361,8 +3322,7 @@
 </tr>
 </tbody>
 </table>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -3625,8 +3585,7 @@
 </tr>
 </tbody>
 </table>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -3760,8 +3719,7 @@
 <li>扫码支付返回了一个地址。可生成一个二维码，完成支付。</li>
 <li>公众号支付，返回的是一个json数据。可直接放入微信的sdk完成jsapi调用。</li>
 </ul>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -3841,8 +3799,7 @@
 </tbody>
 </table>
 <p>这个地方SDK总做了很多工作，简化了相当多的参数，大家可以去对照原接口查看一下。<a href="https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.rVbILN&amp;treeId=64&amp;articleId=104804&amp;docType=1" target="_blank" rel="external">支付宝原接口地址</a></p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -3920,8 +3877,7 @@
 </tbody>
 </table>
 <p>一笔订单，可分多次进行退款处理。比如：一笔支付100元的订单。可分为10次，每次退款10元。该思路可扩展一下，就可实现提现功能（原路返回），想要具体了解提现功能，可咨询我！</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -4061,8 +4017,7 @@
 </tbody>
 </table>
 <p>针对查询返回的数据，调用者可进行相关的业务处理。如果需要更多信息可联系我进行定制开发，也可自行更改代码完成。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -4369,8 +4324,7 @@
 </tbody>
 </table>
 <p>大家可以对比支付宝中异步通知的返回数据。对相关数据均做了命令统一、数据单位格式统一。方便再业务中进行统一处理。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -4493,8 +4447,7 @@
 </tr>
 </tbody>
 </table>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -4533,8 +4486,7 @@
 <p>代码写完了，不知道大家有没有感受到好处，这个模式很好的实现了开闭原则。比如说：现在新增加了一个PayPal支付方式。那么只需要添加一个PayPal的策略算法。在ChargeContext中把对应的实例初始化加进去，其他地方都不需要动的。</p>
 <h1 id="体会"><a href="#体会" class="headerlink" title="体会"></a>体会</h1><p>最后再说几句，不知道大家注意到没有，在 <code>ChargeContext</code> 这个类中，其实还使用了 <strong>简单工厂</strong> 这个模式。这里想给大家说明的是，其实设计模式只是一些编码的技巧，完全可以自由搭配组合，基本思想就是 <a href="http://blog.csdn.net/hel12he/article/details/51351763" target="_blank" rel="external">设计模式的六大原则</a> </p>
 <p>当然，实际编码中也没有必要非要都实现这六大原则。这个也没有什么规范，只能大家多去实践，然后自己约定出一套适合业务的规范就好。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -4675,8 +4627,7 @@
 <p>以下代码，示例的是简单的利用返回的url，重定向到支付宝，完成支付。</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">header(<span class="string">"Location:&#123;$url&#125;"</span>);</span><br></pre></td></tr></table></figure>
 <p>本次支付宝的即时到帐接口到这里就完成了调用。下一节把回调通知部分完成，这样一个基本的支付流程就完成了。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -4723,8 +4674,7 @@
 </ol>
 <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 2.x版本</a></p>
 <p>当然有很多朋友问我支不支持paypal 银联等等。我也想呀，可惜这个得慢慢来。我这基础功能还搞完呢！哈哈，当然也欢迎大家push代码给我</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -4838,8 +4788,7 @@
 </ul>
 <p>以上三种情况是我建议的方式。如果大家还有总结的经验，欢迎分享。</p>
 <p>这里有个问题，待我写完 <strong>职责链模式</strong> 之后再来分享。因为这二者有相当多的共同之处。大家一定认真阅读我写的 <strong>使用场景</strong> 的最后一点。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
   
