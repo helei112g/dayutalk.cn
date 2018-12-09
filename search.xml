@@ -116,13 +116,6 @@
 <li>为什么一台机器几百个  <strong>CLOSE_WAIR</strong>  就导致不可继续访问？我们不是经常说一台机器有 <strong>65535</strong> 个文件描述符可用吗？</li>
 <li>为什么我有负载均衡，而两台部署服务的机器确几乎同时出了  <strong>CLOSE_WAIR</strong> ? </li>
 </ol>
-<hr>
-<div style="margin:0 auto;"><br>    <p align="center" style="margin:0px;"><img src="https://dayutalk.cn/img/mp-qrcode.jpg"></p><br>    <p align="center" style="margin:0px;">个人公众号：<b>dayuTalk</b></p><br>    <p align="center" style="margin:0px;">联系邮箱：dayugog@gmail.com</p><br>    <p align="center" style="margin:0px;">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br>    <p align="center" style="margin:0px;"><img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"></p><br>    <p align="center" style="margin:0px;"><b>我写我的，你赏你的</b></p><br></div>
-
-
-
-
-
 <p>参考文章：</p>
 <ol>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzI4MjA4ODU0Ng==&amp;mid=402163560&amp;idx=1&amp;sn=5269044286ce1d142cca1b5fed3efab1&amp;3rd=MzA3MDU4NTYzMw==&amp;scene=6#rd" target="_blank" rel="external">又见CLOSE_WAIT</a></li>
@@ -565,8 +558,7 @@
 <li>间隙锁的存在会导致并发插入问题，尽量减少范围查询；</li>
 <li>InnoDB的索引设计非常重要。</li>
 </ul>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -637,9 +629,6 @@
 </ul>
 <p>后续会继续摸索分享自己的经验。</p>
 <p>项目地址：<br><a href="https://github.com/helei112g/docker-env" target="_blank" rel="external">https://github.com/helei112g/docker-env</a></p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>
-
 <p>参考资料：</p>
 <ul>
 <li><a href="https://yeasy.gitbooks.io/docker_practice/content/" target="_blank" rel="external">https://yeasy.gitbooks.io/docker_practice/content/</a></li>
@@ -724,11 +713,6 @@
 <p>由于篇幅限制，把 Dockerfile 的内容在拆出一篇来进行说明，以及把遇到的一些问题也进行一些整理。</p>
 <p>我的docker环境：<a href="https://github.com/helei112g/docker-env" target="_blank" rel="external">https://github.com/helei112g/docker-env</a></p>
 <p><em>以后换机装换机，再也不担心了</em></p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>
-
-
-
 <p>参考资料：</p>
 <ul>
 <li><a href="https://yeasy.gitbooks.io/docker_practice/content/" target="_blank" rel="external">https://yeasy.gitbooks.io/docker_practice/content/</a></li>
@@ -788,8 +772,7 @@
 <li><strong>slice</strong>能够通过函数传参后，修改对应的数组值，是因为 slice 内部保存了引用数组的指针，并不是因为引用传递。</li>
 </ul>
 <p>接下来的文章尝试解析下：<br>slice 为什么一定要用 make 进行初始话，它初始化做了哪些事情？它每次动态扩展容量的时候进行了什么操作？</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -916,10 +899,6 @@
 <li>Go中::slice::与::array::的亲密关系</li>
 <li>Go中接口的知识，从::sort::的源代码角度来介绍</li>
 </ol>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>
-
-
 ]]></content>
     </entry>
     
@@ -962,8 +941,7 @@
 <p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>
 
 <p>我觉得这才是真正做到了：<code>依赖于接口而不是实现，优先使用组合而不是继承</code></p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -1179,8 +1157,7 @@
 <hr>
 <p>至此，配置全部完成，篇幅虽然长，但是并没有什么难点。现在可以回到首页，你会看到刚配置的文件名称，点击它即可连接。</p>
 <p>本教程的目的仅仅是技术交流，希望大家翻跃长城后技术实力更上一层楼。</p>
-<hr>
-<p align="center" style="margin:0px;"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center" style="margin:0px;">个人公众号：<b>dayuTalk</b></p><br>    <p align="center" style="margin:0px;">联系邮箱：dayugog@gmail.com</p><br>    <p align="center" style="margin:0px;">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br>    <p align="center" style="margin:0px;"><img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"></p><br>    <p align="center" style="margin:0px;"><b>我写我的，你赏你的</b></p><br><p></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -1714,8 +1691,7 @@
 </tbody>
 </table>
 <p>关于支付返回的各种数据，以及相关支付方式，如果调起微信支付，请自行查看对应文档。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -1900,8 +1876,7 @@
 <p>微信的配置文件相对来说比较简单，只是它的帐号体系有点多，大家在使用时，根据自己使用不同支付，读取不同配置，来完成相互间的切换。</p>
 <p>另外，如果还需要转账或者发红包，请设置以下图中的信息。<br><img src="http://ol59nqr1i.bkt.clouddn.com/pay/set-other.jpeg" alt="image"></p>
 <p>今天晚上公司部署新项目，在等待过程中把微信的配置文档搞定。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -1928,8 +1903,7 @@
 <p>原始图片是： 1.3M ，压缩到最后只剩下 254KB。这是很高的压缩比，而且很难察觉图片质量是否变低。</p>
 <p>但是 guetzili 当前还仅支持单图压缩，而且很慢，希望以后可以改善。自己用python写了一个 批量处理图片的脚本。如果有需要的朋友，关注我的微信公众号，留下的邮箱，我会将脚本发送给你。随便把你猜的答案发给我。</p>
 <p>后期计划可能出一个在线api，方便大家使用。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -2120,8 +2094,7 @@
 </ul>
 <p>这个接口测试时，大家可以手动把条码的值，输入进去</p>
 <p>ok！支付宝支付类的接口基本就讲完了。接下来将开始讲解微信支付的接口。使用起来都一样，不一样的仅仅是参数部分。还是安排将微信支付的配置开一篇单独的文章进行讲解。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
@@ -4821,8 +4794,7 @@
 <p>另一种方法是：根据上传的uid，生成对应的token，然后进行比较token结果是否一致（要保障该算法如果给定的值一定，结果必须唯一。常用md5）。</p>
 <p>对于个人而言更倾向于第二种方案。第一种方案效率更高（可使用redis存储这个token），但是如果redis一但雪崩，就会造成所有用户登录失效，一定时间内不可登陆。初期越简单、越可靠更好。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这一部分没有太多代码，主要是思路。还有涉及到H5的登陆问题也没有说到。下篇文章会把APP中登陆后，如果搞定H5登陆的问题进行阐述。</p>
-<hr>
-<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>]]></content>
+]]></content>
     </entry>
     
     <entry>
