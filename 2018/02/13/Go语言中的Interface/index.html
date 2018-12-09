@@ -111,7 +111,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2018-02-13</span>
-            <span class="time">10:19:32</span>
+            <span class="time">10:37:24</span>
           </span>
           
           <!--  Categories  -->
@@ -166,11 +166,11 @@
 <p>这里只是为了说明问题，名字上看起来有点诡异(Student 竟然可以是车？上车就是上 Student？)</p>
 <p>这种能力带来的真正让人吃惊的地方是什么？从此以后我可以先写类了，我先根据实际情况把类的功能做好，在某个我具体需要使用的地方，我再定义接口。说的专业点：也就是接口是由使用方根据自己真实需求来定义，并且不用关心是否有其它使用方定义过。</p>
 <p>这样子到底解决了什么开发中的问题？举个例子：我们一个大团队在开发一个商城系统，m端、app端、pc端都有购物车的需求，底层根据不同的需求已经实现了一个Cart类，通过该类可以获取购物车价格、数量等。例如：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Cart <span class="keyword">struct</span> &#123;</span><br><span class="line">	price <span class="keyword">float32</span></span><br><span class="line">	num <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c Cart)</span> <span class="title">GetPrice</span><span class="params">()</span> <span class="title">float32</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> c.price</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c Cart)</span> <span class="title">GetNum</span><span class="params">()</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> c.num</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这个时候前端要进行调用了，他们可以自由定义接口名称用于接受，只需要关心自己的接口需要什么方法，Cart 是否全部实现了需要的方法，每一个端完全可以自己定义一个接口，接口名称、定义的方法顺序都可以不同。</p>
+<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>
+
 <p>我觉得这才是真正做到了：<code>依赖于接口而不是实现，优先使用组合而不是继承</code></p>
 <hr>
-<p>欢迎指正交流</p>
-
+<p align="center"><br>    <img src="https://dayutalk.cn/img/mp-qrcode.jpg"><br>    </p><p align="center">个人公众号：<b>dayuTalk</b></p><br>    <p align="center">联系邮箱：dayugog@gmail.com</p><br>    <p align="center">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br><p></p><br><p align="center"><br>    <img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"><br>    <br><br>    <b>我写我的，你赏你的</b><br></p>
         </div>
       </div>
     </div>
