@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="He Lei">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="高并发架构的CDN知识介绍"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚Talk｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://dayutalk.cnundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚Talk｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>大愚Talk｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">高并发架构的CDN知识介绍</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  GitHub
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://juejin.im/user/58c50c75570c35006d632e8e">
+                  
+                  掘金
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://segmentfault.com/u/helei112g">
+                  
+                  SegmentFault
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2019-04-25</span>
+            <span class="time">10:13:59</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/基础知识/">基础知识</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/高并发/">#高并发</a> <a class="tag" href="/tags/CDN/">#CDN</a> <a class="tag" href="/tags/DNS/">#DNS</a> <a class="tag" href="/tags/架构设计/">#架构设计</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>来印度工作了，想家的时候，写了这篇CDN，请理解<br><a id="more"></a></p>
+<p>对一次网络请求过程的了解程度，一是展现你的专业知识；二是深刻的理解，让你在大型网站架构中做出更适合、可靠的架构。而DNS是这一切的出发点，本文结合一张常用架构图，来描述一下这个过程。</p>
+<h1 id="部署架构"><a href="#部署架构" class="headerlink" title="部署架构"></a>部署架构</h1><p>大型的web服务，我们的部署架构一般如下图。先上图再解释。<br><img src="../img/Architecture.jpg" alt="大流量架构图"></p>
+<p>这里来解释下，为什么要这样架构。<br>首先客户端的请求会通过 <code>DNS</code> 获取到对应的服务器IP（实际上是LB的ip地址），这一层会有 <strong>DNS的负载均衡</strong>，并且如果是静态站资源会进入到CDN，这里DNS与CDN如何完成接棒的过程，后面会详细解释。<br>当请求到达LB层的时候（应用层协议是HTTP协议），这一层又会做一次负载均衡（可能用LVS或者Nginx做）。这里我们有两种不同的处理方式，一条路径会进入到代理集群，一条路径直接进入到应用集群。这是为什么？</p>
+<h2 id="LB到代理集群"><a href="#LB到代理集群" class="headerlink" title="LB到代理集群"></a>LB到代理集群</h2><p>通过最顶层的LB负责均衡后到达代理机器，这里不直接进入到应用集群，还要搞一层代理的目的主要是方便我们在代理集群进行各种高级（骚）操作。</p>
+<p>比如：请求日志收集，自定义缓存，自定义的负载均衡，自定义的路由规则制定（跨机房，路由分组）</p>
+<h2 id="LB到应用集群"><a href="#LB到应用集群" class="headerlink" title="LB到应用集群"></a>LB到应用集群</h2><p>上面到代理层有那么多好处，为什么还有绕过代理层这条路径存在呢？这主要是针对大流量服务。因为代理层因为有很多额外的操作，导致响应会变长，路径增加，到下一个集群多了一次网络传输往返。</p>
+<p>所以，一般针对大流量服务，为了防止代理被打满，响应更快，会直接在外网LB上进行负载到应用集群。</p>
+<p>通过上面的分割后，最终都会到达应用集群，每一台机器上我们会部署一台 <code>Nginx</code> 来按照域名转到对应服务，当然这里完全也可以不是 <code>Nginx</code> ，比如微服务，这里可能是一个 <code>SideCard</code> 代理。这里主要是为了便于说明我们后面全部都是当成Nginx。服务调用 <code>DB</code> <code>Cache</code> 等，都是通过域名，这是为了负载均衡，请求时，会通过内网DNS服务，完成域名解析，然后拿到内网的 <code>LB</code> 的IP。然后再这里进行内网的负载均衡，会根据域名的端口来检查你是写操作、还是读操作返回IP。常规一点会保证是单点写入，多点读取。来完成数据一致性的保障。</p>
+<p>整个大体过程如此，接下来我们详细说一下 <code>DNS</code> 与 <code>CDN</code> 相关的工作原理。</p>
+<h1 id="DNS如何实现IP查找"><a href="#DNS如何实现IP查找" class="headerlink" title="DNS如何实现IP查找"></a>DNS如何实现IP查找</h1><p>为了后面说清楚CDN，这里先介绍DNS的解析过程。当然此类文章网络上已经极多。但是我还是想按照我的理解来说一下DNS是如何工作的。</p>
+<p>在整个DNS过程中有四个重要概念，下面解释下。</p>
+<p><strong>DNS Resolver</strong> - 递归解析器，主要是接收客户端发出的域名解析请求，并发送 DNS query 查询请求。对于客户端来说它不需要任何操劳，等待 DNS Resolver 告诉自己域名转IP的结果就好。</p>
+<p><strong>Root Server</strong> - 这是转换IP执行的第一步查询，根服务器并不会保存具体的域名IP映射信息。它就像一个索引服务器，会告诉你下一步该去那台 <strong>TLD Server</strong> 查询。</p>
+<p><strong>TLD Server</strong> - 这是顶级域名服务器，是执行IP查询的第二步，这里会告诉 <strong>DNS Resolver</strong> 权威域名服务器的地址。</p>
+<p><strong>Authoriative Server</strong> - 权威域名服务器就是包含了完整的机器名的域名，例如：www.mi.com ，在这台机器上保存了这个具体域名对应的IP地址。</p>
+<p><img src="../img/dns-lookup-diagram.png" alt="dns-lookup-diagram"></p>
+<p>下面根据图中的十个步骤说一下每一步都在干嘛。</p>
+<ol>
+<li>一个用户在浏览器输入了：mi.com，这时会产生一个 DNS 查询，从而进入到 DNS Resolver中；</li>
+<li>Resolver 会进入到 root server 进行查询；</li>
+<li>root server 返回了 TLD server 的地址，查询请求转向顶级域名服务，这里是 .com 服务器。</li>
+<li>递归解析器向 .com 服务器发送一个请求；</li>
+<li>TLD server 收到请求后会返回 mi.com 权威服务器的地址；</li>
+<li>递归解析器又发了一个向权威服务器查询的请求，至此权威服务器查询自己的映射表拿到IP；</li>
+<li>返回查询到的IP给了 DNS Resolver；</li>
+<li>DNS Resolver返回IP给浏览器，浏览器将会用这个IP来建立连接，发起请求;</li>
+<li>客户端通过这个IP地址，发起一个 HTTP 请求；</li>
+<li>服务器解析请求，并返回数据到浏览器。</li>
+</ol>
+<p>这里需要补充一点是，上面每一步其实都有DNS缓存的设计。比如：</p>
+<ul>
+<li>浏览器会缓存DNS的结果，（chrome://net-internals/#dns）</li>
+<li>操作系统的DNS模块会缓存</li>
+<li>后面的每一层级也都有缓存</li>
+</ul>
+<p>所以很多时候，我们的解析过程并不是要顺序执行完这8个步骤。这就跟我们自己开发的应用服务一样，层层缓存，有缓存就读取缓存结果，缓存实现就执行完整流程。</p>
+<h2 id="DNS的解析分类"><a href="#DNS的解析分类" class="headerlink" title="DNS的解析分类"></a>DNS的解析分类</h2><p>DNS有多种解析记录可以设置，我这里介绍三个很常用的设计。</p>
+<p><strong>A记录</strong> - 被称为IP指向，用户设置自域名指到对应的IP主机上。如果想要利用A记录实现 <strong>负载均衡</strong> 需要主机商的支持。<br><strong>CNAME记录</strong> - 它相当于为一个主机名设置一个别名，而且该记录不能直接使用IP，只能是另一个主机的别名。CDN主要就是利用该记录来完成的。如果有A记录与CNAME记录同时存在，A记录会被优先使用，换句话说CNAME记录不会生效。<br><strong>NS记录</strong> - 用来设置一个域名的权威服务器路径，该记录只会对子域名生效。这个地方可以设置IP也可以设置另外一个权威服务器的域名。需要重点指出的是它的优先级高于A记录，并且它在DNS解析过程中，会跳过2，3，4，5步。</p>
+<p>了解完了DNS的步骤，接下来就进入到CDN部分的分析。</p>
+<h1 id="CDN访问加速度"><a href="#CDN访问加速度" class="headerlink" title="CDN访问加速度"></a>CDN访问加速度</h1><p>什么是CDN呢？中文翻译过来就是内容分发网络。看张图。<br><img src="../img/2circles.png" alt="2circles"></p>
+<p>没有CDN的时候，不管哪里的用户访问我们的站点，都需要到我们数据中心来获取数据(单纯的DNS过程)。而有了CDN之后，用户根据自己的地理位置会选择距离自己最近的缓存数据中心来获取数据。不会每次都到源站（应用服务器）来获取数据。为了理解这个过程，我们是如果在完整的DNS过程中，实现CDN的呢？</p>
+<p>接下来我们需要回答两个问题。</p>
+<ol>
+<li>CDN带来了什么好处。</li>
+<li>如何解析到CDN。</li>
+</ol>
+<h2 id="CDN带来的好处"><a href="#CDN带来的好处" class="headerlink" title="CDN带来的好处"></a>CDN带来的好处</h2><p>了解一个东西之前最好知道它能干什么，带来的好处是什么。然后我们再去看它的运行原理。对于CDN有以下几个方面的好处。</p>
+<h3 id="提高页面加载速度"><a href="#提高页面加载速度" class="headerlink" title="提高页面加载速度"></a>提高页面加载速度</h3><p>这是最显而易见的一个优势，通过上面的图，大家也可以直观感受下，用户访问距离自己最近的机器，速度肯定是最快的。并且网站的加载速度越快那么用户体验越优秀，你的网站更会受到对应用户的喜爱。至于如何实现就近访问的，后面原理部分介绍。</p>
+<h3 id="增加内容的冗余"><a href="#增加内容的冗余" class="headerlink" title="增加内容的冗余"></a>增加内容的冗余</h3><p>CDN是一个典型的分布式架构，它通过增加数据的冗余，一方面保障在大流量面前有多台服务器能够提供相同的数据；另一方面当部分机器出现故障时，可以进行自动转移。</p>
+<h3 id="节省带宽"><a href="#节省带宽" class="headerlink" title="节省带宽"></a>节省带宽</h3><p>如果大家自己买过云服务就知道，带宽每增加一点价格就飙升。使用CDN后，由于流量被分流了，那么原机器带宽要求自然就降低了。当然带宽费用降低了，你还需要为CDN付费。</p>
+<h3 id="保障服务安全"><a href="#保障服务安全" class="headerlink" title="保障服务安全"></a>保障服务安全</h3><p>CDN可防止的攻击：<code>DDOS攻击</code>，该攻击就是通过巨大流量打满你的带宽，让你丧失服务能力。那么由于CDN的存在，它将巨大的流量进行了分流。那么源站压力自然小了。这其实也是高并发需要考虑的。</p>
+<p>CDN目前不仅仅是只能缓存静态的HTML、CSS、JS、VIDEO，现在还有能够缓存动态接口内容的CDN，这为我们在架构高并发的服务时，提供了更多的手段进行选择。</p>
+<h2 id="CDN工作原理"><a href="#CDN工作原理" class="headerlink" title="CDN工作原理"></a>CDN工作原理</h2><p>在介绍DNS的时候，介绍了客户端是如何获取到IP地址的。那么有了CDN之后，这个过程该怎么处理呢？</p>
+<p>CDN其实更像是放在应用服务器与用户之间的一层缓存。所以如果DNS的时候，返回给客户端的是CDN机器的IP而不是应用的IP，那么自然就走到了CDN机器上。</p>
+<p>为了实现上述目的，我们会为该域名配置一个 <code>CNAME</code>（大家注意上面提到的CNAME与A记录的优先级），那么这个CNAME是最终如何解析到对应的CDN机器呢？其实流程与DNS解析是一样的。当发现一个域名设置了CNAME时，DNS解析器会继续解析这个CNAME别名（其实就是另一个域名）。对这个CNAME解析的时候会用到全局负载DNS解析，它会根据访问者的地理位置信息返回对应的IP（CDN机器的IP）。因此客户端实际上得到的是距离它最近的CDN机器的IP地址。</p>
+<p>如果说用户访问CDN，但是CDN上没有对应内容会怎么办？此时CDN机器其实会根据自身专用的DNS解析服务，根据域名得到源站的IP，然后向源站发送请求获取数据，并把这些数据缓存到本地，方便后续使用；同时返回本次结果，完成本次请求的访问。</p>
+<p>需要说一下的是，CDN其实也是分层的。距离用户最近的称之为边缘节点。而CDN的中心服务器集群被称为二级缓存。在上面就是应用部署的源站。一般边缘节点没数据就去找二级缓存，二级缓存没数据就去找源站（被称为回源）。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>关于 <code>DNS</code> 的过程，文中是以流程介绍为主，至于更细节的依赖协议、传输过程都忽略了。 关于CDN也是我们经常用到的性能提升手段，后续要写的秒杀相关文章，就会用到它来提升性能。特别是CDN的分布式设计、解析过程在我们平常设计应用架构时非常有参考意义。</p>
+
+        </div>
+      </div>
+    </div>
+    <!-- 个人信息 -->
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p align="center" style="margin:0;padding:0;"><img src="https://dayutalk.cn/img/mp-qrcode.jpg"></p>
+        <p align="center" style="margin:0;padding:0;">个人公众号：<b>dayuTalk</b></p>
+        <p align="center" style="margin:0;padding:0;">联系邮箱：dayugog@gmail.com</p>
+        <p align="center" style="margin:0;padding:0;">GitHub：<a href="https://github.com/helei112g">https://github.com/helei112g</a></p>
+        <p align="center" style="margin:0;padding:0;"><img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"></p>
+        <p align="center" style="margin:0;padding:0;"><b>我写我的，你赏你的</b></p>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+        <p class="copyright text-muted">
+          友情链接
+          <a target="_blank" href="http://tigerb.cn">Tigerb</a>
+          <a target="_blank" href="http://52fhy.com/">飞鸿影</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+

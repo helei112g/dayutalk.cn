@@ -4,6 +4,71 @@
   
     
     <entry>
+      <title><![CDATA[高并发架构的CDN知识介绍]]></title>
+      <url>http://dayutalk.cn/2019/04/25/%E4%BB%8E%E5%B8%B8%E8%A7%81%E6%9E%B6%E6%9E%84%E8%B0%88CDN%E4%B8%8EDNS/</url>
+      <content type="html"><![CDATA[<p>来印度工作了，想家的时候，写了这篇CDN，请理解<br><a id="more"></a></p>
+<p>对一次网络请求过程的了解程度，一是展现你的专业知识；二是深刻的理解，让你在大型网站架构中做出更适合、可靠的架构。而DNS是这一切的出发点，本文结合一张常用架构图，来描述一下这个过程。</p>
+<h1 id="部署架构"><a href="#部署架构" class="headerlink" title="部署架构"></a>部署架构</h1><p>大型的web服务，我们的部署架构一般如下图。先上图再解释。<br><img src="../img/Architecture.jpg" alt="大流量架构图"></p>
+<p>这里来解释下，为什么要这样架构。<br>首先客户端的请求会通过 <code>DNS</code> 获取到对应的服务器IP（实际上是LB的ip地址），这一层会有 <strong>DNS的负载均衡</strong>，并且如果是静态站资源会进入到CDN，这里DNS与CDN如何完成接棒的过程，后面会详细解释。<br>当请求到达LB层的时候（应用层协议是HTTP协议），这一层又会做一次负载均衡（可能用LVS或者Nginx做）。这里我们有两种不同的处理方式，一条路径会进入到代理集群，一条路径直接进入到应用集群。这是为什么？</p>
+<h2 id="LB到代理集群"><a href="#LB到代理集群" class="headerlink" title="LB到代理集群"></a>LB到代理集群</h2><p>通过最顶层的LB负责均衡后到达代理机器，这里不直接进入到应用集群，还要搞一层代理的目的主要是方便我们在代理集群进行各种高级（骚）操作。</p>
+<p>比如：请求日志收集，自定义缓存，自定义的负载均衡，自定义的路由规则制定（跨机房，路由分组）</p>
+<h2 id="LB到应用集群"><a href="#LB到应用集群" class="headerlink" title="LB到应用集群"></a>LB到应用集群</h2><p>上面到代理层有那么多好处，为什么还有绕过代理层这条路径存在呢？这主要是针对大流量服务。因为代理层因为有很多额外的操作，导致响应会变长，路径增加，到下一个集群多了一次网络传输往返。</p>
+<p>所以，一般针对大流量服务，为了防止代理被打满，响应更快，会直接在外网LB上进行负载到应用集群。</p>
+<p>通过上面的分割后，最终都会到达应用集群，每一台机器上我们会部署一台 <code>Nginx</code> 来按照域名转到对应服务，当然这里完全也可以不是 <code>Nginx</code> ，比如微服务，这里可能是一个 <code>SideCard</code> 代理。这里主要是为了便于说明我们后面全部都是当成Nginx。服务调用 <code>DB</code> <code>Cache</code> 等，都是通过域名，这是为了负载均衡，请求时，会通过内网DNS服务，完成域名解析，然后拿到内网的 <code>LB</code> 的IP。然后再这里进行内网的负载均衡，会根据域名的端口来检查你是写操作、还是读操作返回IP。常规一点会保证是单点写入，多点读取。来完成数据一致性的保障。</p>
+<p>整个大体过程如此，接下来我们详细说一下 <code>DNS</code> 与 <code>CDN</code> 相关的工作原理。</p>
+<h1 id="DNS如何实现IP查找"><a href="#DNS如何实现IP查找" class="headerlink" title="DNS如何实现IP查找"></a>DNS如何实现IP查找</h1><p>为了后面说清楚CDN，这里先介绍DNS的解析过程。当然此类文章网络上已经极多。但是我还是想按照我的理解来说一下DNS是如何工作的。</p>
+<p>在整个DNS过程中有四个重要概念，下面解释下。</p>
+<p><strong>DNS Resolver</strong> - 递归解析器，主要是接收客户端发出的域名解析请求，并发送 DNS query 查询请求。对于客户端来说它不需要任何操劳，等待 DNS Resolver 告诉自己域名转IP的结果就好。</p>
+<p><strong>Root Server</strong> - 这是转换IP执行的第一步查询，根服务器并不会保存具体的域名IP映射信息。它就像一个索引服务器，会告诉你下一步该去那台 <strong>TLD Server</strong> 查询。</p>
+<p><strong>TLD Server</strong> - 这是顶级域名服务器，是执行IP查询的第二步，这里会告诉 <strong>DNS Resolver</strong> 权威域名服务器的地址。</p>
+<p><strong>Authoriative Server</strong> - 权威域名服务器就是包含了完整的机器名的域名，例如：www.mi.com ，在这台机器上保存了这个具体域名对应的IP地址。</p>
+<p><img src="../img/dns-lookup-diagram.png" alt="dns-lookup-diagram"></p>
+<p>下面根据图中的十个步骤说一下每一步都在干嘛。</p>
+<ol>
+<li>一个用户在浏览器输入了：mi.com，这时会产生一个 DNS 查询，从而进入到 DNS Resolver中；</li>
+<li>Resolver 会进入到 root server 进行查询；</li>
+<li>root server 返回了 TLD server 的地址，查询请求转向顶级域名服务，这里是 .com 服务器。</li>
+<li>递归解析器向 .com 服务器发送一个请求；</li>
+<li>TLD server 收到请求后会返回 mi.com 权威服务器的地址；</li>
+<li>递归解析器又发了一个向权威服务器查询的请求，至此权威服务器查询自己的映射表拿到IP；</li>
+<li>返回查询到的IP给了 DNS Resolver；</li>
+<li>DNS Resolver返回IP给浏览器，浏览器将会用这个IP来建立连接，发起请求;</li>
+<li>客户端通过这个IP地址，发起一个 HTTP 请求；</li>
+<li>服务器解析请求，并返回数据到浏览器。</li>
+</ol>
+<p>这里需要补充一点是，上面每一步其实都有DNS缓存的设计。比如：</p>
+<ul>
+<li>浏览器会缓存DNS的结果，（chrome://net-internals/#dns）</li>
+<li>操作系统的DNS模块会缓存</li>
+<li>后面的每一层级也都有缓存</li>
+</ul>
+<p>所以很多时候，我们的解析过程并不是要顺序执行完这8个步骤。这就跟我们自己开发的应用服务一样，层层缓存，有缓存就读取缓存结果，缓存实现就执行完整流程。</p>
+<h2 id="DNS的解析分类"><a href="#DNS的解析分类" class="headerlink" title="DNS的解析分类"></a>DNS的解析分类</h2><p>DNS有多种解析记录可以设置，我这里介绍三个很常用的设计。</p>
+<p><strong>A记录</strong> - 被称为IP指向，用户设置自域名指到对应的IP主机上。如果想要利用A记录实现 <strong>负载均衡</strong> 需要主机商的支持。<br><strong>CNAME记录</strong> - 它相当于为一个主机名设置一个别名，而且该记录不能直接使用IP，只能是另一个主机的别名。CDN主要就是利用该记录来完成的。如果有A记录与CNAME记录同时存在，A记录会被优先使用，换句话说CNAME记录不会生效。<br><strong>NS记录</strong> - 用来设置一个域名的权威服务器路径，该记录只会对子域名生效。这个地方可以设置IP也可以设置另外一个权威服务器的域名。需要重点指出的是它的优先级高于A记录，并且它在DNS解析过程中，会跳过2，3，4，5步。</p>
+<p>了解完了DNS的步骤，接下来就进入到CDN部分的分析。</p>
+<h1 id="CDN访问加速度"><a href="#CDN访问加速度" class="headerlink" title="CDN访问加速度"></a>CDN访问加速度</h1><p>什么是CDN呢？中文翻译过来就是内容分发网络。看张图。<br><img src="../img/2circles.png" alt="2circles"></p>
+<p>没有CDN的时候，不管哪里的用户访问我们的站点，都需要到我们数据中心来获取数据(单纯的DNS过程)。而有了CDN之后，用户根据自己的地理位置会选择距离自己最近的缓存数据中心来获取数据。不会每次都到源站（应用服务器）来获取数据。为了理解这个过程，我们是如果在完整的DNS过程中，实现CDN的呢？</p>
+<p>接下来我们需要回答两个问题。</p>
+<ol>
+<li>CDN带来了什么好处。</li>
+<li>如何解析到CDN。</li>
+</ol>
+<h2 id="CDN带来的好处"><a href="#CDN带来的好处" class="headerlink" title="CDN带来的好处"></a>CDN带来的好处</h2><p>了解一个东西之前最好知道它能干什么，带来的好处是什么。然后我们再去看它的运行原理。对于CDN有以下几个方面的好处。</p>
+<h3 id="提高页面加载速度"><a href="#提高页面加载速度" class="headerlink" title="提高页面加载速度"></a>提高页面加载速度</h3><p>这是最显而易见的一个优势，通过上面的图，大家也可以直观感受下，用户访问距离自己最近的机器，速度肯定是最快的。并且网站的加载速度越快那么用户体验越优秀，你的网站更会受到对应用户的喜爱。至于如何实现就近访问的，后面原理部分介绍。</p>
+<h3 id="增加内容的冗余"><a href="#增加内容的冗余" class="headerlink" title="增加内容的冗余"></a>增加内容的冗余</h3><p>CDN是一个典型的分布式架构，它通过增加数据的冗余，一方面保障在大流量面前有多台服务器能够提供相同的数据；另一方面当部分机器出现故障时，可以进行自动转移。</p>
+<h3 id="节省带宽"><a href="#节省带宽" class="headerlink" title="节省带宽"></a>节省带宽</h3><p>如果大家自己买过云服务就知道，带宽每增加一点价格就飙升。使用CDN后，由于流量被分流了，那么原机器带宽要求自然就降低了。当然带宽费用降低了，你还需要为CDN付费。</p>
+<h3 id="保障服务安全"><a href="#保障服务安全" class="headerlink" title="保障服务安全"></a>保障服务安全</h3><p>CDN可防止的攻击：<code>DDOS攻击</code>，该攻击就是通过巨大流量打满你的带宽，让你丧失服务能力。那么由于CDN的存在，它将巨大的流量进行了分流。那么源站压力自然小了。这其实也是高并发需要考虑的。</p>
+<p>CDN目前不仅仅是只能缓存静态的HTML、CSS、JS、VIDEO，现在还有能够缓存动态接口内容的CDN，这为我们在架构高并发的服务时，提供了更多的手段进行选择。</p>
+<h2 id="CDN工作原理"><a href="#CDN工作原理" class="headerlink" title="CDN工作原理"></a>CDN工作原理</h2><p>在介绍DNS的时候，介绍了客户端是如何获取到IP地址的。那么有了CDN之后，这个过程该怎么处理呢？</p>
+<p>CDN其实更像是放在应用服务器与用户之间的一层缓存。所以如果DNS的时候，返回给客户端的是CDN机器的IP而不是应用的IP，那么自然就走到了CDN机器上。</p>
+<p>为了实现上述目的，我们会为该域名配置一个 <code>CNAME</code>（大家注意上面提到的CNAME与A记录的优先级），那么这个CNAME是最终如何解析到对应的CDN机器呢？其实流程与DNS解析是一样的。当发现一个域名设置了CNAME时，DNS解析器会继续解析这个CNAME别名（其实就是另一个域名）。对这个CNAME解析的时候会用到全局负载DNS解析，它会根据访问者的地理位置信息返回对应的IP（CDN机器的IP）。因此客户端实际上得到的是距离它最近的CDN机器的IP地址。</p>
+<p>如果说用户访问CDN，但是CDN上没有对应内容会怎么办？此时CDN机器其实会根据自身专用的DNS解析服务，根据域名得到源站的IP，然后向源站发送请求获取数据，并把这些数据缓存到本地，方便后续使用；同时返回本次结果，完成本次请求的访问。</p>
+<p>需要说一下的是，CDN其实也是分层的。距离用户最近的称之为边缘节点。而CDN的中心服务器集群被称为二级缓存。在上面就是应用部署的源站。一般边缘节点没数据就去找二级缓存，二级缓存没数据就去找源站（被称为回源）。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>关于 <code>DNS</code> 的过程，文中是以流程介绍为主，至于更细节的依赖协议、传输过程都忽略了。 关于CDN也是我们经常用到的性能提升手段，后续要写的秒杀相关文章，就会用到它来提升性能。特别是CDN的分布式设计、解析过程在我们平常设计应用架构时非常有参考意义。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[coder，你会设计交易系统吗？]]></title>
       <url>http://dayutalk.cn/2019/02/25/coder%EF%BC%8C%E4%BD%A0%E4%BC%9A%E8%AE%BE%E8%AE%A1%E4%BA%A4%E6%98%93%E7%B3%BB%E7%BB%9F%E5%90%97%EF%BC%9F/</url>
       <content type="html"><![CDATA[<p>现在的互联网业务，都少不了支付这个环节。那么如何去设计一个通用的服务，满足各个产品线的需求？希望本文能够给你带来收获！<br><a id="more"></a></p>
@@ -129,13 +194,6 @@
 <p>那么 <code>Context</code> 与 <code>Server</code> 有什么用呢？<code>Server</code> 内部封装了所有的业务逻辑，它提供接口给 action 或者其它 server 进行调用。而 <code>Context</code> 这一层存在的价值是处理 <code>Proxy</code> 层返回的错误。以及在这里进行报警相关的处理。</p>
 <p>上面的结构只是我的一个实践，欢迎大家讨论。</p>
 <p>本文描述的系统只是满足了最基本的支付需求。缺少相关的监控、报警。如果你按照上文设计自己的系统，风险自担与我无关。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[秒杀系统该如何扛住高并发]]></title>
-      <url>http://dayutalk.cn/2018/12/18/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E8%AF%A5%E5%A6%82%E4%BD%95%E6%89%9B%E4%BD%8F%E9%AB%98%E5%B9%B6%E5%8F%91/</url>
-      <content type="html"><![CDATA[<p>文章还没写完，不用点进来了<br><a id="more"></a></p>
 ]]></content>
     </entry>
     
@@ -4810,76 +4868,6 @@
 </ol>
 <p><a href="https://github.com/helei112g/payment" target="_blank" rel="external">payment 2.x版本</a></p>
 <p>当然有很多朋友问我支不支持paypal 银联等等。我也想呀，可惜这个得慢慢来。我这基础功能还搞完呢！哈哈，当然也欢迎大家push代码给我</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[1.APP后端开发系列：登陆系统设计中的注意问题]]></title>
-      <url>http://dayutalk.cn/2016/07/12/APP%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E7%B3%BB%E5%88%97%EF%BC%9A%E7%99%BB%E9%99%86%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98/</url>
-      <content type="html"><![CDATA[<p>自从接触到app开发以来，遇到很多问题，一直都是一路走，一路解决。希望这些文字能够让大家少走些弯路。<br><a id="more"></a></p>
-<p>想写这个系列很久了，因为之前做这个东西花费了大量的精力，有必要分享出来与大家共享。以前也写了一些关于 <a href="http://blog.csdn.net/hel12he/article/details/47721209" target="_blank" rel="external">APP后端开发的系列文章</a> 由于当初功力不够，很多问题描述不清楚或者解决方案过于复杂、不严谨等。</p>
-<p>这一次查了很多资料，问了很多相关人士。准备再结合自己实际工作中的问题再次进行一些补充。就先从登陆的设计开始吧！</p>
-<h1 id="越想越糊涂"><a href="#越想越糊涂" class="headerlink" title="越想越糊涂"></a>越想越糊涂</h1><p>之前再做这一部分的时候，总想着复杂的技术，说出去多调炸天呀。一般来说登陆的流程是：</p>
-<p><img src="https://helei112g.github.io/images/login-flow.png" alt="image"></p>
-<p>当时对于安全性过度痴迷，确走偏了道路。首先提交的时候爬信息被人劫持，因此客户端在上传时，进行AES加密，服务端解密出结果。服务端返回的信息也会AES加密，然后客户端解密。</p>
-<p>然后这里又带来另外一个问题：加密信息放在了客户端，那么一但客户端被反编译，hacker拿到秘钥，那么对于服务端来说加密就没有任何意义了。又为了不在客户端保存这么敏感的信息，就像秘钥由服务端下发。这样子服务端可随时对秘钥进行变更。</p>
-<p>到这里又带来了一个新的问题，感脚一切又回到了起点：下发秘钥要走http，那么依然可能被人劫持。这时候该是加密还是怎么弄呢？如果加密，客户端又放了一个秘钥过去。那这个秘钥依然可能被人反编译。不能再从服务端获取这个秘钥吧？为了确保上个秘钥的安全，生产下一个秘钥……</p>
-<p>当时就是陷入了这样的死循环，不可自拔。现在想想真是too young too simple!</p>
-<h1 id="简单、有效"><a href="#简单、有效" class="headerlink" title="简单、有效"></a>简单、有效</h1><p>首先在这里还是先说一下：如果你的产品刚刚起步，不要过于纠结性能、安全</p>
-<p>先说性能：你的产品才推出的时候，冷启动的用户数一般来说不会超过1000人（这已经是很不得了的冷启动人数了）。然后你的并发也不会超过100。这种级别的访问，相信机器硬件就可以帮助你解决。如果你的条件远远超出以上规模，那么你的实力绝对足以应付即将发生的事情。<br>谈谈安全：安全这个事情，从一开始就要考虑，但是不能过于纠结（我之后可以讲讲我在做短信验证码这一部分的遇到的一个经理）。过早介入，会导致系统开发速度降低，过早做了一些不需要的事情（hacker来搞你也是需要成本的，在你没价值的时候，没人愿意来搞你）。所以早期应该重视开发成本，抓紧时间，早日上线。</p>
-<p>另外，安全与性能有时候也是鱼与熊掌。</p>
-<h1 id="演化之路"><a href="#演化之路" class="headerlink" title="演化之路"></a>演化之路</h1><p>这一部分会有一些代码与图来进行说明。在安全方面逐步演进。前面说前期开发只要快就好，但是这里也要注意一个问题，就是后续升级能够弥补前面的错，要给未来升级留下余地。因为否则你的系统始终留下了一个隐患。</p>
-<h2 id="实现功能就好"><a href="#实现功能就好" class="headerlink" title="实现功能就好"></a>实现功能就好</h2><p>这是最开始的阶段，重点考虑功能实现。用户提交username + pwd 服务端验证通过后，返回一个令牌token。</p>
-<p>这里需要注意的几个部分是要为未来的升级做好准备。我经常遇到的几个初期设计是：</p>
-<blockquote>
-<ol>
-<li>验证通过后，把用户uid+username+salt等md5后，作为token返回到客户端。</li>
-<li>对token加入时间戳，过期后客户端重新提交username + pwd验证后再发一个token到客户端</li>
-<li>服务端生成一个token后下发到客户端，客户端按照约定的规则加密后请求服务端。</li>
-</ol>
-</blockquote>
-<p>先说第一种带来的问题：生成的token永久不变，那么别人获取到一个token就可以无限制的进行请求。直到你关闭了这个接口为止。为后续安全设计增加了成本。</p>
-<p>第二种问题就有点老火了，虽然看似token只在一定时间范围内有效了，但是其实更不安全了。首先客户端需要保存用户的用户名与密码，如果用户手机平时不注重安全，很容易被人窃取。</p>
-<p>第三种设计方案，这是我原先干过的一件事，是这三种方案中最垃圾的设计。得出的教训就是：绝不能把任何加密的事情交给客户端。这样子灵活性大打折扣。举例：还是升级接口了，现在本来token生成只是服务端的事情，服务端随时可动态改变规则，现在由于客户端也参与进来了，这事儿就麻烦了，你一改，客户端也要跟着改。没有任何灵活性可言。切记：客户端就接收，然后转发回服务端就好了。别再客户端进行加密！！！</p>
-<p>经过这些坑的历练，参考oauth2.0，我现在采用以下方案：</p>
-<p>用户提交username + pwd后，服务端返回以下信息：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"access_token"</span>:<span class="string">"2YotnFZFEjr1zCsicMWpAA"</span>,</span><br><span class="line">    <span class="attr">"expires_in"</span>:<span class="number">3600</span>,</span><br><span class="line">    <span class="attr">"refresh_token"</span>:<span class="string">"tGzv3JOkF0XG5Qx2TlKWIA"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>access_token</strong> 是用来进行访问的接口的，<strong>expires_in</strong> 是他的过期时间，到达过期时间后，需要用 <strong>refresh_token</strong>  来请求服务端刷新 <strong>access_token</strong>。</p>
-<p>这里几个重点是：<strong>refresh_token</strong> 仅能使用一次，使用一次后，将被废弃。另外这个 <strong>access_token</strong> 只在 <strong>expires_in</strong> 有效期内有效。</p>
-<p><strong>注意：</strong> 这里的 expires_in 仅返回秒数就好了。别返回时间戳。因为各个平台计算s的时间戳，不一致，这样子做更方便处理。</p>
-<h2 id="访问频率控制"><a href="#访问频率控制" class="headerlink" title="访问频率控制"></a>访问频率控制</h2><p>上面我们简单实现了功能，现在app的流量上来了，有些功能也很复杂，如果某个接口访问量太大，会导致服务器崩溃，需要分别对每个接口每次访问设置频率（也可以统一设置每个接口访问的频率）。</p>
-<p>一般我的做法是加入一个中间件。每一个接口的访问频率做好一个对应的配置文件。比如：</p>
-<ul>
-<li>a接口 5s内可访问1次</li>
-<li>b接口 10s内可访问1次（可能非常耗时，如果同时过多请求会导致服务器崩溃）</li>
-</ul>
-<p>那么就把 <strong>access_token</strong> 与这些关联起来。这里需要用到redis。当用户A进来访问了 a接口 那么设置这个token 5s内不能再次访问。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ($redis-&gt;get($key)) &#123;</span><br><span class="line">    <span class="comment">// 无法访问，还未到时间</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置频率控制key</span></span><br><span class="line">$redis-&gt;setex($key, $expires, $value);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 访问接口</span></span><br></pre></td></tr></table></figure>
-<p>这里需要考虑几个问题：</p>
-<p>设置的访问时间要合理。举例：客户端一般启动的时候会请求多个接口，那么当这些请求到达后，服务端可能拒绝其中一部分访问（因为在频率控制内）</p>
-<p>一般来说不需要对所有的接口都进行频率控制，仅仅针对重要的内容以及性能上有要求的接口进行频率控制。</p>
-<h2 id="账号安全考虑"><a href="#账号安全考虑" class="headerlink" title="账号安全考虑"></a>账号安全考虑</h2><p>现在又进一步了，需要考虑用户账号安全的问题。比如：QQ，有时候会提醒我们你的账号在香港登陆了。如果不是自己所为，赶快修改密码之类的。</p>
-<p>实现这个功能，你需要记录每次登陆、启动时每个token对应的ip地址。如果ip地址与上次的ip不在同一个范围（这个规则由自己定，因为有的运营商ip经常变化，比如：长城）。就提醒用户是不是他自己所为，如果不是，就赶快修改密码。</p>
-<p>现在很多app在开发之初，都是可以多个设备同时登陆。这样带来的安全问题也很多。如果要做成单个设备登陆，需要每个token对应一个deviceToken。</p>
-<p>这一部分就不继续深入讨论下去了。</p>
-<h2 id="防DNS劫持"><a href="#防DNS劫持" class="headerlink" title="防DNS劫持"></a>防DNS劫持</h2><p>安全工作做得再好，如果有人能够获得大量合法用户的token，来请求你的借口，你也无法识别，因为从行为来看，这一切都是合法用户再进行。</p>
-<p>以前为了防止别人获取到合法的信息，我才弄出了很狗血的客户端加密方法。导致后期升级的时候，诸多问题。这个东西其实很简单，使用https来进行请求（可以个人关键接口使用）</p>
-<h1 id="token"><a href="#token" class="headerlink" title="token"></a>token</h1><p>才开始做app服务端的时候，总想着token的设计。怎么才能生成一个好的token呢？现在想想真不知道当初怎么想的。</p>
-<h2 id="token的生成"><a href="#token的生成" class="headerlink" title="token的生成"></a>token的生成</h2><p>首先搞明白这个token的作用就是一个令牌，用来标记一个用户的身份。那么首先他要唯一。其次他从客户端上传后，服务端能够验证这个token是由服务端生成的。</p>
-<p>所以token生成只要满足以上目的，你随意就好了。当然别把敏感信息暴露出去了。</p>
-<p>常用的一种生成方式：</p>
-<ol>
-<li>该用户的uid，如：8888</li>
-<li>该用户的口令，如： 123123</li>
-<li>用户对应的salt，如：abcd</li>
-<li>过期时间戳，如：1468293948</li>
-</ol>
-<p>把上面几部分拼接起来：888:123123:abcd:1468293948</p>
-<p>token = md5(‘888:123123:abcd:1468293948’);</p>
-<h2 id="token的验证"><a href="#token的验证" class="headerlink" title="token的验证"></a>token的验证</h2><p>对于token也有两种方法进行验证。一是：服务端生成后，将token保存起来（redis或者mysql中）。客户端穿上来之后，检查是否有该token，如果有取出对应的信息，比如uid，验证是否匹配。</p>
-<p>另一种方法是：根据上传的uid，生成对应的token，然后进行比较token结果是否一致（要保障该算法如果给定的值一定，结果必须唯一。常用md5）。</p>
-<p>对于个人而言更倾向于第二种方案。第一种方案效率更高（可使用redis存储这个token），但是如果redis一但雪崩，就会造成所有用户登录失效，一定时间内不可登陆。初期越简单、越可靠更好。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这一部分没有太多代码，主要是思路。还有涉及到H5的登陆问题也没有说到。下篇文章会把APP中登陆后，如果搞定H5登陆的问题进行阐述。</p>
 ]]></content>
     </entry>
     
