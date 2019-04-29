@@ -8,7 +8,7 @@
       <url>http://dayutalk.cn/2019/04/25/%E4%BB%8E%E5%B8%B8%E8%A7%81%E6%9E%B6%E6%9E%84%E8%B0%88CDN%E4%B8%8EDNS/</url>
       <content type="html"><![CDATA[<p>来印度工作了，想家的时候，写了这篇CDN，请理解<br><a id="more"></a></p>
 <p>对一次网络请求过程的了解程度，一是展现你的专业知识；二是深刻的理解，让你在大型网站架构中做出更适合、可靠的架构。而DNS是这一切的出发点，本文结合一张常用架构图，来描述一下这个过程。</p>
-<h1 id="部署架构"><a href="#部署架构" class="headerlink" title="部署架构"></a>部署架构</h1><p>大型的web服务，我们的部署架构一般如下图。先上图再解释。<br><img src="../img/Architecture.jpg" alt="大流量架构图"></p>
+<h1 id="部署架构"><a href="#部署架构" class="headerlink" title="部署架构"></a>部署架构</h1><p>大型的web服务，我们的部署架构一般如下图。先上图再解释。<br><img src="https://dayutalk.cn/img/Architecture.jpg" alt="大流量架构图"></p>
 <p>这里来解释下，为什么要这样架构。<br>首先客户端的请求会通过 <code>DNS</code> 获取到对应的服务器IP（实际上是LB的ip地址），这一层会有 <strong>DNS的负载均衡</strong>，并且如果是静态站资源会进入到CDN，这里DNS与CDN如何完成接棒的过程，后面会详细解释。<br>当请求到达LB层的时候（应用层协议是HTTP协议），这一层又会做一次负载均衡（可能用LVS或者Nginx做）。这里我们有两种不同的处理方式，一条路径会进入到代理集群，一条路径直接进入到应用集群。这是为什么？</p>
 <h2 id="LB到代理集群"><a href="#LB到代理集群" class="headerlink" title="LB到代理集群"></a>LB到代理集群</h2><p>通过最顶层的LB负责均衡后到达代理机器，这里不直接进入到应用集群，还要搞一层代理的目的主要是方便我们在代理集群进行各种高级（骚）操作。</p>
 <p>比如：请求日志收集，自定义缓存，自定义的负载均衡，自定义的路由规则制定（跨机房，路由分组）</p>
@@ -22,7 +22,7 @@
 <p><strong>Root Server</strong> - 这是转换IP执行的第一步查询，根服务器并不会保存具体的域名IP映射信息。它就像一个索引服务器，会告诉你下一步该去那台 <strong>TLD Server</strong> 查询。</p>
 <p><strong>TLD Server</strong> - 这是顶级域名服务器，是执行IP查询的第二步，这里会告诉 <strong>DNS Resolver</strong> 权威域名服务器的地址。</p>
 <p><strong>Authoriative Server</strong> - 权威域名服务器就是包含了完整的机器名的域名，例如：www.mi.com ，在这台机器上保存了这个具体域名对应的IP地址。</p>
-<p><img src="../img/dns-lookup-diagram.png" alt="dns-lookup-diagram"></p>
+<p><img src="https://dayutalk.cn/img/dns-lookup-diagram.png" alt="dns-lookup-diagram"></p>
 <p>下面根据图中的十个步骤说一下每一步都在干嘛。</p>
 <ol>
 <li>一个用户在浏览器输入了：mi.com，这时会产生一个 DNS 查询，从而进入到 DNS Resolver中；</li>
@@ -46,7 +46,7 @@
 <h2 id="DNS的解析分类"><a href="#DNS的解析分类" class="headerlink" title="DNS的解析分类"></a>DNS的解析分类</h2><p>DNS有多种解析记录可以设置，我这里介绍三个很常用的设计。</p>
 <p><strong>A记录</strong> - 被称为IP指向，用户设置自域名指到对应的IP主机上。如果想要利用A记录实现 <strong>负载均衡</strong> 需要主机商的支持。<br><strong>CNAME记录</strong> - 它相当于为一个主机名设置一个别名，而且该记录不能直接使用IP，只能是另一个主机的别名。CDN主要就是利用该记录来完成的。如果有A记录与CNAME记录同时存在，A记录会被优先使用，换句话说CNAME记录不会生效。<br><strong>NS记录</strong> - 用来设置一个域名的权威服务器路径，该记录只会对子域名生效。这个地方可以设置IP也可以设置另外一个权威服务器的域名。需要重点指出的是它的优先级高于A记录，并且它在DNS解析过程中，会跳过2，3，4，5步。</p>
 <p>了解完了DNS的步骤，接下来就进入到CDN部分的分析。</p>
-<h1 id="CDN访问加速度"><a href="#CDN访问加速度" class="headerlink" title="CDN访问加速度"></a>CDN访问加速度</h1><p>什么是CDN呢？中文翻译过来就是内容分发网络。看张图。<br><img src="../img/2circles.png" alt="2circles"></p>
+<h1 id="CDN访问加速度"><a href="#CDN访问加速度" class="headerlink" title="CDN访问加速度"></a>CDN访问加速度</h1><p>什么是CDN呢？中文翻译过来就是内容分发网络。看张图。<br><img src="https://dayutalk.cn/img/2circles.png" alt="2circles"></p>
 <p>没有CDN的时候，不管哪里的用户访问我们的站点，都需要到我们数据中心来获取数据(单纯的DNS过程)。而有了CDN之后，用户根据自己的地理位置会选择距离自己最近的缓存数据中心来获取数据。不会每次都到源站（应用服务器）来获取数据。为了理解这个过程，我们是如果在完整的DNS过程中，实现CDN的呢？</p>
 <p>接下来我们需要回答两个问题。</p>
 <ol>
