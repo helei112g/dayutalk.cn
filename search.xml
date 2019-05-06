@@ -4,8 +4,175 @@
   
     
     <entry>
+      <title><![CDATA[高并发架构的TCP知识介绍]]></title>
+      <url>http://dayutalk.cn/2019/05/01/%E9%AB%98%E5%B9%B6%E5%8F%91%E6%9E%B6%E6%9E%84%E7%9A%84TCP%E7%9F%A5%E8%AF%86%E4%BB%8B%E7%BB%8D/</url>
+      <content type="html"><![CDATA[<p>这是关于高并发架构网络协议基础知识的第二篇，编程路上的基础心法！<br><a id="more"></a></p>
+<p>做为一个有追求的程序员，不能只满足增删改查，我们要对系统全方面无死角掌控。掌握了这些基本的网络知识后，相信一方面日常排错中会事半功倍，另一方面日常架构中不得不考虑的高并发问题，理解了这些底层协议也是会如虎添翼。</p>
+<p>本文不会单纯给大家讲讲TCP三次握手、四次挥手就完事了。如果只是哪样的话，我直接贴几个连接就完事了。我希望把实际工作中的很多点能够串起来讲给大家。当然为了文章完整，我依然会从 <strong>三次握手</strong> 起头。</p>
+<h2 id="再说TCP状态变更过程"><a href="#再说TCP状态变更过程" class="headerlink" title="再说TCP状态变更过程"></a>再说TCP状态变更过程</h2><p>不管是三次握手、还是四次挥手，他们都是完成了TCP不同状态的切换。进而影响各种数据的传输情况。下面从三次握手开始分析。</p>
+<blockquote>
+<p>本文图片有部分来自网络，若有侵权，告知即焚</p>
+</blockquote>
+<h3 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h3><p>来看看三次握手的图，估计大家看这图都快看吐了，不过为什么每次面试、回忆的时候还是想不起呢？我再来抄抄这锅剩饭吧！<br><img src="../img/tcp-1st_f9lfkr8yh.png" alt="tcp-1st"></p>
+<p>首先当服务端处于 <strong>listen</strong> 状态的时候，我们就可以再客户端发起监听了，此时客户端会处于 <strong>SYN_SENT</strong> 状态。服务端收到这个消息会返回一个 <strong>SYN</strong> 并且同时 <strong>ACK</strong> 客户端的请求，之后服务端便处于 <strong>SYN_RCVD</strong> 状态。这个时候客户端收到了服务端的 <strong>SYN&amp;ACK</strong>，就会发送对服务端的 <strong>ACK</strong>，之后便处于 <strong>ESTABLISHED</strong> 状态。服务端收到了对自己的 <strong>ACK</strong> 后也会处于 <strong>ESTABLISHED</strong> 状态。</p>
+<p>经常在面试中可能有人提问：为什么握手要3次，不是2次或者4次呢？</p>
+<p>首先说4次握手，其实为了保证可靠性，这个握手次数可以一直循环下去；但是这没有一个终止就没有意义了。所以3次，保证了各方消息有来有回就足够了。当然这里可能有一种情况是，客户端发送的 <strong>ACK</strong> 在网络中被丢了。那怎么办？</p>
+<ol>
+<li>其实大部分时候，我们连接建立完成就会立刻发送数据，所以如果服务端没有收到 <strong>ACK</strong> 没关系，当收到数据就会认为连接已经建立；</li>
+<li>如果连接建立后不立马传输数据，那么服务端认为连接没有建立成功会周期性重发 <strong>SYN&amp;ACK</strong> 直到客户端确认成功。</li>
+</ol>
+<p>再说为什么2次握手不行呢？2次握手我们可以想象是没有三次握手最后的 <strong>ACK</strong>, 在实际中确实会出现客户端发送 <strong>ACK</strong> 服务端没有收到的情况（上面的情况一），那么这是否说明两次握手也是可行的呢？<br>看下情况二，2次握手当服务端发送消息后，就认为建立成功，而恰巧此时又没有数据传输。这就会带来一种资源浪费的情况。比如：客户端可能由于延时发送了多个连接情况，当服务端每收到一个请求回复后就认为连接建立成功，但是这其中很多求情都是延时产生的重复连接，浪费了很多宝贵的资源。</p>
+<p>因此综上所述，从资源节省、效率3次握手都是最合适的。话又回来三次握手的真实意义其实就是协商传输数据用的：<strong>序列号与窗口大小</strong>。</p>
+<p>下面我们通过抓包再来看一下真实的情况是否如上所述。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">20:33:26.583598 IP 192.168.0.102.58165 &gt; 103.235.46.39.80: Flags [S], seq 621839080, win 65535, options [mss 1460,nop,wscale 6,nop,nop,TS val 1050275400 ecr 0,sackOK,eol], length 0</span><br><span class="line">20:33:26.660754 IP 103.235.46.39.80 &gt; 192.168.0.102.58165: Flags [S.], seq 1754967387, ack 621839081, win 8192, options [mss 1452,nop,wscale 5,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,sackOK,eol], length 0</span><br><span class="line">20:33:26.660819 IP 192.168.0.102.58165 &gt; 103.235.46.39.80: Flags [.], ack 1754967388, win 4096, length 0</span><br></pre></td></tr></table></figure>
+<p><strong>抓包：</strong> <code>sudo tcpdump -n host www.baidu.com -S</code></p>
+<blockquote>
+<ul>
+<li><code>S</code> 表示 SYN</li>
+<li><code>.</code> 表示 ACK</li>
+<li><code>P</code> 表示 传输数据</li>
+<li><code>F</code> 表示 FIN</li>
+</ul>
+</blockquote>
+<h3 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h3><p>挥手，就是说数据传完了，同志们再见！</p>
+<p><img src="../img/tcp-3th.png" alt="tcp-3th"></p>
+<p>这里有个问题需要注意下，其实客户端、服务端都能够主动发起关闭操作，谁调用 <code>close()</code> 就先发送关闭的请求。当然一般的流程，发起建立连接的一方会主动发起关闭请求（http中）。</p>
+<p>关于4次挥手的过程，我就不多解释了，这里有两个重要的状态我需要解释下，这都是我亲自经历过的线上故障，<strong>close_wait</strong> 与 <strong>time_wait</strong>。</p>
+<p>先给大家一个命令，统计tcp的各种状态情况。下面表格内容就来自这个命令的统计。</p>
+<blockquote>
+<p>netstat -n | awk ‘/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}’</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Tcp状态</th>
+<th>连接数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CLOSE_WAIT</td>
+<td>505</td>
+</tr>
+<tr>
+<td>ESTABLISHED</td>
+<td>808</td>
+</tr>
+<tr>
+<td>TIME_WAIT</td>
+<td>3481</td>
+</tr>
+<tr>
+<td>SYN_SENT</td>
+<td>1</td>
+</tr>
+<tr>
+<td>SYN_RECV</td>
+<td>1</td>
+</tr>
+<tr>
+<td>LAST_ACK</td>
+<td>2</td>
+</tr>
+<tr>
+<td>FIN_WAIT2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>FIN_WAIT1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>大量的CLOSE_WAIT</strong> 这个在我之前的一篇文章 <a href="https://dayutalk.cn/2018/12/08/%E7%BA%BF%E4%B8%8A%E5%A4%A7%E9%87%8FCLOSE_WAIT%E5%88%86%E6%9E%90/">线上大量CLOSE_WAIT原因分析</a> 已经有过介绍，它会导致大量的socket无法释放。而每个socket都是一个文件，是会占用资源的。这个问题主要是代码问题。它出现在被动关闭的一方（习惯称为server）。</p>
+<p><strong>大量的TIME_WAIT</strong> 这个问题在日常中经常看到，流量一高就出现大量的该情况。该状态出现在主动发起关闭的一方。该状态一般等待的时间设为 2MSL后自动关闭，<strong>MSL是Maximum Segment Lifetime，报文最大生存时间</strong>，如果报文超过这个时间，就会被丢弃。处于该状态下的socket也是不能被回收使用的。线上我就遇到这种情况，每次大流量的时候，每台机器处于该状态的socket就多达10w+，远远比处于 <code>Established</code> 状态的socket多的多，导致很多时候服务响应能力下降。这个一方面可以通过调整内核参数处理，另一方面避免使用太多的短链接，可以采用连接池来提升性能。另外在代码层面可能是由于某些地方没有关闭连接导致的，也需要检查业务代码。</p>
+<p>上面两个状态一定要牢记发生在哪一方，这方便我们快速定位问题。</p>
+<p>最后这里还是放上挥手时的抓包数据：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">20:33:26.750607 IP 192.168.0.102.58165 &gt; 103.235.46.39.80: Flags [F.], seq 621839159, ack 1754967720, win 4096, length 0</span><br><span class="line">20:33:26.827472 IP 103.235.46.39.80 &gt; 192.168.0.102.58165: Flags [.], ack 621839160, win 776, length 0</span><br><span class="line">20:33:26.827677 IP 103.235.46.39.80 &gt; 192.168.0.102.58165: Flags [F.], seq 1754967720, ack 621839160, win 776, length 0</span><br><span class="line">20:33:26.827729 IP 192.168.0.102.58165 &gt; 103.235.46.39.80: Flags [.], ack 1754967721, win 4096, length 0</span><br></pre></td></tr></table></figure></p>
+<p>不多不少，刚好4次。</p>
+<h3 id="TCP状态变更"><a href="#TCP状态变更" class="headerlink" title="TCP状态变更"></a>TCP状态变更</h3><p>网络上有一张TCP状态机的图，我觉得太复杂了，用自己的方式搞个简单点的容易理解的。我从两个角度来说明状态的变更。</p>
+<ul>
+<li>一个是客户端</li>
+<li>一个是服务端</li>
+</ul>
+<p>看下面两张图的时候，请一定结合上面三次握手、四次挥手的时序图一起看，加深理解。</p>
+<h4 id="客户端状态变更"><a href="#客户端状态变更" class="headerlink" title="客户端状态变更"></a>客户端状态变更</h4><p><img src="../img/tcp-4th.png" alt="tcp-4th"></p>
+<p>通过这张图，大家是否能够清晰明了的知道 TCP 在客户端上的变更情况了呢？</p>
+<h4 id="服务端状态变更"><a href="#服务端状态变更" class="headerlink" title="服务端状态变更"></a>服务端状态变更</h4><p><img src="../img/tcp-5th.png" alt="tcp-5th"></p>
+<p>这一张图描述了 TCP 状态在服务端的变迁。</p>
+<h2 id="TCP的流量控制与拥塞控制"><a href="#TCP的流量控制与拥塞控制" class="headerlink" title="TCP的流量控制与拥塞控制"></a>TCP的流量控制与拥塞控制</h2><p>我们常说TCP是面向连接的，UDP是无连接的。那么TCP这个面向连接主要解决的是什么问题呢？</p>
+<p>这里继续把三次握手的抓包数据贴出来分析下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">20:33:26.583598 IP 192.168.0.102.58165 &gt; 103.235.46.39.80: Flags [S], seq 621839080, win 65535, options [mss 1460,nop,wscale 6,nop,nop,TS val 1050275400 ecr 0,sackOK,eol], length 0</span><br><span class="line">20:33:26.660754 IP 103.235.46.39.80 &gt; 192.168.0.102.58165: Flags [S.], seq 1754967387, ack 621839081, win 8192, options [mss 1452,nop,wscale 5,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,sackOK,eol], length 0</span><br><span class="line">20:33:26.660819 IP 192.168.0.102.58165 &gt; 103.235.46.39.80: Flags [.], ack 1754967388, win 4096, length 0</span><br></pre></td></tr></table></figure>
+<p>上面我们说到 <code>TCP</code> 的三次握手最重要的就是协商传输数据用的序列号。那这个序列号究竟有些什么用呢？这个序号能够帮助后续两端进行确认数据包是否收到，解决顺序、丢包问题；另外我们还可以看到有一个 <strong>win</strong> 字段，这是双方交流的窗口大小，这在每次传输数据过程中也会携带。主要是告诉对方，我窗口是这么大，别发多了或者别发太少。</p>
+<p>总结下，TCP的几个特点是：</p>
+<ul>
+<li>顺序问题，依靠序号</li>
+<li>丢包问题，依靠序号</li>
+<li>流量控制，依靠滑动窗口</li>
+<li>拥塞控制，依靠拥塞窗口+滑动窗口</li>
+<li>连接维护，三次握手/四次挥手</li>
+</ul>
+<h3 id="顺序与丢包问题"><a href="#顺序与丢包问题" class="headerlink" title="顺序与丢包问题"></a>顺序与丢包问题</h3><p>这个问题其实应该很好理解。由于数据在传输前我们已经有序号了，这里注意一下这个序号是随机的，重复的概率极地，避免了程序发生乱入的可能性。</p>
+<p>由于我们每个数据包有序号，虽然发送与到达可能不是顺序的，但是TCP层收到数据后，可以根据序号进行重新排列；另外在这个排列过程中，发现有了1，2，3，5，6这几个包，一检查就知道4要么延时未到达，要么丢包了，等待重传。</p>
+<p>这里需要重要说明的一点是。为了提升效率，TCP其实并不是收到一个包就发一个ack。那是如何ACK的呢？还是以上面为例，TCP收到了1,2,3,5,6这几个包，它可能会发送一个 <code>ack ，seq=3</code> 的确认包，这样次一次确认了3个包。但是它不会发送 5,6 的ack。因为4没有收到啊！一旦4延时到达或者重发到达，就会发送一个 <code>ack, seq=6</code>，又一次确认了3个包。</p>
+<h3 id="流量控制与拥塞控制"><a href="#流量控制与拥塞控制" class="headerlink" title="流量控制与拥塞控制"></a>流量控制与拥塞控制</h3><p>这两个概念说实话，让我理解了挺长时间，主要是对它们各自控制的内容以及相互之间是否有作用一直没有闹清楚。</p>
+<p>先大概说下：</p>
+<ul>
+<li>流量控制：是根据接收方的窗口大小来感知我这次能够传多少数据给对方；———— 滑动窗口</li>
+<li>拥塞控制：而拥塞控制主要是避免网络拥塞，它考虑的问题更多。根据综合因素来觉得发多少数据给对方；———— 滑动窗口&amp;拥塞窗口</li>
+</ul>
+<p>举个例子说下，比如：A给B发送数据，通过握手后，A知道B一次可以收1000的数据（B有这么大的处理能力），那么这个时候滑动窗口就可以设置成1000。那是不是最后真的可以一次发这么多数据给B呢？还不是，这时候得问问拥塞窗口，老兄，现在网络情况怎么样？一次运1000的数据有压力吗？拥塞窗口一通计算说不行，现在是高峰期，最多只能有600的货上路。最终这次传数据的时候就是 600 的标注。大家也可以关注抓包数据的 <strong>win</strong> 值，一直在动态调整。</p>
+<p>当然另外一种情况是滑动窗口比拥塞窗口小，虽然运输能力强，但是接收能力有限，这时候就要取滑动窗口的值来实际发生。所以它们二者之间是有关系的。</p>
+<p>所以具体到每次能够发送多少数据，有这么一个公式：</p>
+<blockquote>
+<p>LastByteSend - LastByteAcked &lt;= min{cwnd,rwnd}</p>
+</blockquote>
+<ul>
+<li>LastByteSend 是最后一个发送的字节的序号</li>
+<li>LastByteAcked 最后一个被确认的字节的序号</li>
+</ul>
+<p>这两个相减得到的是本次能够发送的数据，这个数据一定小于或等于 cwnd 与 rwnd 中最小的一个值。相信大家能够理清楚。</p>
+<p>那么这部分知识对于实际工作中有什么作用呢？指导意义就是：如果你的业务很重要、很核心一定不要混布；二是如果你的服务忽快忽慢，而确信依赖服务没有问题，检查下机器对应的网络情况；三是窗口这个速度控制机制，在我们进行服务设计的时候，非常具有参考意义。是不是有点消息队列的感觉？（很多消息队列都是匀速的，我们是否可以加一个窗口的概念来进行优化呢？）</p>
+<h2 id="是什么限制了你的连接"><a href="#是什么限制了你的连接" class="headerlink" title="是什么限制了你的连接"></a>是什么限制了你的连接</h2><p>到了最关键的地方了，精华我都是留到最后讲。下面放一张网上找的socket操作步骤图，画的太好了我就直接用了。<br><img src="../img/tcp-6th.jpg" alt="tcp-6th"></p>
+<p>我们假设我的服务端就是 <code>Nginx</code> ，我来尝试解读一下。当客户端调用 <code>connect()</code> 时候就会发起三次握手，这次握手的时候有几个元素唯一确定了这次通信（或者说这个socket），<strong>[源IP:源Port， 目的IP:目的Port]</strong> ，当然这个socket还不是最终用来传输数据的socket，一旦握手完成后，服务端会在返回一个 <strong>socket</strong> 专门用来后续的数据传输。这里暂且把第一个socket叫 <strong>监听socket</strong>，第二个叫 <strong>传输socket</strong> 方便后文叙述。</p>
+<p>为什么要这么设计呢？大家想一想，如果监听的socket还要负责数据的收发，请问这个服务端的效率如何提升？什么东西、谁都往这个socket里边丢，太复杂！</p>
+<h3 id="提高连接常用套路"><a href="#提高连接常用套路" class="headerlink" title="提高连接常用套路"></a>提高连接常用套路</h3><p>到了这一步，我们现在先停下来算算自己的服务器机器能够有多少连接呢？这个极限又是如何一步步被突破呢？</p>
+<p>先说 <strong>监听socket</strong> ，服务器的prot一般都是固定的，服务器的ip当然也是固定的（单机）。那么上面的结构 <strong>[源IP:源Port， 目的IP:目的Port]</strong> 其实只有客户端的ip与端口可以发生变化。假设客户端用的是IPv4，那么理论连接数是：2^32(ip数) * 2^16(端口数) = 2^48。</p>
+<p>看起来这个值蛮大的。但是真的能够有这么多连接吗？不可能的，因为每一个socket都需要消耗内存；以及每一个进程的文件描述符是有上限的。这些都限制了最终的连接数。</p>
+<p>那么如何进行调和呢？我知道的操作有：多进程、多线程、IO多路服用、协程等手段组合使用。</p>
+<h4 id="多进程"><a href="#多进程" class="headerlink" title="多进程"></a>多进程</h4><p>也就是监听是一个进程，一旦accept后，对于 <strong>传输socket</strong> 我们就fork一个新的子进程来处理。但是这种方式太重，fork一个进程、销毁一个进程都是特别费事的。单机对进程的创建上限也是有限制的。</p>
+<h4 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h4><p>线程比进程要轻量级的多，它会共享父进程的很多资源，比如：文件描述符、进程空间，它就是多了一个引用。因此它的创建、销毁更加容易。每一个 <strong>传输socket</strong> 在这里就交给了线程来处理。</p>
+<p>但是不管是多进程、还是多线程都存在一个问题，一个连接对应一个进程或者协程。这都很难逃脱 <strong>C10K</strong> 的问题。那么该怎么办呢？</p>
+<h4 id="IO多路复用"><a href="#IO多路复用" class="headerlink" title="IO多路复用"></a>IO多路复用</h4><p>IO多路复用是什么意思呢？在上面单纯的多进程、多线程模型中，一个进程或线程只能处理一个连接。用了IO多路复用后，我一个进程或线程就能处理多个连接。</p>
+<p>我们都知道 <code>Nginx</code> 非常高效，它的结构是：master + worker，worker 会在 80、443端口上来监听请求。它的worker一般设置为 cpu 的cores数，那么这么少的子进程是如何解决超多连接的呢？这里其实每个worker就采用了 epoll 模型（当然IO多路复用还有个select，这里就不说了）。</p>
+<p>处于监听状态的worker，会把所有 <strong>监听socket</strong> 加入到自己的epoll中。当这些socket都在epoll中时，如果某个socket有事件发生就会立即被回调唤醒（这涉及epoll的红黑树，讲不清楚不细说了）。这种模式，大大增加了每个进程可以管理的socket数量，上限直接可以上升到进程能够操作的最大文件描述符。</p>
+<p>一般机器可以设置百万级别文件描述符，所以单机单进程就是百万连接，<strong>epoll是解决C10K的利器，很多开源软件用到了它。</strong></p>
+<blockquote>
+<p>这里说下，并不是所有的worker都是同时处于监听端口的状态，这涉及到nginx惊群、抢自旋锁的问题，不再本文范围内不多说。</p>
+</blockquote>
+<h3 id="关于ulimit"><a href="#关于ulimit" class="headerlink" title="关于ulimit"></a>关于ulimit</h3><p>在文章的最后，补充一些单机文件描述符设置的问题。我们常说连接数受限于文件描述符，这是为什么？</p>
+<p>因为在linux上一切皆文件，故每一个socket都是被当作一个文件看待，那么每个文件就会有一个文件描述符。在linux中每一个进程中都有一个数组保存了该进程需要的所有文件描述符。这个文件描述符其实就是这个数组的 <code>key</code> ，它的 <code>value</code> 是一个指针，指向的就是打开的对应文件。</p>
+<p>关于文件描述符有两点注意：</p>
+<ol>
+<li>它对应的其实是一个linux上的文件</li>
+<li>文件描述符本身这个值在不同进程中是可以重复的</li>
+</ol>
+<p>另外补充一点，单机设置的ulimit的上线受限与系统的两个配置：</p>
+<blockquote>
+<p>fs.nr_open，进程级别</p>
+<p>fs.file-max，系统级别</p>
+</blockquote>
+<p>fs.nr_open 总是应该小于等于 fs.file-max，这两个值的设置也不是随意可以操作，因为设置的越大，系统资源消耗越多，所以需要根据真实情况来进行设置。</p>
+<hr>
+<p>至此，本篇长文就完结了。这跟上篇 <a href="https://dayutalk.cn/2019/04/25/%E4%BB%8E%E5%B8%B8%E8%A7%81%E6%9E%B6%E6%9E%84%E8%B0%88CDN%E4%B8%8EDNS/">高并发架构的CDN知识介绍</a> 属于一个系列，高并发架构需要理解的网络基础知识。</p>
+<p>后面还会写一下 HTTP/HTTPS 的知识。然后关于高并发网络相关的东西就算完结。我会开启下一个篇章。</p>
+<hr>
+<p>如果你想对网络协议了解更多，推荐一个课程：<br><img src="../img/tcp-7th.jpeg" alt="tcp-7th"></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[高并发架构的CDN知识介绍]]></title>
-      <url>http://dayutalk.cn/2019/04/25/%E4%BB%8E%E5%B8%B8%E8%A7%81%E6%9E%B6%E6%9E%84%E8%B0%88CDN%E4%B8%8EDNS/</url>
+      <url>http://dayutalk.cn/2019/04/25/%E9%AB%98%E5%B9%B6%E5%8F%91%E6%9E%B6%E6%9E%84%E7%9A%84CDN%E7%9F%A5%E8%AF%86%E4%BB%8B%E7%BB%8D/</url>
       <content type="html"><![CDATA[<p>来印度工作了，想家的时候，写了这篇CDN，请理解<br><a id="more"></a></p>
 <p>对一次网络请求过程的了解程度，一是展现你的专业知识；二是深刻的理解，让你在大型网站架构中做出更适合、可靠的架构。而DNS是这一切的出发点，本文结合一张常用架构图，来描述一下这个过程。</p>
 <h1 id="部署架构"><a href="#部署架构" class="headerlink" title="部署架构"></a>部署架构</h1><p>大型的web服务，我们的部署架构一般如下图。先上图再解释。<br><img src="https://dayutalk.cn/img/Architecture.jpg" alt="大流量架构图"></p>
@@ -21,15 +188,15 @@
 <p><strong>DNS Resolver</strong> - 递归解析器，主要是接收客户端发出的域名解析请求，并发送 DNS query 查询请求。对于客户端来说它不需要任何操劳，等待 DNS Resolver 告诉自己域名转IP的结果就好。</p>
 <p><strong>Root Server</strong> - 这是转换IP执行的第一步查询，根服务器并不会保存具体的域名IP映射信息。它就像一个索引服务器，会告诉你下一步该去那台 <strong>TLD Server</strong> 查询。</p>
 <p><strong>TLD Server</strong> - 这是顶级域名服务器，是执行IP查询的第二步，这里会告诉 <strong>DNS Resolver</strong> 权威域名服务器的地址。</p>
-<p><strong>Authoriative Server</strong> - 权威域名服务器就是包含了完整的机器名的域名，例如：www.mi.com ，在这台机器上保存了这个具体域名对应的IP地址。</p>
+<p><strong>Authoriative Server</strong> - 权威域名服务器就是包含了完整的机器名的域名，例如：www.example.com ，在这台机器上保存了这个具体域名对应的IP地址。</p>
 <p><img src="https://dayutalk.cn/img/dns-lookup-diagram.png" alt="dns-lookup-diagram"></p>
 <p>下面根据图中的十个步骤说一下每一步都在干嘛。</p>
 <ol>
-<li>一个用户在浏览器输入了：mi.com，这时会产生一个 DNS 查询，从而进入到 DNS Resolver中；</li>
+<li>一个用户在浏览器输入了：example.com，这时会产生一个 DNS 查询，从而进入到 DNS Resolver中；</li>
 <li>Resolver 会进入到 root server 进行查询；</li>
 <li>root server 返回了 TLD server 的地址，查询请求转向顶级域名服务，这里是 .com 服务器。</li>
 <li>递归解析器向 .com 服务器发送一个请求；</li>
-<li>TLD server 收到请求后会返回 mi.com 权威服务器的地址；</li>
+<li>TLD server 收到请求后会返回 example.com 权威服务器的地址；</li>
 <li>递归解析器又发了一个向权威服务器查询的请求，至此权威服务器查询自己的映射表拿到IP；</li>
 <li>返回查询到的IP给了 DNS Resolver；</li>
 <li>DNS Resolver返回IP给浏览器，浏览器将会用这个IP来建立连接，发起请求;</li>
@@ -65,6 +232,67 @@
 <p>如果说用户访问CDN，但是CDN上没有对应内容会怎么办？此时CDN机器其实会根据自身专用的DNS解析服务，根据域名得到源站的IP，然后向源站发送请求获取数据，并把这些数据缓存到本地，方便后续使用；同时返回本次结果，完成本次请求的访问。</p>
 <p>需要说一下的是，CDN其实也是分层的。距离用户最近的称之为边缘节点。而CDN的中心服务器集群被称为二级缓存。在上面就是应用部署的源站。一般边缘节点没数据就去找二级缓存，二级缓存没数据就去找源站（被称为回源）。</p>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>关于 <code>DNS</code> 的过程，文中是以流程介绍为主，至于更细节的依赖协议、传输过程都忽略了。 关于CDN也是我们经常用到的性能提升手段，后续要写的秒杀相关文章，就会用到它来提升性能。特别是CDN的分布式设计、解析过程在我们平常设计应用架构时非常有参考意义。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>http://dayutalk.cn/2019/04/18/Go%E7%9A%84channel/</url>
+      <content type="html"><![CDATA[<ol>
+<li>goroutine 与 channel 的含义<ul>
+<li>goroutine 其实并不是协程 （Rob Pike 说的）</li>
+<li>讲并发同步</li>
+<li>为什么要有channel，讲讲共享内存的问题（数据竞争），这也说明为什么要调度器</li>
+<li>go的并发编程哲学；不要让计算通过共享内存来通讯，而应该让它们通过通讯来共享内存</li>
+</ul>
+</li>
+<li>channel<ul>
+<li>channel 的分类</li>
+<li>channel 接受阻塞</li>
+<li>channel 发送阻塞</li>
+<li>有缓存、无缓存channel的内部区别</li>
+<li>channel的六种操作，并发安全</li>
+<li>channel 源码分析，简单的三个队列，以及一把互斥锁</li>
+<li>它是如何解耦的</li>
+</ul>
+</li>
+<li><p>goroutine 的调度器</p>
+<blockquote>
+<p>特殊的goroutine g0</p>
+</blockquote>
+<ul>
+<li>M: os thread  也是动态创建，与P的个数没有关系</li>
+<li>G: goroutine 肯定不固定</li>
+<li>P: context for scheduling (调度的上下文，也就是 goroutine运行的环境) (一般是逻辑cpu个数，程序启动就固定了)</li>
+<li>P 的数量等于 GOMAXPROCS</li>
+<li>G M P三者之间的关系</li>
+<li>M 没有 P 怎么办？M怎么取到G？</li>
+<li>为什么需要全局的队列G</li>
+</ul>
+</li>
+<li>GMP的交互关系<ul>
+<li>结合讲channel阻塞问题</li>
+<li>goroutine 又产生goroutine，如何管理的问题</li>
+</ul>
+</li>
+<li>goroutine 的泄漏<ul>
+<li>goroutine泄漏是什么&amp;如何发现</li>
+<li>channel操作的正确姿势</li>
+</ul>
+</li>
+<li>channel的相关操作<ul>
+<li>for range</li>
+<li>select case</li>
+<li>wg.WaitGroup</li>
+</ul>
+</li>
+</ol>
+<h1 id="引用资料"><a href="#引用资料" class="headerlink" title="引用资料"></a>引用资料</h1><ul>
+<li><a href="https://mp.weixin.qq.com/s?__biz=Mzg3MTA0NDQ1OQ%3D%3D&amp;mid=2247483869&amp;idx=1&amp;sn=bf6f038dbe6c7bde5954fc37c0e449b5&amp;scene=45#wechat_redirect" target="_blank" rel="external">https://mp.weixin.qq.com/s?__biz=Mzg3MTA0NDQ1OQ%3D%3D&amp;mid=2247483869&amp;idx=1&amp;sn=bf6f038dbe6c7bde5954fc37c0e449b5&amp;scene=45#wechat_redirect</a><ul>
+<li><a href="https://gfw.go101.org/article/channel.html" target="_blank" rel="external">https://gfw.go101.org/article/channel.html</a></li>
+</ul>
+</li>
+</ul>
 ]]></content>
     </entry>
     
@@ -194,6 +422,13 @@
 <p>那么 <code>Context</code> 与 <code>Server</code> 有什么用呢？<code>Server</code> 内部封装了所有的业务逻辑，它提供接口给 action 或者其它 server 进行调用。而 <code>Context</code> 这一层存在的价值是处理 <code>Proxy</code> 层返回的错误。以及在这里进行报警相关的处理。</p>
 <p>上面的结构只是我的一个实践，欢迎大家讨论。</p>
 <p>本文描述的系统只是满足了最基本的支付需求。缺少相关的监控、报警。如果你按照上文设计自己的系统，风险自担与我无关。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[秒杀系统该如何扛住高并发]]></title>
+      <url>http://dayutalk.cn/2018/12/18/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E8%AF%A5%E5%A6%82%E4%BD%95%E6%89%9B%E4%BD%8F%E9%AB%98%E5%B9%B6%E5%8F%91/</url>
+      <content type="html"><![CDATA[<p>文章还没写完，不用点进来了<br><a id="more"></a></p>
 ]]></content>
     </entry>
     
