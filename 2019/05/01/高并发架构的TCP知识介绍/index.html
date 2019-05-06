@@ -111,7 +111,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2019-05-01</span>
-            <span class="time">15:44:25</span>
+            <span class="time">15:46:53</span>
           </span>
           
           <!--  Categories  -->
@@ -140,7 +140,7 @@
 <blockquote>
 <p>本文图片有部分来自网络，若有侵权，告知即焚</p>
 </blockquote>
-<h3 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h3><p>来看看三次握手的图，估计大家看这图都快看吐了，不过为什么每次面试、回忆的时候还是想不起呢？我再来抄抄这锅剩饭吧！<br><img src="../img/tcp-1st_f9lfkr8yh.png" alt="tcp-1st"></p>
+<h3 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h3><p>来看看三次握手的图，估计大家看这图都快看吐了，不过为什么每次面试、回忆的时候还是想不起呢？我再来抄抄这锅剩饭吧！<br><img src="https://dayutalk.cn/img/tcp-1st_f9lfkr8yh.png" alt="tcp-1st"></p>
 <p>首先当服务端处于 <strong>listen</strong> 状态的时候，我们就可以再客户端发起监听了，此时客户端会处于 <strong>SYN_SENT</strong> 状态。服务端收到这个消息会返回一个 <strong>SYN</strong> 并且同时 <strong>ACK</strong> 客户端的请求，之后服务端便处于 <strong>SYN_RCVD</strong> 状态。这个时候客户端收到了服务端的 <strong>SYN&amp;ACK</strong>，就会发送对服务端的 <strong>ACK</strong>，之后便处于 <strong>ESTABLISHED</strong> 状态。服务端收到了对自己的 <strong>ACK</strong> 后也会处于 <strong>ESTABLISHED</strong> 状态。</p>
 <p>经常在面试中可能有人提问：为什么握手要3次，不是2次或者4次呢？</p>
 <p>首先说4次握手，其实为了保证可靠性，这个握手次数可以一直循环下去；但是这没有一个终止就没有意义了。所以3次，保证了各方消息有来有回就足够了。当然这里可能有一种情况是，客户端发送的 <strong>ACK</strong> 在网络中被丢了。那怎么办？</p>
@@ -162,7 +162,7 @@
 </ul>
 </blockquote>
 <h3 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h3><p>挥手，就是说数据传完了，同志们再见！</p>
-<p><img src="../img/tcp-3th.png" alt="tcp-3th"></p>
+<p><img src="https://dayutalk.cn/img/tcp-3th.png" alt="tcp-3th"></p>
 <p>这里有个问题需要注意下，其实客户端、服务端都能够主动发起关闭操作，谁调用 <code>close()</code> 就先发送关闭的请求。当然一般的流程，发起建立连接的一方会主动发起关闭请求（http中）。</p>
 <p>关于4次挥手的过程，我就不多解释了，这里有两个重要的状态我需要解释下，这都是我亲自经历过的线上故障，<strong>close_wait</strong> 与 <strong>time_wait</strong>。</p>
 <p>先给大家一个命令，统计tcp的各种状态情况。下面表格内容就来自这个命令的统计。</p>
@@ -222,9 +222,9 @@
 <li>一个是服务端</li>
 </ul>
 <p>看下面两张图的时候，请一定结合上面三次握手、四次挥手的时序图一起看，加深理解。</p>
-<h4 id="客户端状态变更"><a href="#客户端状态变更" class="headerlink" title="客户端状态变更"></a>客户端状态变更</h4><p><img src="../img/tcp-4th.png" alt="tcp-4th"></p>
+<h4 id="客户端状态变更"><a href="#客户端状态变更" class="headerlink" title="客户端状态变更"></a>客户端状态变更</h4><p><img src="https://dayutalk.cn/img/tcp-4th.png" alt="tcp-4th"></p>
 <p>通过这张图，大家是否能够清晰明了的知道 TCP 在客户端上的变更情况了呢？</p>
-<h4 id="服务端状态变更"><a href="#服务端状态变更" class="headerlink" title="服务端状态变更"></a>服务端状态变更</h4><p><img src="../img/tcp-5th.png" alt="tcp-5th"></p>
+<h4 id="服务端状态变更"><a href="#服务端状态变更" class="headerlink" title="服务端状态变更"></a>服务端状态变更</h4><p><img src="https://dayutalk.cn/img/tcp-5th.png" alt="tcp-5th"></p>
 <p>这一张图描述了 TCP 状态在服务端的变迁。</p>
 <h2 id="TCP的流量控制与拥塞控制"><a href="#TCP的流量控制与拥塞控制" class="headerlink" title="TCP的流量控制与拥塞控制"></a>TCP的流量控制与拥塞控制</h2><p>我们常说TCP是面向连接的，UDP是无连接的。那么TCP这个面向连接主要解决的是什么问题呢？</p>
 <p>这里继续把三次握手的抓包数据贴出来分析下：</p>
@@ -259,7 +259,7 @@
 </ul>
 <p>这两个相减得到的是本次能够发送的数据，这个数据一定小于或等于 cwnd 与 rwnd 中最小的一个值。相信大家能够理清楚。</p>
 <p>那么这部分知识对于实际工作中有什么作用呢？指导意义就是：如果你的业务很重要、很核心一定不要混布；二是如果你的服务忽快忽慢，而确信依赖服务没有问题，检查下机器对应的网络情况；三是窗口这个速度控制机制，在我们进行服务设计的时候，非常具有参考意义。是不是有点消息队列的感觉？（很多消息队列都是匀速的，我们是否可以加一个窗口的概念来进行优化呢？）</p>
-<h2 id="是什么限制了你的连接"><a href="#是什么限制了你的连接" class="headerlink" title="是什么限制了你的连接"></a>是什么限制了你的连接</h2><p>到了最关键的地方了，精华我都是留到最后讲。下面放一张网上找的socket操作步骤图，画的太好了我就直接用了。<br><img src="../img/tcp-6th.jpg" alt="tcp-6th"></p>
+<h2 id="是什么限制了你的连接"><a href="#是什么限制了你的连接" class="headerlink" title="是什么限制了你的连接"></a>是什么限制了你的连接</h2><p>到了最关键的地方了，精华我都是留到最后讲。下面放一张网上找的socket操作步骤图，画的太好了我就直接用了。<br><img src="https://dayutalk.cn/img/tcp-6th.jpg" alt="tcp-6th"></p>
 <p>我们假设我的服务端就是 <code>Nginx</code> ，我来尝试解读一下。当客户端调用 <code>connect()</code> 时候就会发起三次握手，这次握手的时候有几个元素唯一确定了这次通信（或者说这个socket），<strong>[源IP:源Port， 目的IP:目的Port]</strong> ，当然这个socket还不是最终用来传输数据的socket，一旦握手完成后，服务端会在返回一个 <strong>socket</strong> 专门用来后续的数据传输。这里暂且把第一个socket叫 <strong>监听socket</strong>，第二个叫 <strong>传输socket</strong> 方便后文叙述。</p>
 <p>为什么要这么设计呢？大家想一想，如果监听的socket还要负责数据的收发，请问这个服务端的效率如何提升？什么东西、谁都往这个socket里边丢，太复杂！</p>
 <h3 id="提高连接常用套路"><a href="#提高连接常用套路" class="headerlink" title="提高连接常用套路"></a>提高连接常用套路</h3><p>到了这一步，我们现在先停下来算算自己的服务器机器能够有多少连接呢？这个极限又是如何一步步被突破呢？</p>
@@ -293,7 +293,7 @@
 <p>至此，本篇长文就完结了。这跟上篇 <a href="https://dayutalk.cn/2019/04/25/%E4%BB%8E%E5%B8%B8%E8%A7%81%E6%9E%B6%E6%9E%84%E8%B0%88CDN%E4%B8%8EDNS/">高并发架构的CDN知识介绍</a> 属于一个系列，高并发架构需要理解的网络基础知识。</p>
 <p>后面还会写一下 HTTP/HTTPS 的知识。然后关于高并发网络相关的东西就算完结。我会开启下一个篇章。</p>
 <hr>
-<p>如果你想对网络协议了解更多，推荐一个课程：<br><img src="../img/tcp-7th.jpeg" alt="tcp-7th"></p>
+<p>如果你想对网络协议了解更多，推荐一个课程：<br><img src="https://dayutalk.cn/img/tcp-7th.jpeg" alt="tcp-7th"></p>
 
         </div>
       </div>
