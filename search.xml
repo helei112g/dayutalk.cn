@@ -236,67 +236,6 @@
     </entry>
     
     <entry>
-      <title></title>
-      <url>http://dayutalk.cn/2019/04/18/Go%E7%9A%84channel/</url>
-      <content type="html"><![CDATA[<ol>
-<li>goroutine 与 channel 的含义<ul>
-<li>goroutine 其实并不是协程 （Rob Pike 说的）</li>
-<li>讲并发同步</li>
-<li>为什么要有channel，讲讲共享内存的问题（数据竞争），这也说明为什么要调度器</li>
-<li>go的并发编程哲学；不要让计算通过共享内存来通讯，而应该让它们通过通讯来共享内存</li>
-</ul>
-</li>
-<li>channel<ul>
-<li>channel 的分类</li>
-<li>channel 接受阻塞</li>
-<li>channel 发送阻塞</li>
-<li>有缓存、无缓存channel的内部区别</li>
-<li>channel的六种操作，并发安全</li>
-<li>channel 源码分析，简单的三个队列，以及一把互斥锁</li>
-<li>它是如何解耦的</li>
-</ul>
-</li>
-<li><p>goroutine 的调度器</p>
-<blockquote>
-<p>特殊的goroutine g0</p>
-</blockquote>
-<ul>
-<li>M: os thread  也是动态创建，与P的个数没有关系</li>
-<li>G: goroutine 肯定不固定</li>
-<li>P: context for scheduling (调度的上下文，也就是 goroutine运行的环境) (一般是逻辑cpu个数，程序启动就固定了)</li>
-<li>P 的数量等于 GOMAXPROCS</li>
-<li>G M P三者之间的关系</li>
-<li>M 没有 P 怎么办？M怎么取到G？</li>
-<li>为什么需要全局的队列G</li>
-</ul>
-</li>
-<li>GMP的交互关系<ul>
-<li>结合讲channel阻塞问题</li>
-<li>goroutine 又产生goroutine，如何管理的问题</li>
-</ul>
-</li>
-<li>goroutine 的泄漏<ul>
-<li>goroutine泄漏是什么&amp;如何发现</li>
-<li>channel操作的正确姿势</li>
-</ul>
-</li>
-<li>channel的相关操作<ul>
-<li>for range</li>
-<li>select case</li>
-<li>wg.WaitGroup</li>
-</ul>
-</li>
-</ol>
-<h1 id="引用资料"><a href="#引用资料" class="headerlink" title="引用资料"></a>引用资料</h1><ul>
-<li><a href="https://mp.weixin.qq.com/s?__biz=Mzg3MTA0NDQ1OQ%3D%3D&amp;mid=2247483869&amp;idx=1&amp;sn=bf6f038dbe6c7bde5954fc37c0e449b5&amp;scene=45#wechat_redirect" target="_blank" rel="external">https://mp.weixin.qq.com/s?__biz=Mzg3MTA0NDQ1OQ%3D%3D&amp;mid=2247483869&amp;idx=1&amp;sn=bf6f038dbe6c7bde5954fc37c0e449b5&amp;scene=45#wechat_redirect</a><ul>
-<li><a href="https://gfw.go101.org/article/channel.html" target="_blank" rel="external">https://gfw.go101.org/article/channel.html</a></li>
-</ul>
-</li>
-</ul>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[coder，你会设计交易系统吗？]]></title>
       <url>http://dayutalk.cn/2019/02/25/coder%EF%BC%8C%E4%BD%A0%E4%BC%9A%E8%AE%BE%E8%AE%A1%E4%BA%A4%E6%98%93%E7%B3%BB%E7%BB%9F%E5%90%97%EF%BC%9F/</url>
       <content type="html"><![CDATA[<p>现在的互联网业务，都少不了支付这个环节。那么如何去设计一个通用的服务，满足各个产品线的需求？希望本文能够给你带来收获！<br><a id="more"></a></p>
