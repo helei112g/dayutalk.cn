@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="He Lei">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="高并发架构的HTTP知识介绍"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚Talk｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://dayutalk.cnundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚Talk｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>大愚Talk｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">高并发架构的HTTP知识介绍</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  GitHub
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://juejin.im/user/58c50c75570c35006d632e8e">
+                  
+                  掘金
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://segmentfault.com/u/helei112g">
+                  
+                  SegmentFault
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2019-06-22</span>
+            <span class="time">23:16:52</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/网络基础/">网络基础</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/高并发/">#高并发</a> <a class="tag" href="/tags/HTTP-HTTPS/">#HTTP/HTTPS</a> <a class="tag" href="/tags/架构设计/">#架构设计</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>拖延症患者的毛病需要治疗了，不过基础的协议部分内容终于要完结了！<br><a id="more"></a></p>
+<p>我们前面说过了 <a href="https://dayutalk.cn/2019/04/25/%E9%AB%98%E5%B9%B6%E5%8F%91%E6%9E%B6%E6%9E%84%E7%9A%84CDN%E7%9F%A5%E8%AF%86%E4%BB%8B%E7%BB%8D/">CDN的知识</a>，也通过抓包分析了 <a href="https://dayutalk.cn/2019/05/01/%E9%AB%98%E5%B9%B6%E5%8F%91%E6%9E%B6%E6%9E%84%E7%9A%84TCP%E7%9F%A5%E8%AF%86%E4%BB%8B%E7%BB%8D/">TCP建立链接的过程</a>。今天一起聊一聊应用层的协议 <code>HTTP/HTTPS</code>；这是应用工程师日常中接触最久的协议了。但是你真的了解他吗？</p>
+<p>今天我们不讲 <code>HTTP协议</code> 的几种请求方式，主要介绍HTTP及HTTPS整个发送数据的过程。</p>
+<h1 id="消息结构"><a href="#消息结构" class="headerlink" title="消息结构"></a>消息结构</h1><p>还记得前面讲的 DNS 的过程吗？通过DNS我们拿到了服务端的IP地址，然后通过TCP协议，完成了浏览器与应用服务器的连接建立。HTTP协议是建立在TCP协议之上的（上层协议必然依赖下层协议），连接建立后，自然是开始通信。那么通信的格式是什么呢？</p>
+<p><img src="https://dayutalk.cn/img/blog-httpmsg01.png" alt="blog-httpmsg01"></p>
+<p>看上面这张图，HTTP的请求与响应格式基本如此。我们分开来说。</p>
+<p>对于 <strong>请求消息</strong> ，由三部分构成：请求行、请求头、请求的Body；所谓的请求行，就是：<code>POST / HTTP/1.1</code> 这部分内容。接下来的就是请求头，也就是我们常说的HTTP头；然后换行后紧接着的内容就是请求的Body，也就是正儿八经发送给应用的参数。</p>
+<p>对于 <strong>响应消息</strong> ，也是由三部分构成：状态行、响应头、响应的Body；关于响应行就是标记本次请求获得的结果是什么，这里主要有：20X、30X、40X、50X这几个范围的状态码，需要熟记。响应头里边重要的主要有跟缓存相关的东西，这部分内容会知道浏览器、CDN等缓存体的缓存行为，需要有一定的了解；最后的实体就是你请求的想要的结构，比如：HTML、Json等等。</p>
+<h1 id="传输过程"><a href="#传输过程" class="headerlink" title="传输过程"></a>传输过程</h1><p>消息构建后，如何发送进行传输呢？我们上面图片中看到的是字符串内容，HTTP本身是不能进行网络传输的，它必须依赖的底层的TCP协议建立的连接来发送数据。因此它实际上就是把这些构建好的字符串传给下层的TCP，至于TCP如何传输的可以看上篇文章，这里不展开了。</p>
+<p>WebService 收到数据后会对数据进行处理然后交给应用服务器，应用服务器自然是将请求的Body作为输入，然后根据要求产生输出。输出的行为受到请求头中部分信息的控制，比如：格式(Content-Type)、编码(Accept-Charset)等。而产生的输出各个地方也会根据响应头进行处理。</p>
+<p>看到这里大家有没有发现几个问题：HTTP依赖底层的TCP连接，也就是每个HTTP都需要进行三次握手，效率是不是会非常慢？这种方式总需要浏览器端主动发起链接，服务端想主动推送些什么很无能为力；</p>
+<p>针对上面这些问题，<code>HTTP2.0</code> 协议也就诞生了，当然上面这些问题在 <code>HTTP1.1</code> 时代也有些解决方案。<code>HTTP2.0</code> 主要解决了协议头进行压缩，传输同样含义的内容，占用带宽更少速度更快；将上面的单向链接的方式改成二进制流的方式，服务端有能力主动推送数据；一个链接里边支持传输多种数据流。</p>
+<p>关于 <code>HTTP2.0</code> 的内容不是文本主要想说的，大家可以自行了解下。接下来又到了 <strong>核心部分</strong>，关于 <code>HTTPS</code> 为什么安全、以及如何加密的解释。这部分内容算是面试的重要考点。</p>
+<h1 id="HTTPS为什么可靠"><a href="#HTTPS为什么可靠" class="headerlink" title="HTTPS为什么可靠"></a>HTTPS为什么可靠</h1><p>现在大网站基本都适用了HTTPS协议，那么它跟HTTP是什么关系呢？它其实就是HTTP加上TLS(SSL)安全层，合在一起就叫 HTTPS。为什么有了这层处理数据就安全了呢？</p>
+<p>很简单，要想安全就得加密。加密的方式现在无非就是：<code>对称加密</code> 与 <code>非对称加密</code>。</p>
+<p><strong>对称加密：</strong> 加密与解密都是使用相同的密钥，因此这种方式加密数据，密钥一定不能丢失。</p>
+<p><strong>非对称加密：</strong> 有两把密钥，私钥与公钥。使用私钥加密的数据必须使用公钥进行解密，反之依然。</p>
+<h1 id="安全的代价"><a href="#安全的代价" class="headerlink" title="安全的代价"></a>安全的代价</h1><p>看起来 非对称加密 非常安全。不过对称加密的效率非常高。HTTPS正是综合使用这两种加密方式，让整个传输过程变得安全。接下来看看这个过程是如何完成的。</p>
+<h2 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h2><p>我们先来看看，如果HTTPS只使用 <code>对称加密</code>，能否满足安全的需要呢？由于这种情况只有一个密钥，服务端怎么把这个密钥交给客户端呢？线上传输肯定会泄漏。</p>
+<p>所以单单有对称加密是不能满足需求。看来得换个路子。</p>
+<h2 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h2><p>使用非对称加密的私钥加密数据，发给客户端。客户端用公钥解密就得到了数据。看起来好像没有什么问题。</p>
+<p>但是这里有个问题，由于服务端发出来的数据是使用的私钥，由于公钥是公开，这相当于没有加密。大家都能够看到。并且服务端发出去的公钥这个过程也可能被串改啊，你怎么知道你收到的公钥就是服务器给你的呢？就跟现在很多诈骗公司一样，看起来有模有样，实则就是一皮包公司。</p>
+<h2 id="第三方公正"><a href="#第三方公正" class="headerlink" title="第三方公正"></a>第三方公正</h2><p>为了解决上述问题，出现了一个所谓的 <code>CA</code> 机构，它怎么解决这个信任问题呢？它将服务器的公钥放到 <code>CA证书</code> 里边传给客户端（这里指浏览器），浏览器拿到后验证一下这个证书是否真实有效，因为CA机构是有限可追溯的。就跟你的护照一样，可辨别真伪，所以CA证书证明了有效，那么CA证书中携带的公钥自然也证明了自己的身份。</p>
+<p>是不是看起来整个过程非常麻烦？没有办法为了安全，这点代价非常值得。这也是为什么我们常常说HTTPS的效率略低于HTTP的原因。</p>
+<h1 id="工作模式"><a href="#工作模式" class="headerlink" title="工作模式"></a>工作模式</h1><p>了解完上面的知识，我们来看看HTTPS到底是如何工作的？</p>
+<p><img src="https://dayutalk.cn/img/blog-httpscomm02.png" alt="blog-httpscomm02"></p>
+<ol>
+<li>客户端发起了一个https请求，包含版本信息，加密套件候选列表，压缩算法候选列表，随机数random_c，扩展字段等信息。这个过程此时是明文的。</li>
+<li>然后服务器会进行回复，根据客户端支持的算法信息、套件等，服务器选择一个告诉客户端，我们就用这个吧，同时也会返回一个随机数random_s，后面协商密钥有用。</li>
+<li>服务端响应客户端，这个响应中包含了证书的链接，用于交换密钥。</li>
+<li>客户端对收到的数据进行检查，先把证书给拉下来，然后检查各种指标，如果不合法，会看到浏览器提醒不安全。</li>
+</ol>
+<p>如果验证通过，就会生成一个 <code>随机数字 Pre-master</code>，并用证书公钥加密（<strong>非对称加密</strong>），发送给服务器。</p>
+<ol>
+<li><p>此时的客户端已经有了生成证书的全部内容，它会计算协商的密钥（<strong>对称密钥</strong>），然后告诉服务端以后通信都采用协商的通信密钥和加密算法进行加密通信。紧接着会用协商的密钥加密一段数据发给服务端，看看是否能够正常。</p>
+</li>
+<li><p>上面这步里边，客户端发送了三个请求。服务器先将收到的 <code>Pre-master</code> 用自己的私钥解密出来。然后验证客户端用对称加密发过来的数据，如果通过，则也会告知客户端后续的通信都采用协商的密钥与算法进行加密通信。</p>
+</li>
+<li><p>并且服务端也会用对称加密生成一段加密信息给客户端让客户端试试（<strong>对称密钥</strong>）。</p>
+</li>
+<li><p>客户端使用对称密钥正确完成解密。握手结束。开始使用对称密钥的方式进行数据传输。</p>
+</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>由于不让文章显得过于复杂，我只介绍了最简单的单向认证。这种安全性并不是最高，单日常中也足够了。</p>
+<p>本文从源头讲了为什么只有对称加密搞不定这件事；一步步演化出HTTPS的整个过程。</p>
+<p>首先，为了效率，整个过程只采用了一次非对称加密来加密 <code>Pre-master</code>；</p>
+<p>其次，客户端、服务端分别使用了一次对称加密来进行密钥有效性的验证，来防止中间人攻击；</p>
+<p>最后，也说了为什么整个过程需要CA机构的参与。</p>
+<p>参考连接：</p>
+<ul>
+<li><a href="https://www.wosign.com/faq/faq2016-0309-04.htm" target="_blank" rel="external">https://www.wosign.com/faq/faq2016-0309-04.htm</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <!-- 个人信息 -->
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p align="center" style="margin:0;padding:0;"><img src="https://dayutalk.cn/img/mp-qrcode.jpg"></p>
+        <p align="center" style="margin:0;padding:0;">个人公众号：<b>dayuTalk</b></p>
+        <p align="center" style="margin:0;padding:0;">联系邮箱：dayugog@gmail.com</p>
+        <p align="center" style="margin:0;padding:0;">GitHub：<a href="https://github.com/helei112g">https://github.com/helei112g</a></p>
+        <p align="center" style="margin:0;padding:0;"><img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"></p>
+        <p align="center" style="margin:0;padding:0;"><b>我写我的，你赏你的</b></p>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+        <p class="copyright text-muted">
+          友情链接
+          <a target="_blank" href="http://tigerb.cn">Tigerb</a>
+          <a target="_blank" href="http://52fhy.com/">飞鸿影</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
