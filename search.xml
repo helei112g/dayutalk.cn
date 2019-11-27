@@ -4,22 +4,6 @@
   
     
     <entry>
-      <title><![CDATA[一篇文章搞定购物车设计方法]]></title>
-      <url>http://dayutalk.cn/2019/11/20/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E6%90%9E%E5%AE%9A%E8%B4%AD%E7%89%A9%E8%BD%A6%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/</url>
-      <content type="html"><![CDATA[<p>文章摘要，作者太懒了，没写……<br><a id="more"></a></p>
-<h1 id="购物车的需求"><a href="#购物车的需求" class="headerlink" title="购物车的需求"></a>购物车的需求</h1><pre><code>- 收藏效果
-- 活动效果
-- 价格实时计算
-- 一键购买
-- 可以删除购物车商品
-</code></pre><h1 id="整体架构图"><a href="#整体架构图" class="headerlink" title="整体架构图"></a>整体架构图</h1><h1 id="系统设计"><a href="#系统设计" class="headerlink" title="系统设计"></a>系统设计</h1><pre><code>- 代码建模
-- 表设计
-- cache设计
-- 接口设计
-</code></pre><h1 id="性能提升"><a href="#性能提升" class="headerlink" title="性能提升"></a>性能提升</h1>]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[走进Golang之运行与Plan9汇编]]></title>
       <url>http://dayutalk.cn/2019/11/09/%E8%B5%B0%E8%BF%9BGolang%E4%B9%8B%E8%BF%90%E8%A1%8C%E4%B8%8EPlan9%E6%B1%87%E7%BC%96/</url>
       <content type="html"><![CDATA[<p>费了老大劲，又搞定了一篇，很长看完需要耐心。如果不想看，一定要看看第五张图，对函数执行过程非常有帮助。</p>
