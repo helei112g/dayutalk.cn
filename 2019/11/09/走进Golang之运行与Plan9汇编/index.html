@@ -111,7 +111,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2019-11-09</span>
-            <span class="time">10:53:35</span>
+            <span class="time">11:02:55</span>
           </span>
           
           <!--  Categories  -->
@@ -155,7 +155,7 @@
 </li>
 <li><a href="#总结">总结</a></li>
 </ul>
-<p>通过上一篇<a href="https://xiaomi-info.github.io/2019/11/13/golang-compiler-principle/" target="_blank" rel="external">走进Golang之汇编原理</a>，我们知道了目标代码的生成经历了那些过程。今天我们一起来学习一下生成的目标代码如何在计算机上执行。以及通过查阅 <code>Golang</code> 的 Plan9 汇编来了解Golang的一些内部秘密。</p>
+<p>通过上一篇<a href="https://dayutalk.cn/2019/10/24/%E8%B5%B0%E8%BF%9BGolang%E4%B9%8B%E7%BC%96%E8%AF%91%E5%99%A8%E5%8E%9F%E7%90%86/">走进Golang之汇编原理</a>，我们知道了目标代码的生成经历了那些过程。今天我们一起来学习一下生成的目标代码如何在计算机上执行。以及通过查阅 <code>Golang</code> 的 Plan9 汇编来了解Golang的一些内部秘密。</p>
 <h1 id="Golang的运行环境"><a href="#Golang的运行环境" class="headerlink" title="Golang的运行环境"></a>Golang的运行环境</h1><p>当我们把编译后的Go代码运行起来，它会以进程的方式出现在系统中。然后开始处理请求、数据，我们会看到这个进程占用了内存消耗、cpu占比等等信息。本文就是要来解释在程序的运行过程中，内存、CPU、操作系统（当然还有其它的硬件，文中关系不大，就不说了）是如何进行配合，完成了我们代码所指定的事情。</p>
 <h2 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h2><p>首先，我们先来说说内存。先来看一个我们运行的go进程。</p>
 <p>代码如下：</p>
@@ -168,7 +168,7 @@
 <li>RSS: 是实际的物理内存，包含了栈内存与堆内存。</li>
 </ul>
 <p>每一个进程都是运行在自己的内存沙盒里，程序被分配的地址都是 “虚拟内存”，物理内存对程序开发者来说实际是不可见的，而且虚拟地址比进程实际的物理地址要大的多。我们经常编程中取指针对应的地址实际就是虚拟地址。这里一定要注意区分虚拟内存与物理内存。来一张图感受一下。</p>
-<p><img src="../img/go-hb-0.jpg" alt="虚拟内存与物理内存"></p>
+<p><img src="https://dayutalk.cn/img/go-hb-0.jpg" alt="虚拟内存与物理内存"></p>
 <p>这张图主要是为了说明两个问题：</p>
 <ol>
 <li>程序使用的是虚拟内存，但是操作系统会把虚拟内存映射到物理内存；你会发现自己机器上所有进程的VSZ要大得多；</li>
@@ -176,7 +176,7 @@
 </ol>
 <p>上面搞明白了程序中的内存具体是指什么，接下来说明程序是如何使用内存的（虚拟内存），内存说白了就是比硬盘存取速度更快的一个硬件，为了方便内存的管理，操作系统把分配给进程的内存划分成了不同的功能块。像我们经常说的：代码区，静态数据区，堆区，栈区等。</p>
 <p>这里借用一张网络上的图来看一下。</p>
-<p><img src="../img/go-hb-1.jpeg" alt="go语言内存的划分"></p>
+<p><img src="https://dayutalk.cn/img/go-hb-1.jpeg" alt="go语言内存的划分"></p>
 <p>这里就是我们程序（进程）在虚拟内存中的分布。</p>
 <p>代码区：存放的就是我们编译后的机器码，一般来说这个区域只能是只读。</p>
 <p>静态数据区：存放的是全局变量与常量。这些变量的地址编译的时候就确定了（这也是使用虚拟地址的好处，如果是物理地址，这些地址编译的时候是不可能确定的）。Data与BSS都属于这一部分。这部分只有程序中止（kill掉、crasg掉等）才会被销毁。</p>
@@ -206,7 +206,7 @@
 <li>调用者：caller，比如：a函数调用了b函数，那么a就是调用者</li>
 <li>被调者：callee，还是上面的例子，b就是被调者</li>
 </ul>
-<p><img src="../img/go-hb-2.png" alt="栈帧"></p>
+<p><img src="https://dayutalk.cn/img/go-hb-2.png" alt="栈帧"></p>
 <p>这幅图所展示的就是一个 <code>栈帧</code> 的结构。也可以说栈桢是栈给一个函数分配的栈空间，它包括了函数调用者地址、本地变量、返回值地址、调用者参数等信息。</p>
 <p>这里有几个注意点，图中的 <code>BP</code>、<code>SP</code>都表示对应的寄存器。</p>
 <ul>
@@ -218,7 +218,7 @@
 <h2 id="Go的调用实例"><a href="#Go的调用实例" class="headerlink" title="Go的调用实例"></a>Go的调用实例</h2><p>才开始，我们就从一个简单的函数开始来分析一下整个函数的调用过程（下面涉及到 <code>Plan9</code> 汇编，请别慌，大部分都能够看懂，并且我也会写注释）。</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := <span class="number">3</span></span><br><span class="line">	b := <span class="number">2</span></span><br><span class="line">	returnTwo(a, b)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">returnTwo</span><span class="params">(a, b <span class="keyword">int</span>)</span> <span class="params">(c, d <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	tmp := <span class="number">1</span> <span class="comment">// 这一行的主要目的是保证栈桢不为0，方便分析</span></span><br><span class="line">	c = a + b</span><br><span class="line">	d = b - tmp</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上面有两个函数，<code>main</code> 定义了两个本地变量，然后调用 <code>returnTwo</code> 函数。<code>returnTwo</code> 函数有两个参数与两个返回值。设计两个返回值主要是一起来看一下 <code>golang</code> 的多返回值是如何实现的。接下来我们把上面的代码对应的汇编代码展示出来。</p>
-<p><img src="../img/go-hb-3.png" alt="main函数"></p>
+<p><img src="https://dayutalk.cn/img/go-hb-3.png" alt="main函数"></p>
 <p>有几行代码需要特别解释下，</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x0000 00000 (test1.go:3)       TEXT    &quot;&quot;.main(SB), ABIInternal, $56-0</span><br></pre></td></tr></table></figure>
 <p>这一行中的重点信息：<code>$56-0</code>。<strong>56</strong> 表示的该函数栈桢大小（两个本地变量，两个参数是int类型，两个返回值是int类型，1个保存base pointer，合计7 * 8 = 56）；0表示 <code>mian</code> 函数的参数与返回值大小。待会可以在 <code>returnTwo</code> 中去看一下它的返回值又是多少。</p>
@@ -237,11 +237,11 @@
 <li>第三条指令 <code>MOVQ    48(SP), BP</code> ，因为一开始 <code>48(SP)</code> 保存了最开始 <code>BP</code> 的所存的值 <code>0x00ff</code>，所以这里是又把 <code>BP</code> 恢复回去了。</li>
 </ul>
 <p>这几行代码的作用至关重要，正因为如此在执行的时候，我们才能找到函数开始的地方以及回到调用函数的位置，它才可以继续往下执行（如果觉得饶，先放过，后面有图，看完后再回来理解）。接着来看一下 <code>returnTwo</code> 函数。</p>
-<p><img src="../img/go-hb-4.png" alt="returnTwo函数汇编"></p>
+<p><img src="https://dayutalk.cn/img/go-hb-4.png" alt="returnTwo函数汇编"></p>
 <p>这里 <code>NOSPLIT|ABIInternal, $0-32</code> 说明，该函数的栈桢大小是0，由于有两个int参数，以及2个int返回值，合计为 <code>4*8 = 32</code> 字节大小，是不是跟上面的 <code>main</code> 函数对上了？。</p>
 <p>这里有没有对 <code>returnTwo</code> 函数的栈桢大小是0表示迷惑呢？难道这个函数不需要栈空间吗？其实主要原因是：golang的参数传递与返回值都是要求使用栈来进行的（这也是为什么go能够支持多参数返回的原因）。所以参数与返回值所需空间都由 <code>caller</code> 来提供。</p>
 <p>接下来，我们用完整的图来演示一下这个调用过程。</p>
-<p><img src="../img/go-hb-5.png" alt="函数调用"></p>
+<p><img src="https://dayutalk.cn/img/go-hb-5.png" alt="函数调用"></p>
 <blockquote>
 <p>这个图就画了将近1个小时，希望对大家理解有帮助。</p>
 </blockquote>
