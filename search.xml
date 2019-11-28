@@ -4,13 +4,6 @@
   
     
     <entry>
-      <title><![CDATA[tt]]></title>
-      <url>http://dayutalk.cn/2019/11/27/tt/</url>
-      <content type="html"><![CDATA[<p>文章摘要，作者太懒了，没写……<br><a id="more"></a></p>
-<div style="margin:0 auto;"><br>    <p align="center" style="margin:0px;"><img src="https://dayutalk.cn/img/mp-qrcode.jpg"></p><br>    <p align="center" style="margin:0px;">个人公众号：<b>dayuTalk</b></p><br>    <p align="center" style="margin:0px;">联系邮箱：dayugog@gmail.com</p><br>    <p align="center" style="margin:0px;">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br>    <p align="center" style="margin:0px;"><img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"></p><br>    <p align="center" style="margin:0px;"><b>我写我的，你赏你的</b></p><br></div>]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[走进Golang之运行与Plan9汇编]]></title>
       <url>http://dayutalk.cn/2019/11/09/%E8%B5%B0%E8%BF%9BGolang%E4%B9%8B%E8%BF%90%E8%A1%8C%E4%B8%8EPlan9%E6%B1%87%E7%BC%96/</url>
       <content type="html"><![CDATA[<p>费了老大劲，又搞定了一篇，很长看完需要耐心。如果不想看，一定要看看第五张图，对函数执行过程非常有帮助。</p>
@@ -51,7 +44,7 @@
 <p><img src="https://dayutalk.cn/img/go-hb-0.jpg" alt="虚拟内存与物理内存"></p>
 <p>这张图主要是为了说明两个问题：</p>
 <ol>
-<li>程序使用的是虚拟内存，但是操作系统会把虚拟内存映射到物理内存；你会发现自己机器上所有进程的VSZ要大得多；</li>
+<li>程序使用的是虚拟内存，但是操作系统会把虚拟内存映射到物理内存；你会发现自己机器上所有进程的 VSZ 总和要比实际物理内存大得多；</li>
 <li>物理内存可以被多个进程共享，甚至一个进程内的不同地址可能映射的都是同一个物理内存地址。</li>
 </ol>
 <p>上面搞明白了程序中的内存具体是指什么，接下来说明程序是如何使用内存的（虚拟内存），内存说白了就是比硬盘存取速度更快的一个硬件，为了方便内存的管理，操作系统把分配给进程的内存划分成了不同的功能块。像我们经常说的：代码区，静态数据区，堆区，栈区等。</p>
@@ -60,7 +53,7 @@
 <p>这里就是我们程序（进程）在虚拟内存中的分布。</p>
 <p>代码区：存放的就是我们编译后的机器码，一般来说这个区域只能是只读。</p>
 <p>静态数据区：存放的是全局变量与常量。这些变量的地址编译的时候就确定了（这也是使用虚拟地址的好处，如果是物理地址，这些地址编译的时候是不可能确定的）。Data与BSS都属于这一部分。这部分只有程序中止（kill掉、crasg掉等）才会被销毁。</p>
-<p>栈区：主要是 <code>Golang</code> 里边的函数、方法以及其本地变量存储的地方。这部分伴随函数、方法开始执行而分配，运行完后就被释放，特别注意这里的释放并不会清空内存。后面文章讲内存分配的时候再详细说；还有一个点需要记住栈一般是从高地址向低地址方向分配，换句话说：高地址属于栈低，低地址属于栈底，它分配方向与堆是相反的。</p>
+<p>栈区：主要是 <code>Golang</code> 里边的函数、方法以及其本地变量存储的地方。这部分伴随函数、方法开始执行而分配，运行完后就被释放，特别注意这里的释放并不会清空内存。后面文章讲内存分配的时候再详细说；还有一个点需要记住栈一般是从高地址向低地址方向分配，换句话说：高地址属于栈低，低地址属于栈顶，它分配方向与堆是相反的。</p>
 <p>堆区：像 <code>C/C++</code> 语言，堆完全是程序员自己控制的。但是 <code>Golang</code> 里边由于有GC机制，我们写代码的时候并不需要关心内存是在栈还是堆上分配。<code>Golang</code> 会自己判断如果变量的生命周期在函数退出后还不能销毁或者栈上资源不够分配等等情况，就会被放到堆上。堆的性能会比栈要差一些。原因也留到内存分配相关的文章再给大家介绍。</p>
 <p>内存的结构搞明白了，我们的程序被加载到内存还需要操作系统来指挥才能正确运行。</p>
 <p>补充一个比较重要的概念：</p>
@@ -1581,7 +1574,7 @@
     
     <entry>
       <title><![CDATA[指针、引用的理解]]></title>
-      <url>http://dayutalk.cn/2018/06/06/%E6%8C%87%E9%92%88%E3%80%81%E5%BC%95%E7%94%A8%E7%9A%84%E7%90%86%E8%A7%A3-md/</url>
+      <url>http://dayutalk.cn/2018/06/06/%E6%8C%87%E9%92%88%E3%80%81%E5%BC%95%E7%94%A8%E7%9A%84%E7%90%86%E8%A7%A3/</url>
       <content type="html"><![CDATA[<p>指针与引用常常被混淆，他们为什么总被人理解错误？<br><a id="more"></a></p>
 <p>最近在学习Golang的过程中，发现一个有意思的事情，有的文章说函数调用传参时 <strong>slice</strong> 是引用传递，有的说是值传递。为什么同一个东西大家会不同认识？为了搞清楚其本质，我进行了以下内容的研究：</p>
 <ol>
