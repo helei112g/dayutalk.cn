@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="He Lei">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="一个程序员对架构的认识"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚Talk｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://dayutalk.cnundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚Talk｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>大愚Talk｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">一个程序员对架构的认识</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  GitHub
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://juejin.im/user/58c50c75570c35006d632e8e">
+                  
+                  掘金
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://segmentfault.com/u/helei112g">
+                  
+                  SegmentFault
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-05-27</span>
+            <span class="time">13:12:16</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/架构/">架构</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/架构/">#架构</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>架构是一个系统的草图（逻辑+物理角度），它是有生命的，随着业务的变化会不断演进。没有完美的架构只有合适的架构。<br><a id="more"></a></p>
+<p>最近订阅了一些架构方面的资料，阅读后获益匪浅，想着整理一些自己的体会与思考，形成架构方面的读书笔记，一来与大家交流，二来通过文字的形式检查自己到底收获多少！</p>
+<p>“我们系统是MVC架构的”</p>
+<p>“淘宝的架构好屌”</p>
+<p>“最近在学习MySQL的架构”</p>
+<p>“这个系统开发我们要用MVC框架来进行开发”</p>
+<hr>
+<p>我们常常听到上面关于架构的各种描述，那么架构到底是指什么？系统、框架、架构三者之间是一个什么样的关系？下面让我们结合实际的例子一起来探究下。</p>
+<h1 id="架构的含义"><a href="#架构的含义" class="headerlink" title="架构的含义"></a>架构的含义</h1><p>小石最近加入了一家生鲜电商公司。公司现在的首要任务是把电商系统给做出来，让用户能够通过PC、App购买公司的生鲜产品。</p>
+<blockquote>
+<p>关键词：<strong>系统</strong>，所谓系统可以简单理解为我们平时所说的应用，当然系统可以包含多个小系统，这里为了简单起见，我们就先假设只开发这样一个单体应用，包含了用户下单购买的基本功能。  </p>
+</blockquote>
+<p>小石通过分析其他电商系统，知道至少需要 <strong>用户注册登录模块</strong>、<strong>用户信息模块</strong>、<strong>商品模块</strong>、<strong>订单模块</strong> 系统才能够进行运转。</p>
+<p>系统的功能确定了，该选择用什么样的语言进行开发呢？选择什么样的方式进行开发呢？与大家一起讨论后，大家认为现在阶段的首要目标是快速做出系统来，因此大家决定采用PHP来开发，并决定使用 <strong>Yii2</strong> 框架，数据库方面使用 MySQL，WebService使用Nginx。</p>
+<blockquote>
+<p>关键词：<strong>框架</strong>，为了快速完成系统的开发，我们会采用一些已被业内实践确认的规范来进行，比如这里采用 YII2 框架，也就是采用了业内的 MVC 规范。所以可以认为所谓的框架就是确定了一些业内规范，从某种程度上对大家形成约束或者形成都能理解的规定。  </p>
+</blockquote>
+<p>从开始到现在，还没有写一行代码，一直在进行设计与讨论，讨论需要哪些功能，设计采用什么 <strong>结构</strong>，而这里的结构主要包括了两方面：逻辑的结构与物理的结构。所谓逻辑结构就是指系统是按照什么样的流程来运转，需要哪些功能来支持。所谓物理，就是当编码完成所有的逻辑后，系统采用什么形式来部署运行。</p>
+<p>那么到底什么是架构呢？我理解的架构：在系统诞生之初，对系统进行的逻辑设计与物理设计。他是系统的草图，可以类比为建筑领域的设计图。这张图需要确定：</p>
+<ul>
+<li>业务需要的功能模块划分（建筑设计需要划分区域功能）</li>
+<li>技术选型，用什么框架、什么存储、什么缓存（建筑领域也要确认框架结构还是框剪结构）</li>
+</ul>
+<h1 id="架构是进化的"><a href="#架构是进化的" class="headerlink" title="架构是进化的"></a>架构是进化的</h1><p>一个架构的0.1版本绝对不会是完美的，世界上也不存在完美的架构。像上面的小故事，我们采用最简单的架构，如下图（物理角度）：<br><img src="http://ol59nqr1i.bkt.clouddn.com/jg2.jpeg" alt="架构"></p>
+<p>我们把所有的功能写在一份代码里，所有的数据存在一个库里，所有的代码部署在同一个Nginx上，甚至还可能我们的Nginx、MySQL都部署在同一台机器上。</p>
+<p>公司业务得以发展，人员得以增加，系统变得更加复杂。这个时候原来的架构，一无法满足业务快速发展，二无法让多人开发变得愉快。因为几十个人在同一份代码里进行编码，想一下都是头大。文件冲突、功能依赖、bug排查、测试功能，这些都无法愉快的解决。这时就得根据新的情况重新设计架构。</p>
+<p>我们将代码功能进行拆分，将以前的模块拆分成独立的系统，将MySQL进行主从设计，利用Nginx做负载等等。</p>
+<p>那么为什么不一上来就进行拆分呢？因为一开始人手不足，拆分过细，开发周期慢，业务也不需要如此细致的划分。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>架构是一个系统的草图（逻辑+物理角度），它是有生命的，随着业务的变化会不断演进。没有完美的架构只有合适的架构。</p>
+
+        </div>
+      </div>
+    </div>
+    <!-- 个人信息 -->
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p align="center" style="margin:0;padding:0;"><img src="https://dayutalk.cn/img/mp-qrcode.jpg"></p>
+        <p align="center" style="margin:0;padding:0;">个人公众号：<b>dayuTalk</b></p>
+        <p align="center" style="margin:0;padding:0;">联系邮箱：dayugog@gmail.com</p>
+        <p align="center" style="margin:0;padding:0;">GitHub：<a href="https://github.com/helei112g">https://github.com/helei112g</a></p>
+        <p align="center" style="margin:0;padding:0;"><img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"></p>
+        <p align="center" style="margin:0;padding:0;"><b>我写我的，你赏你的</b></p>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+        <p class="copyright text-muted">
+          友情链接
+          <a target="_blank" href="http://tigerb.cn">Tigerb</a>
+          <a target="_blank" href="http://52fhy.com/">飞鸿影</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
