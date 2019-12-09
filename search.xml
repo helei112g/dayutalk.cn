@@ -100,13 +100,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[走进Golang之内存分配策略]]></title>
-      <url>http://dayutalk.cn/2019/11/20/%E8%B5%B0%E8%BF%9BGolang%E4%B9%8B%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5/</url>
-      <content type="html"><![CDATA[<p>文章摘要，作者太懒了，没写……<br><a id="more"></a></p>
-<div style="margin:0 auto;"><br>    <p align="center" style="margin:0px;"><img src="https://dayutalk.cn/img/mp-qrcode.jpg"></p><br>    <p align="center" style="margin:0px;">个人公众号：<b>dayuTalk</b></p><br>    <p align="center" style="margin:0px;">联系邮箱：dayugog@gmail.com</p><br>    <p align="center" style="margin:0px;">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br>    <p align="center" style="margin:0px;"><img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"></p><br>    <p align="center" style="margin:0px;"><b>我写我的，你赏你的</b></p><br></div>]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[走进Golang之运行与Plan9汇编]]></title>
       <url>http://dayutalk.cn/2019/11/09/%E8%B5%B0%E8%BF%9BGolang%E4%B9%8B%E8%BF%90%E8%A1%8C%E4%B8%8EPlan9%E6%B1%87%E7%BC%96/</url>
       <content type="html"><![CDATA[<p>费了老大劲，又搞定了一篇，很长看完需要耐心。如果不想看，一定要看看第五张图，对函数执行过程非常有帮助。</p>
@@ -772,67 +765,6 @@
 <p>如果说用户访问CDN，但是CDN上没有对应内容会怎么办？此时CDN机器其实会根据自身专用的DNS解析服务，根据域名得到源站的IP，然后向源站发送请求获取数据，并把这些数据缓存到本地，方便后续使用；同时返回本次结果，完成本次请求的访问。</p>
 <p>需要说一下的是，CDN其实也是分层的。距离用户最近的称之为边缘节点。而CDN的中心服务器集群被称为二级缓存。在上面就是应用部署的源站。一般边缘节点没数据就去找二级缓存，二级缓存没数据就去找源站（被称为回源）。</p>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>关于 <code>DNS</code> 的过程，文中是以流程介绍为主，至于更细节的依赖协议、传输过程都忽略了。 关于CDN也是我们经常用到的性能提升手段，后续要写的秒杀相关文章，就会用到它来提升性能。特别是CDN的分布式设计、解析过程在我们平常设计应用架构时非常有参考意义。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title></title>
-      <url>http://dayutalk.cn/2019/04/18/%E8%B5%B0%E8%BF%9BGolang%E4%B9%8BChannel/</url>
-      <content type="html"><![CDATA[<ol>
-<li>goroutine 与 channel 的含义<ul>
-<li>goroutine 其实并不是协程 （Rob Pike 说的）</li>
-<li>讲并发同步</li>
-<li>为什么要有channel，讲讲共享内存的问题（数据竞争），这也说明为什么要调度器</li>
-<li>go的并发编程哲学；不要让计算通过共享内存来通讯，而应该让它们通过通讯来共享内存</li>
-</ul>
-</li>
-<li>channel<ul>
-<li>channel 的分类</li>
-<li>channel 接受阻塞</li>
-<li>channel 发送阻塞</li>
-<li>有缓存、无缓存channel的内部区别</li>
-<li>channel的六种操作，并发安全</li>
-<li>channel 源码分析，简单的三个队列，以及一把互斥锁</li>
-<li>它是如何解耦的</li>
-</ul>
-</li>
-<li><p>goroutine 的调度器</p>
-<blockquote>
-<p>特殊的goroutine g0</p>
-</blockquote>
-<ul>
-<li>M: os thread  也是动态创建，与P的个数没有关系</li>
-<li>G: goroutine 肯定不固定</li>
-<li>P: context for scheduling (调度的上下文，也就是 goroutine运行的环境) (一般是逻辑cpu个数，程序启动就固定了)</li>
-<li>P 的数量等于 GOMAXPROCS</li>
-<li>G M P三者之间的关系</li>
-<li>M 没有 P 怎么办？M怎么取到G？</li>
-<li>为什么需要全局的队列G</li>
-</ul>
-</li>
-<li>GMP的交互关系<ul>
-<li>结合讲channel阻塞问题</li>
-<li>goroutine 又产生goroutine，如何管理的问题</li>
-</ul>
-</li>
-<li>goroutine 的泄漏<ul>
-<li>goroutine泄漏是什么&amp;如何发现</li>
-<li>channel操作的正确姿势</li>
-</ul>
-</li>
-<li>channel的相关操作<ul>
-<li>for range</li>
-<li>select case</li>
-<li>wg.WaitGroup</li>
-</ul>
-</li>
-</ol>
-<h1 id="引用资料"><a href="#引用资料" class="headerlink" title="引用资料"></a>引用资料</h1><ul>
-<li><a href="https://mp.weixin.qq.com/s?__biz=Mzg3MTA0NDQ1OQ%3D%3D&amp;mid=2247483869&amp;idx=1&amp;sn=bf6f038dbe6c7bde5954fc37c0e449b5&amp;scene=45#wechat_redirect" target="_blank" rel="external">https://mp.weixin.qq.com/s?__biz=Mzg3MTA0NDQ1OQ%3D%3D&amp;mid=2247483869&amp;idx=1&amp;sn=bf6f038dbe6c7bde5954fc37c0e449b5&amp;scene=45#wechat_redirect</a><ul>
-<li><a href="https://gfw.go101.org/article/channel.html" target="_blank" rel="external">https://gfw.go101.org/article/channel.html</a></li>
-</ul>
-</li>
-</ul>
 ]]></content>
     </entry>
     
