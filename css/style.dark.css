@@ -39,7 +39,7 @@ audio, canvas, video {
 
 /* 要注意表单元素并不继承父级 font 的问题 */
 body, button, input, select, textarea {
-  font: 300 1rem/1.8 PingFang SC, Lantinghei SC, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans;
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, "PingFang SC", Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
 button::-moz-focus-inner,
@@ -244,11 +244,29 @@ strong, b {
   margin-bottom: 1.2em
 }
 
+.typo p {
+  color: rgb(74, 74, 74);
+  line-height: 1.75em;
+  font-size: 16px;
+  padding: 10px;
+}
+
 h1, h2, h3, h4, h5, h6 {
-  font-family: PingFang SC, Verdana, Helvetica Neue, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
   font-weight: 100;
   color: #000;
   line-height: 1.35;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: 95px;
+  line-height: 95px;
+  margin-top: 38px;
+  margin-bottom: 10px;
 }
 
 /* 标题应该更贴紧内容，并与其他块区分，margin 值要相应做优化 */
@@ -264,19 +282,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .typo h2, .typo-h2 {
-  font-size: 1.8em;
-}
-
-.typo h3, .typo-h3 {
   font-size: 1.6em;
 }
 
-.typo h4, .typo-h4 {
+.typo h3, .typo-h3 {
   font-size: 1.4em;
 }
 
-.typo h5, .typo h6, .typo-h5, .typo-h6 {
+.typo h4, .typo-h4 {
   font-size: 1.2em;
+}
+
+.typo h5, .typo h6, .typo-h5, .typo-h6 {
+  font-size: 1em;
 }
 
 /* 在文章中，应该还原 ul 和 ol 的样式 */
@@ -680,7 +698,7 @@ h6 {
 }
 .post-tags,
 .post-info {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-style: italic;
   text-align: center;
 }
