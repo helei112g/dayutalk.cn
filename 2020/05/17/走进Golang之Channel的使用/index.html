@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="He Lei">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="走进Golang之Channel的使用"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚Talk｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://dayutalk.cnundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚Talk｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>大愚Talk｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">走进Golang之Channel的使用</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  GitHub
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://juejin.im/user/58c50c75570c35006d632e8e">
+                  
+                  掘金
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://segmentfault.com/u/helei112g">
+                  
+                  SegmentFault
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2020-05-17</span>
+            <span class="time">19:16:25</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Golang/">Golang</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/Golang/">#Golang</a> <a class="tag" href="/tags/channel/">#channel</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>没错，这个系列又开张了，哈哈^_^<br><a id="more"></a></p>
+<p>对于 Golang 语言应用层面的知识，先讲如何正确的使用，然后再讲它的实现。</p>
+<h1 id="channel-是什么"><a href="#channel-是什么" class="headerlink" title="channel 是什么"></a>channel 是什么</h1><blockquote>
+<p>Don’t communicate by sharing memory, share memory by communicating.</p>
+</blockquote>
+<p>相信写过 Go 的同学都知道这句名言，可以说 channel 就是后边这句话的具体实现。我们来看一下到底 channel 是什么？</p>
+<p>channel 是一个类型安全的队列（循环队列），能够控制 groutine 在它上面读写消息的行为，比如：阻塞某个 groutine ，或者唤醒某个 groutine。</p>
+<p>不同的 groutine 可以通过 channel 交换任意的资源，由于 channel 能够控制 groutine 的行为，所以 CSP 模型才能在 Golang 中顺利实现，它确保了不同 groutine 之间的数据同步机制。</p>
+<p>上面的话是不是听起来非常的不舒服？</p>
+<p>好吧，简单说人话就是，channel 是用来在 <strong>不同的</strong> 的 goroutine 中交换数据的。一定要注意这里 <strong>不同的</strong> 三个字。千万不要把 channel 拿来在不同函数（同一个 goroutine 中）间交换数据。</p>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>知道了定义，我们来看具体如何使用。</p>
+<p>如何定义一个 channel 类型呢？</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ch1 <span class="keyword">chan</span> <span class="keyword">int</span> <span class="comment">// 定义了一个 int 类型的 channel，没有初始化，是 nil</span></span><br><span class="line"></span><br><span class="line">ch2 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>) <span class="comment">// 定义+初始化了一个无缓冲的 int 类型 channel</span></span><br><span class="line">ch3 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>) <span class="comment">// 定义+初始化了一个有缓冲的 int 类型 channel</span></span><br></pre></td></tr></table></figure>
+<p>上面的定义方法我们都是定义的双向通道，对应的还有单向通道，但是单向通道我们一般只是做为函数参数来进行一些限制，并不会在定义、初始化时就搞一个单向通道出来。因为你定义一个单向通道没有任何实际价值，通道的存在本来就是用来交换数据的，单向通道只能满足发或者收。</p>
+<p>下面我们一起来看一下具体的使用，以及使用中注意的一些点。</p>
+<h2 id="send"><a href="#send" class="headerlink" title="send"></a>send</h2><p>不管是有缓冲的通道还是无缓冲的通道都是用来交换数据的，既然是交换数据，无非就是写入、读取。我们先从发送开始。</p>
+<h3 id="无缓冲-channel"><a href="#无缓冲-channel" class="headerlink" title="无缓冲 channel"></a>无缓冲 channel</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line"><span class="keyword">defer</span> <span class="built_in">close</span>(ch)</span><br><span class="line"></span><br><span class="line"><span class="comment">//ch&lt;-5 // 位置一</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    num := &lt;-ch</span><br><span class="line">    fmt.Println(num)</span><br><span class="line">&#125;(ch)</span><br><span class="line"></span><br><span class="line"><span class="comment">// ch&lt;-5 // 位置二</span></span><br></pre></td></tr></table></figure>
+<p>如果我们打开 <strong>位置一</strong> 的注释，程序是无法获得预期执行的，由于该 channel 是无缓冲的，位置一的代码会陷入阻塞，下一行的 goroutine 根本没有机会执行。整个代码会陷入死锁。</p>
+<p>正确的操作是，打开 <strong>位置二</strong> 的注释，因为上一行 goroutine 先行启动，他是一个独立的协程，不会阻塞主 groutine 的执行，但它内部会阻塞在 <code>num := &lt;-ch</code> 这行代码，直到主协程执行完 <code>ch&lt;-5</code> ，才会执行打印。所以这里也有一个非常重要的问题，主协程如果不等待子协程执行完就退出的话，会看不到执行结果。</p>
+<p>这里先提一点，无缓冲的 channel 并不会用到内部结构体的 <code>buf</code> ，这部分具体会在源码部分讲解他们的数据存取、交换的方式。</p>
+<h3 id="有缓冲-channel"><a href="#有缓冲-channel" class="headerlink" title="有缓冲 channel"></a>有缓冲 channel</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">1</span>) <span class="comment">// 注意这里</span></span><br><span class="line"><span class="keyword">defer</span> <span class="built_in">close</span>(ch)</span><br><span class="line"></span><br><span class="line"><span class="comment">//ch&lt;-5 // 位置一</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    num := &lt;-ch</span><br><span class="line">    fmt.Println(num)</span><br><span class="line">&#125;(ch)</span><br><span class="line"></span><br><span class="line"><span class="comment">// ch&lt;-5 // 位置二</span></span><br></pre></td></tr></table></figure>
+<p>代码基本没有改变，唯一的区别是 make 函数传入了第二个参数，这个值的含义是缓冲的大小。那么此时 <strong>位置一</strong> 与 <strong>位置二</strong> 都能够正常执行吗？</p>
+<p>答案是肯定的，此时的代码，无论是那个位置，打开注释后都能够正常执行。原因就在于由于 channel 有了缓存区域，<strong>位置一</strong> 写入数据不会造成主协程的阻塞，那么下一行代码的子协程就可以正常启动，并直接将位置一写入 <code>buf</code> 的数据读取出来打印。</p>
+<p>对于 <strong>位置二</strong> ，由于子协程先启动，但是会被阻塞在 <code>num := &lt;-ch</code> 这一行，因为此时 <code>buf</code> 中没有任何内容可读取（下期源码分析我们可以看代码实现），直到位置二执行完，唤醒子协程。</p>
+<hr>
+<p>发送需要注意几个问题：</p>
+<ol>
+<li><p>什么时候会被阻塞？</p>
+<ul>
+<li>向 <code>nil</code> 通道发送数据会被阻塞</li>
+<li>向无缓冲 channel 写数据，如果读协程没有准备好，会阻塞</li>
+<li>向有缓冲 channel 写数据，如果缓冲已满，会阻塞</li>
+</ul>
+</li>
+<li><p>什么时候会 <code>panic</code>？</p>
+<ul>
+<li>closed的 channel，写数据会 panic</li>
+</ul>
+</li>
+<li><p>就算是有缓冲的 channel ，也不是每次发送、接收都要经过缓存，如果发送的时候，刚好有等待接收的协程，那么会直接交换数据。</p>
+</li>
+</ol>
+<h2 id="receive"><a href="#receive" class="headerlink" title="receive"></a>receive</h2><p>有写入，必然后读取。</p>
+<p>还是上面的代码， <code>num := &lt;-ch</code> 就是从 channel 读取数据。对于读取就不按照有缓冲与无缓冲来讲解了，它们的主要问题是什么时候阻塞。通过上面写的例子自己再想想即可。</p>
+<p>这里说下读取的两种形式。</p>
+<p><strong>形式一</strong></p>
+<blockquote>
+<p>multi-valued assignment</p>
+</blockquote>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v, ok := &lt;-ch</span><br></pre></td></tr></table></figure>
+<p><code>ok</code> 是一个 bool 类型，可以通过它来判断 channel 是否已经关闭，如果关闭该值为 true ，此时 v 接收到的是 channel 类型的零值。比如： channel 是传递的 int， 那么 v 就是 0 ；如果是结构体，那么 v 就是结构体内部对应字段的零值。</p>
+<p><strong>形式二</strong></p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v := &lt;-ch</span><br></pre></td></tr></table></figure>
+<p>该方式对于关闭的 channel 无法掌控，我们示例中就是该种方式。</p>
+<hr>
+<p>接收需要注意几个问题：</p>
+<ol>
+<li><p>什么时候会被阻塞？</p>
+<ul>
+<li>从 <code>nil</code> 通道接收数据会被阻塞</li>
+<li>从无缓冲 channel 读数据，如果写协程没有准备好，会阻塞</li>
+<li>从有缓冲 channel 读数据，如果缓冲为空，会阻塞</li>
+</ul>
+</li>
+<li><p>读取的 channel 如果被关闭，并不会影响正在读的数据，它会将所有数据读取完毕，并不会立即就失败或者返回零值</p>
+</li>
+</ol>
+<h2 id="close"><a href="#close" class="headerlink" title="close"></a>close</h2><p>对于 channel 的关闭，在什么地方去关闭呢？因为上面也讲到向 closed 的 channel 写或者继续 close 都会导致 panic问题。</p>
+<p>一般的建议是谁写入，谁负责关闭。如果涉及到多个写入的协程、多个读取的协程？又该如何关闭？总的来说就是加入一个标记避免重复关闭。不过真的不建议搞的太复杂，否则后续维护代码会疯掉。</p>
+<hr>
+<p>关闭需要注意几个问题：</p>
+<ol>
+<li>什么时候会 <code>panic</code>？<ul>
+<li>closed 的 channel，再次关闭 close 会 panic</li>
+</ul>
+</li>
+</ol>
+<h2 id="for-range"><a href="#for-range" class="headerlink" title="for-range"></a>for-range</h2><p>我们常常会用 <code>for-range</code> 来读取 channel的数据。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">        ch &lt;- i</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">close</span>(ch)</span><br><span class="line">&#125;(ch)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> val := <span class="keyword">range</span> ch &#123;</span><br><span class="line">    fmt.Println(val)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该语句的一个特色是如果 channel 已经被关闭，它还是会继续执行，直到所有值被取完，然后退出执行。而如果通道没有关闭，但是channel没有可读取的数据，它则会阻塞在 range 这句位置，直到被唤醒。但是如果 channel 是 nil，那么同样符合我们上面说的的原则，读取会被阻塞，也就是会一直阻塞在 <code>range</code> 位置。</p>
+<h2 id="select"><a href="#select" class="headerlink" title="select"></a>select</h2><p><code>select</code> 是跟 channel 关系最亲密的语句，它是被专门设计出来处理通道的，因为每个 case 后面跟的都是通道表达式，可以是读，也可以是写。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">q := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(ch, q <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">        num := &lt;-ch</span><br><span class="line">        fmt.Println(num)</span><br><span class="line">    &#125;</span><br><span class="line">    q &lt;- <span class="number">1</span></span><br><span class="line">&#125;(ch, q)</span><br><span class="line"></span><br><span class="line">fibonacci := <span class="function"><span class="keyword">func</span><span class="params">(ch, q <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    x, y := <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">select</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> ch &lt;- x: <span class="comment">// 写入</span></span><br><span class="line">            x, y = y, x+y</span><br><span class="line">            <span class="keyword">break</span> <span class="comment">// 你觉得是否会影响 for 语句的循环？</span></span><br><span class="line">        <span class="keyword">case</span> &lt;-q: <span class="comment">// 读取</span></span><br><span class="line">            fmt.Println(<span class="string">"quit"</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">fibonacci(ch, q)</span><br></pre></td></tr></table></figure>
+<p>上面的代码是利用 channel 实现的一个斐波拉契数列。select 还可以有 default 语句，该语句会在其它 case 都被阻塞的情况下执行。</p>
+<hr>
+<p>关注的问题</p>
+<ol>
+<li>select 只要有默认语句，就不会被阻塞，换句话说，如果没有 default，然后 case 又都不能读或者写，则会被阻塞</li>
+<li>nil 的 channel，不管读写都会被阻塞</li>
+<li>select 不能够像 <code>for-range</code> 一样发现 channel 被关闭而终止执行，所以需要结合 <code>multi-valued assignment</code> 来处理</li>
+<li>如果同时有多个 case 满足了条件，会使用伪随机选择一个 case 来执行</li>
+<li>select 语句如果不配合 for 语句使用，只会对 case 表达式求值一次</li>
+<li>每次 select 语句的执行，是会扫码完所有的 case 后才确定如何执行，而不是说遇到合适的 case 就直接执行了。</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文内容很简单易懂，希望大家彻底掌握了 channel 的使用。一切源码的研究都是为了更好的使用，后面的文章将开始研究 channel 的源码实现。</p>
+<p>本文几个重要问题再次总结下，也是经常面试的常考点。</p>
+<ol>
+<li>向 close 的 channel 写数据、再次 close 都会触发 <code>runtime panic</code>。</li>
+<li>向 nil channel 写、读取数据，都会阻塞，可以利用这点来优化 for + select 的用法。</li>
+<li>channel 的关闭最好在写入方处理，读的协程不要去关闭 channel，可以通过单向通道来表明 channel 在该位置的功能。</li>
+<li>如果有多个写协程的 channel 需要关闭，可以使用额外的 channel 来标记，也可以使用 <code>sync.Once</code> 或者 <code>sync.Mutex</code> 来处理。</li>
+<li>channel 不管是读写都是并发安全的，不会出现多个协程同时读或者写的情况，从而实现了 CSP。</li>
+</ol>
+<p><strong>参考资料</strong></p>
+<ul>
+<li>[1] <a href="https://colobu.com/2016/04/14/Golang-Channels/" target="_blank" rel="external">Go Channel 详解</a> </li>
+<li>[2] <a href="https://www.ardanlabs.com/blog/2014/02/the-nature-of-channels-in-go.html" target="_blank" rel="external">The Nature Of Channels In Go</a></li>
+</ul>
+<p><strong>下期预告</strong></p>
+<p>channel 这些特性是如何在代码层面实现的？下期会先将 channel 内部两个重要的数据结构：循环队列实现的buf，以及单向链表实现的协程读写队列。</p>
+
+        </div>
+      </div>
+    </div>
+    <!-- 个人信息 -->
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p align="center" style="margin:0;padding:0;"><img src="https://dayutalk.cn/img/mp-qrcode.jpg"></p>
+        <p align="center" style="margin:0;padding:0;">个人公众号：<b>dayuTalk</b></p>
+        <p align="center" style="margin:0;padding:0;">联系邮箱：dayugog@gmail.com</p>
+        <p align="center" style="margin:0;padding:0;">GitHub：<a href="https://github.com/helei112g">https://github.com/helei112g</a></p>
+        <p align="center" style="margin:0;padding:0;"><img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"></p>
+        <p align="center" style="margin:0;padding:0;"><b>我写我的，你赏你的</b></p>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+        <p class="copyright text-muted">
+          友情链接
+          <a target="_blank" href="//tigerb.cn">Tigerb</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
