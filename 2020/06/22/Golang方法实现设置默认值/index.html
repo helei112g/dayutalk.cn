@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="He Lei">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Golang技巧之默认值设置的高阶玩法"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚Talk｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://dayutalk.cnundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚Talk｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>大愚Talk｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Golang技巧之默认值设置的高阶玩法</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  GitHub
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://juejin.im/user/58c50c75570c35006d632e8e">
+                  
+                  掘金
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://segmentfault.com/u/helei112g">
+                  
+                  SegmentFault
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2020-06-22</span>
+            <span class="time">10:37:09</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Golang/">Golang</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/Golang/">#Golang</a> <a class="tag" href="/tags/Go技巧/">#Go技巧</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>从别人的代码中吸取养分！让自己成长<br><a id="more"></a></p>
+<p>最近使用 <code>GRPC</code> 发现一个设计特别好的地方，非常值得借鉴。</p>
+<p>我们在日常写方法的时候，希望给某个字段设置一个默认值，不需要定制化的场景就不传这个参数，但是 <code>Golang</code> 却没有提供像 <code>PHP</code>、<code>Python</code> 这种动态语言设置方法参数默认值的能力。</p>
+<h1 id="低阶玩家应对默认值问题"><a href="#低阶玩家应对默认值问题" class="headerlink" title="低阶玩家应对默认值问题"></a>低阶玩家应对默认值问题</h1><p>以一个购物车举例。比如我有下面这样一个购物车的结构体，其中 <code>CartExts</code> 是扩展属性，它有自己的默认值，使用者希望如果不改变默认值时就不传该参数。但是由于 <code>Golang</code> 无法在参数中设置默认值，只有以下几个选择：</p>
+<ol>
+<li>提供一个初始化函数，所有的 <code>ext</code> 字段都做为参数，如果不需要的时候传该类型的零值，这把复杂度暴露给调用者；</li>
+<li>将 <code>ext</code> 这个结构体做为一个参数在初始化函数中，与 <code>1</code> 一样，复杂度在于调用者;</li>
+<li>提供多个初始化函数，针对每个场景都进行内部默认值设置。</li>
+</ol>
+<p>下面看下代码具体会怎么做</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	CommonCart = <span class="string">"common"</span></span><br><span class="line">	BuyNowCart = <span class="string">"buyNow"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> CartExts <span class="keyword">struct</span> &#123;</span><br><span class="line">	CartType <span class="keyword">string</span></span><br><span class="line">	TTL      time.Duration</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> DemoCart <span class="keyword">struct</span> &#123;</span><br><span class="line">	UserID <span class="keyword">string</span></span><br><span class="line">	ItemID <span class="keyword">string</span></span><br><span class="line">	Sku    <span class="keyword">int64</span></span><br><span class="line">	Ext    CartExts</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> DefaultExt = CartExts&#123;</span><br><span class="line">	CartType: CommonCart,       <span class="comment">// 默认是普通购物车类型</span></span><br><span class="line">	TTL:      time.Minute * <span class="number">60</span>, <span class="comment">// 默认 60min 过期</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方式一：每个扩展数据都做为参数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewCart</span><span class="params">(userID <span class="keyword">string</span>, Sku <span class="keyword">int64</span>, TTL time.Duration, cartType <span class="keyword">string</span>)</span> *<span class="title">DemoCart</span></span> &#123;</span><br><span class="line">	ext := DefaultExt</span><br><span class="line">	<span class="keyword">if</span> TTL &gt; <span class="number">0</span> &#123;</span><br><span class="line">		ext.TTL = TTL</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> cartType == BuyNowCart &#123;</span><br><span class="line">		ext.CartType = cartType</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> &amp;DemoCart&#123;</span><br><span class="line">		UserID: userID,</span><br><span class="line">		Sku:    Sku,</span><br><span class="line">		Ext:    ext,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方式二：多个场景的独立初始化函数；方式二会依赖一个基础的函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewCartScenes01</span><span class="params">(userID <span class="keyword">string</span>, Sku <span class="keyword">int64</span>, cartType <span class="keyword">string</span>)</span> *<span class="title">DemoCart</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> NewCart(userID, Sku, time.Minute*<span class="number">60</span>, cartType)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewCartScenes02</span><span class="params">(userID <span class="keyword">string</span>, Sku <span class="keyword">int64</span>, TTL time.Duration)</span> *<span class="title">DemoCart</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> NewCart(userID, Sku, TTL, <span class="string">""</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码看起来没什么问题，但是我们设计代码最重要的考虑就是稳定与变化，我们需要做到 <strong>对扩展开放，对修改关闭</strong> 以及代码的 <strong>高内聚</strong>。那么如果是上面的代码，你在 <code>CartExts</code> 增加了一个字段或者减少了一个字段。是不是每个地方都需要进行修改呢？又或者 <code>CartExts</code> 如果有非常多的字段，这个不同场景的构造函数是不是得写非常多个？所以简要概述一下上面的办法存在的问题。</p>
+<ol>
+<li>不方便对 <code>CartExts</code> 字段进行扩展；</li>
+<li>如果 <code>CartExts</code> 字段非常多，构造函数参数很长，难看、难维护；</li>
+<li>所有的字段构造逻辑冗余在 <code>NewCart</code> 中，面条代码不优雅；</li>
+<li>如果采用 <code>CartExts</code> 做为参数的方式，那么就将过多的细节暴露给了调用者。</li>
+</ol>
+<p>接下来我们来看看 <code>GRPC</code> 是怎么做的，学习优秀的范例，提升自我的代码能力。</p>
+<blockquote>
+<p>从这你也可以体会到代码功底牛逼的人，代码就是写的美！</p>
+</blockquote>
+<h1 id="GRPC-之高阶玩家设置默认值"><a href="#GRPC-之高阶玩家设置默认值" class="headerlink" title="GRPC 之高阶玩家设置默认值"></a>GRPC 之高阶玩家设置默认值</h1><blockquote>
+<p>源码来自：grpc@v1.28.1 版本。为了突出主要目标，对代码进行了必要的删减。</p>
+</blockquote>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// dialOptions 详细定义在 google.golang.org/grpc/dialoptions.go</span></span><br><span class="line"><span class="keyword">type</span> dialOptions <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="comment">// ... ...</span></span><br><span class="line">	insecure    <span class="keyword">bool</span></span><br><span class="line">    timeout     time.Duration</span><br><span class="line">    <span class="comment">// ... ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ClientConn 详细定义在 google.golang.org/grpc/clientconn.go</span></span><br><span class="line"><span class="keyword">type</span> ClientConn <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="comment">// ... ...</span></span><br><span class="line">	authority    <span class="keyword">string</span></span><br><span class="line">	dopts        dialOptions <span class="comment">// 这是我们关注的重点，所有可选项字段都在这里</span></span><br><span class="line">    csMgr        *connectivityStateManager</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ... ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个 grpc 链接</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DialContext</span><span class="params">(ctx context.Context, target <span class="keyword">string</span>, opts ...DialOption)</span> <span class="params">(conn *ClientConn, err error)</span></span> &#123;</span><br><span class="line">	cc := &amp;ClientConn&#123;</span><br><span class="line">		target:            target,</span><br><span class="line">		csMgr:             &amp;connectivityStateManager&#123;&#125;,</span><br><span class="line">		conns:             <span class="built_in">make</span>(<span class="keyword">map</span>[*addrConn]<span class="keyword">struct</span>&#123;&#125;),</span><br><span class="line">		dopts:             defaultDialOptions(), <span class="comment">// 默认值选项</span></span><br><span class="line">		blockingpicker:    newPickerWrapper(),</span><br><span class="line">		czData:            <span class="built_in">new</span>(channelzData),</span><br><span class="line">		firstResolveEvent: grpcsync.NewEvent(),</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ... ...</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 修改改选为用户的默认值</span></span><br><span class="line">	<span class="keyword">for</span> _, opt := <span class="keyword">range</span> opts &#123;</span><br><span class="line">		opt.apply(&amp;cc.dopts)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ... ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码的含义非常明确，可以认为 <code>DialContext</code> 函数是一个 grpc 链接的创建函数，它内部主要是构建 <code>ClientConn</code> 这个结构体，并做为返回值。<code>defaultDialOptions</code> 函数返回的是系统提供给 <strong>dopts</strong> 字段的默认值，如果用户想要自定义可选属性，可以通过可变参数 <strong>opts</strong> 来控制。</p>
+<p>经过上面的改进，我们惊奇的发现，这个构造函数非常的优美，无论 <strong>dopts</strong> 字段如何增减，构造函数不需要改动；<code>defaultDialOptions</code> 也可以从一个公有字段变为一个私有字段，更加对内聚，对调用者友好。</p>
+<p>那么这一切是怎么实现的？下面我们一起学习这个实现思路。</p>
+<h2 id="DialOption-的封装"><a href="#DialOption-的封装" class="headerlink" title="DialOption 的封装"></a>DialOption 的封装</h2><p>首先，这里的第一个技术点是，<code>DialOption</code> 这个参数类型。我们通过可选参数方式优化了可选项字段修改时就要增加构造函数参数的尴尬，但是要做到这一点就需要确保可选字段的类型一致，实际工作中这是不可能的。所以又使出了程序界最高手段，一层实现不了，就加一层。</p>
+<p>通过这个接口类型，实现了对各个不同字段类型的统一，让构造函数入参简化。来看一下这个接口。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> DialOption <span class="keyword">interface</span> &#123;</span><br><span class="line">	apply(*dialOptions)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个接口有一个方法，其参数是 <code>*dialOptions</code> 类型，我们通过上面 for 循环处的代码也可以看到，传入的是 <code>&amp;cc.dopts</code>。简单说就是把要修改的对象传入进来。<code>apply</code> 方法内部实现了具体的修改逻辑。</p>
+<p>那么，这既然是一个接口，必然有具体的实现。来看一下实现。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 空实现，什么也不做</span></span><br><span class="line"><span class="keyword">type</span> EmptyDialOption <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(EmptyDialOption)</span> <span class="title">apply</span><span class="params">(*dialOptions)</span></span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用到最多的地方，重点讲</span></span><br><span class="line"><span class="keyword">type</span> funcDialOption <span class="keyword">struct</span> &#123;</span><br><span class="line">	f <span class="function"><span class="keyword">func</span><span class="params">(*dialOptions)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title">func</span> <span class="params">(fdo *funcDialOption)</span> <span class="title">apply</span><span class="params">(do *dialOptions)</span></span> &#123;</span><br><span class="line">	fdo.f(do)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newFuncDialOption</span><span class="params">(f <span class="keyword">func</span>(*dialOptions)</span>) *<span class="title">funcDialOption</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;funcDialOption&#123;</span><br><span class="line">		f: f,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们重点说 <code>funcDialOption</code> 这个实现。这算是一个高级用法，体现了在 Golang 里边函数是 <strong>一等公民</strong>。它有一个构造函数，以及实现了 <code>DialOption</code> 接口。</p>
+<p><code>newFuncDialOption</code> 构造函数接收一个函数做为唯一参数，然后把传入的函数保存到 <code>funcDialOption</code> 的字段 <code>f</code> 上。再来看看这个参数函数的参数类型是 <code>*dialOptions</code> ，与 <code>apply</code> 方法的参数是一致的，这是设计的第二个重点。</p>
+<p>现在该看 <code>apply</code> 方法的实现了。它非常简单，其实就是调用构造 <code>funcDialOption</code> 时传入的方法。可以理解为相当于做了一个代理。把 <code>apply</code> 要修改的对象丢到 <code>f</code> 这个方法中。所以重要的逻辑都是我们传入到 <code>newFuncDialOption</code> 这个函数的参数方法实现的。</p>
+<p>现在来看看 <strong>grpc</strong> 内部有哪些地方调用了 <code>newFuncDialOption</code> 这个构造方法。</p>
+<h2 id="newFuncDialOption-的调用"><a href="#newFuncDialOption-的调用" class="headerlink" title="newFuncDialOption 的调用"></a>newFuncDialOption 的调用</h2><p>由于 <code>newFuncDialOption</code> 返回的 <code>*funcDialOption</code> 实现了 <code>DialOption</code> 接口，因此关注哪些地方调用了它，就可以顺藤摸瓜的找到我们最初 <code>grpc.DialContext</code> 构造函数 <strong>opts</strong> 可以传入的参数。</p>
+<blockquote>
+<p>调用了该方法的地方非常多，我们只关注文章中列出的两个字段对应的方法：<code>insecure</code> 与 <code>timeout</code>。</p>
+</blockquote>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 以下方法详细定义在 google.golang.org/grpc/dialoptions.go</span></span><br><span class="line"><span class="comment">// 开启不安全传输</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WithInsecure</span><span class="params">()</span> <span class="title">DialOption</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> newFuncDialOption(<span class="function"><span class="keyword">func</span><span class="params">(o *dialOptions)</span></span> &#123;</span><br><span class="line">		o.insecure = <span class="literal">true</span></span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置 timeout</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WithTimeout</span><span class="params">(d time.Duration)</span> <span class="title">DialOption</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> newFuncDialOption(<span class="function"><span class="keyword">func</span><span class="params">(o *dialOptions)</span></span> &#123;</span><br><span class="line">		o.timeout = d</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>来体验一下这里的精妙设计：</p>
+<ol>
+<li>首先对于每一个字段，提供一个方法来设置其对应的值。由于每个方法返回的类型都是 <code>DialOption</code> ，从而确保了 <code>grpc.DialContext</code> 方法可用可选参数，因为类型都是一致的；</li>
+<li>返回的真实类型是 <code>*funcDialOption</code> ，但是它实现了接口 <code>DialOption</code>，这增加了扩展性。</li>
+</ol>
+<h2 id="grpc-DialContext-的调用"><a href="#grpc-DialContext-的调用" class="headerlink" title="grpc.DialContext 的调用"></a>grpc.DialContext 的调用</h2><p>完成了上面的程序构建，现在我们来站在使用的角度，感受一下这无限的风情。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">opts := []grpc.DialOption&#123;</span><br><span class="line">    grpc.WithTimeout(<span class="number">1000</span>),</span><br><span class="line">    grpc.WithInsecure(),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">conn, err := grpc.DialContext(context.Background(), target, opts...)</span><br><span class="line"><span class="comment">// ... ...</span></span><br></pre></td></tr></table></figure>
+<p>当然这里要介绍的重点就是 <code>opts</code> 这个 slice ，它的元素就是实现了 <code>DialOption</code> 接口的对象。而上面的两个方法经过包装后都是 <code>*funcDialOption</code> 对象，它实现了 <code>DialOption</code> 接口，因此这些函数调用后的返回值就是这个 slice 的元素。</p>
+<p>现在我们可以进入到 <code>grpc.DialContext</code> 这个方法内部，看到它内部是如何调用的。遍历 <strong>opts</strong>，然后依次调用 <code>apply</code> 方法完成设置。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 修改改选为用户的默认值</span></span><br><span class="line"><span class="keyword">for</span> _, opt := <span class="keyword">range</span> opts &#123;</span><br><span class="line">    opt.apply(&amp;cc.dopts)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>经过这样一层层的包装，虽然增加了不少代码量，但是明显能够感受到整个代码的美感、可扩展性都得到了改善。接下来看一下，我们自己的 demo 要如何来改善呢？</p>
+<h1 id="改善-DEMO-代码"><a href="#改善-DEMO-代码" class="headerlink" title="改善 DEMO 代码"></a>改善 DEMO 代码</h1><p>首先我们需要对结构体进行改造，将 <code>CartExts</code> 变成 <code>cartExts</code>， 并且需要设计一个封装类型来包裹所有的扩展字段，并将这个封装类型做为构造函数的可选参数。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	CommonCart = <span class="string">"common"</span></span><br><span class="line">	BuyNowCart = <span class="string">"buyNow"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> cartExts <span class="keyword">struct</span> &#123;</span><br><span class="line">	CartType <span class="keyword">string</span></span><br><span class="line">	TTL      time.Duration</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> CartExt <span class="keyword">interface</span> &#123;</span><br><span class="line">	apply(*cartExts)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这里新增了类型，标记这个函数。相关技巧后面介绍</span></span><br><span class="line"><span class="keyword">type</span> tempFunc <span class="function"><span class="keyword">func</span><span class="params">(*cartExts)</span></span><br><span class="line"></span><br><span class="line">// 实现 <span class="title">CartExt</span> 接口</span><br><span class="line"><span class="title">type</span> <span class="title">funcCartExt</span> <span class="title">struct</span></span> &#123;</span><br><span class="line">	f tempFunc</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实现的接口</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(fdo *funcCartExt)</span> <span class="title">apply</span><span class="params">(e *cartExts)</span></span> &#123;</span><br><span class="line">	fdo.f(e)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newFuncCartExt</span><span class="params">(f tempFunc)</span> *<span class="title">funcCartExt</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;funcCartExt&#123;f: f&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> DemoCart <span class="keyword">struct</span> &#123;</span><br><span class="line">	UserID <span class="keyword">string</span></span><br><span class="line">	ItemID <span class="keyword">string</span></span><br><span class="line">	Sku    <span class="keyword">int64</span></span><br><span class="line">	Ext    cartExts</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> DefaultExt = cartExts&#123;</span><br><span class="line">	CartType: CommonCart,       <span class="comment">// 默认是普通购物车类型</span></span><br><span class="line">	TTL:      time.Minute * <span class="number">60</span>, <span class="comment">// 默认 60min 过期</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewCart</span><span class="params">(userID <span class="keyword">string</span>, Sku <span class="keyword">int64</span>, exts ...CartExt)</span> *<span class="title">DemoCart</span></span> &#123;</span><br><span class="line">	c := &amp;DemoCart&#123;</span><br><span class="line">		UserID: userID,</span><br><span class="line">		Sku:    Sku,</span><br><span class="line">		Ext:    DefaultExt, <span class="comment">// 设置默认值</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 遍历进行设置</span></span><br><span class="line">	<span class="keyword">for</span> _, ext := <span class="keyword">range</span> exts &#123;</span><br><span class="line">		ext.apply(&amp;c.Ext)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>经过这一番折腾，我们的代码看起来是不是非常像 grpc 的代码了？还差最后一步，需要对 <code>cartExts</code> 的每个字段包装一个函数。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WithCartType</span><span class="params">(cartType <span class="keyword">string</span>)</span> <span class="title">CartExt</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> newFuncCartExt(<span class="function"><span class="keyword">func</span><span class="params">(exts *cartExts)</span></span> &#123;</span><br><span class="line">		exts.CartType = cartType</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WithTTL</span><span class="params">(d time.Duration)</span> <span class="title">CartExt</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> newFuncCartExt(<span class="function"><span class="keyword">func</span><span class="params">(exts *cartExts)</span></span> &#123;</span><br><span class="line">		exts.TTL = d</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于使用者来说，只需如下处理：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">exts := []CartExt&#123;</span><br><span class="line">    WithCartType(CommonCart),</span><br><span class="line">    WithTTL(<span class="number">1000</span>),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">NewCart(<span class="string">"dayu"</span>, <span class="number">888</span>, exts...)</span><br></pre></td></tr></table></figure>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>是不是非常简单？我们再一起来总结一下这里代码的构建技巧：</p>
+<ol>
+<li>把可选项收敛到一个统一的结构体中；并且将该字段私有化；</li>
+<li>定义一个接口类型，这个接口提供一个方法，方法的参数应该是可选属性集合的结构体的指针类型，因为我们要修改其内部值，所以一定要指针类型；</li>
+<li>定义一个函数类型，该函数应该跟接口类型中的方法保持一致的参数，都使用可选项收敛的这个结构体指针作为参数；（非常重要）</li>
+<li>定义一个结构体，并实现 <code>2</code> 中的接口类型；（这一步并非必须，但这是一种良好的编程风格）</li>
+<li>利用实现了接口的类型，封装可选字段对应的方法；命令建议用 <strong>With + 字段名</strong> 的方式。</li>
+</ol>
+<p>按照上面的五步大法，你就能够实现设置默认值的高阶玩法。</p>
+<p>如果你喜欢这个类型的文章，欢迎留言点赞！</p>
+
+        </div>
+      </div>
+    </div>
+    <!-- 个人信息 -->
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p align="center" style="margin:0;padding:0;"><img src="https://dayutalk.cn/img/mp-qrcode.jpg"></p>
+        <p align="center" style="margin:0;padding:0;">个人公众号：<b>dayuTalk</b></p>
+        <p align="center" style="margin:0;padding:0;">联系邮箱：dayugog@gmail.com</p>
+        <p align="center" style="margin:0;padding:0;">GitHub：<a href="https://github.com/helei112g">https://github.com/helei112g</a></p>
+        <p align="center" style="margin:0;padding:0;"><img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"></p>
+        <p align="center" style="margin:0;padding:0;"><b>我写我的，你赏你的</b></p>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+        <p class="copyright text-muted">
+          友情链接
+          <a target="_blank" href="//tigerb.cn">Tigerb</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
