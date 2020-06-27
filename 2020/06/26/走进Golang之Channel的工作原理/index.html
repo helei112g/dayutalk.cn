@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="He Lei">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="走进Golang之Channel的数据结构"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚Talk｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://dayutalk.cnundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚Talk｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>大愚Talk｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">走进Golang之Channel的数据结构</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  GitHub
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://juejin.im/user/58c50c75570c35006d632e8e">
+                  
+                  掘金
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://segmentfault.com/u/helei112g">
+                  
+                  SegmentFault
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2020-06-26</span>
+            <span class="time">11:15:32</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Golang/">Golang</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/Golang/">#Golang</a> <a class="tag" href="/tags/channel/">#channel</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>挖坑容易，填坑难！假期来填一填坑。<br><a id="more"></a></p>
+<p>上篇文章讲了 <code>channel</code> 的基本使用，讲了一些使用时需要注意的事项，本文将重点介绍 <code>channel</code> 中的两个数据结构：<strong>循环队列</strong> 与 <strong>双端链表</strong> 。</p>
+<h1 id="channel-的需求描述"><a href="#channel-的需求描述" class="headerlink" title="channel 的需求描述"></a>channel 的需求描述</h1><p>为了理解这些数据结构解决了什么问题，我们先来做个简单的回顾，看看为什么需要这两个数据结构，他们解决了什么问题。我们知道 <strong>goroutine</strong> 是用户态的线程，不同的 <strong>goroutine</strong> 之间是有消息传递这个需求的。在原始的进程与线程（系统线程）编程中我们会采用管道的方式，而 <code>channel</code> 就是用户态线程传递消息的管道实现，并且是类型安全的。</p>
+<p>既然 <code>channel</code> 是一个管道，用来满足不同 <strong>goroutine</strong> 间交换消息的。那么实现这样一个管道要怎么做呢？</p>
+<p>来看看我们日常传递消息的需求：</p>
+<ol>
+<li>能够有多个 <strong>goroutine</strong> 向 <code>channel</code> 进行读写，并且保证没有竞争问题，需要用 <strong>队列</strong> 来管理阻塞的 <strong>goroutine</strong>，解决竞争问题；</li>
+<li>需要管理发送到 <code>channel</code> 的消息（有缓冲、无缓冲），对于有缓存的 <code>channel</code> 可以采用 <strong>循环队列</strong> 来管理多个消息。</li>
+</ol>
+<p>当然上面的需求是经过简化的，比如 <code>channel</code> 还需要具备阻塞、唤醒 <strong>goroutine</strong> 的能力，不过为了本文我们更加专注焦点问题，先只关注上面两个问题。</p>
+<h1 id="channel-的数据结构"><a href="#channel-的数据结构" class="headerlink" title="channel 的数据结构"></a>channel 的数据结构</h1><p>接下来我们分析一下 <code>channel</code> 在实际运行中，它的结构体是怎么样的。当然这又分为两种类型，有缓冲与无缓冲的。我们先来看一个无缓冲的情况。</p>
+<h2 id="无缓冲"><a href="#无缓冲" class="headerlink" title="无缓冲"></a>无缓冲</h2><p>先把示例代码贴出来。就是两个读的 <strong>goroutine</strong> 被阻塞在一个无缓冲的 channel 上。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>) <span class="comment">// 无缓冲</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> goRoutineA(ch)</span><br><span class="line">	<span class="keyword">go</span> goRoutineB(ch)</span><br><span class="line">	ch &lt;- <span class="number">1</span></span><br><span class="line"></span><br><span class="line">	time.Sleep(time.Second * <span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">goRoutineA</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	v := &lt;-ch</span><br><span class="line">	fmt.Printf(<span class="string">"A received data: %d\n"</span>, v)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">goRoutineB</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	v := &lt;-ch</span><br><span class="line">	fmt.Printf(<span class="string">"B received data: %d\n"</span>, v)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>来看看当代码执行到 <code>ch &lt;- 1</code> 这一行之后 <code>channel</code> 的结构体被填充成什么样子了！</p>
+<p><img src="https://dayutalk.cn/img/20200626/channel-00.jpg" alt="无缓冲 channel"></p>
+<p>注意其中 <code>buf</code> 字段可存储的长度是0，这是因为 <strong>无缓冲 channel</strong> 不会用到循环队列来存储数据。它一定是等读、写 goroutine 都准备好了，然后直接把数据交给对方。我们用一副图来看一下无缓冲的数据交换过程。</p>
+<p><img src="https://dayutalk.cn/img/20200626/channel-01.jpg" alt="交换数据"></p>
+<p>上图描述的是数据交换过程，再看一下读 goroutine 被阻塞的结构示意图。被阻塞的 goroutine 会挂载到对应的队列上，该队列是一个双端队列。</p>
+<p>上面的例子，由于两个读 goroutine 在启动的时候，写还没有准备好，因此读全部被挂起在队列中；当有写goroutine准备好的时候，由于此时读已经就绪，因此写不会阻塞，挂起放到 <code>sendq</code> 中。大家可以修改上面的代码，自己看一下写阻塞，读立马执行的情况。</p>
+<p><img src="https://dayutalk.cn/img/20200626/channel-02.jpg" alt="结构示例"></p>
+<h2 id="有缓冲"><a href="#有缓冲" class="headerlink" title="有缓冲"></a>有缓冲</h2><p>我们将上面的代码改成有缓冲的通道，然后再来看看有缓冲的情况。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>) <span class="comment">// 有缓冲</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 都不会阻塞</span></span><br><span class="line">	ch &lt;- <span class="number">1</span></span><br><span class="line">	ch &lt;- <span class="number">2</span></span><br><span class="line">    ch &lt;- <span class="number">3</span></span><br><span class="line">    <span class="comment">// 会阻塞，被挂起到 sendq 中</span></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		ch &lt;- <span class="number">4</span></span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 只是为了debug</span></span><br><span class="line">	<span class="keyword">var</span> a <span class="keyword">int</span></span><br><span class="line">	fmt.Println(a)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> goRoutineA(ch)</span><br><span class="line">	<span class="keyword">go</span> goRoutineA(ch)</span><br><span class="line">	<span class="keyword">go</span> goRoutineB(ch)</span><br><span class="line">	<span class="keyword">go</span> goRoutineB(ch) <span class="comment">// 猜猜这里会被挂起吗？</span></span><br><span class="line"></span><br><span class="line">	time.Sleep(time.Second * <span class="number">2</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">goRoutineA</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	v := &lt;-ch</span><br><span class="line">	fmt.Printf(<span class="string">"A received data: %d\n"</span>, v)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">goRoutineB</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	v := &lt;-ch</span><br><span class="line">	fmt.Printf(<span class="string">"B received data: %d\n"</span>, v)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>贴出执行到第一行的 <code>go goRoutineA(ch)</code> 时， <code>hchan</code> 的结构填充情况。</p>
+<p><img src="https://dayutalk.cn/img/20200626/channel-04.jpg" alt="有缓冲 channel"></p>
+<p>在这里可以看到缓冲的大小是3，由于增加了缓冲，只要写 goroutine 没有把缓冲写满，则不会导致协程阻塞。但是一旦缓冲没有多余的空间，则会把写 goroutine 挂起到 <code>sendq</code> 中，直到有空间时将他唤醒（还有其它唤醒的场景，这一略过）。</p>
+<p>其实有缓冲的 channel，就是把同步的通信变为了异步的通信。写的 channel 不需要关注读 channel，只要有空间它就写；而读也一样，只要有数据就正常读就可以，如果没有就挂起到队列中，等待被唤醒。下图形象的展示了有缓冲 channel 是如何交换数据的。</p>
+<p><img src="https://dayutalk.cn/img/20200626/channel-03.jpg" alt="交换数据"></p>
+<p>我们再来用图的形式看一下此时结构体的样子，这里图有些偷懒，只是在上面图的基础上增加了循环队列部分的描述，实际到该例子中，读 goroutine时不会被阻塞的，看的时候需要注意这一点。</p>
+<p><img src="https://dayutalk.cn/img/20200626/channel-05.jpg" alt="结构示例"></p>
+<h2 id="循环队列"><a href="#循环队列" class="headerlink" title="循环队列"></a>循环队列</h2><p>今天最重要的是理解 channel 中两个关键的数据结构。为了下一讲阅读源码做准备，我把 channel 中的循环队列部分的代码抽象出来了。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 队列满了</span></span><br><span class="line"><span class="keyword">var</span> ErrQFull = errors.New(<span class="string">"circular is full"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 没有值</span></span><br><span class="line"><span class="keyword">var</span> ErrQEmpty = errors.New(<span class="string">"circular is empty"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义循环队列</span></span><br><span class="line"><span class="comment">// 如何确定队空，还是队满？q.sendx = (q.sendx+1) % q.dataqsiz</span></span><br><span class="line"><span class="keyword">type</span> queue <span class="keyword">struct</span> &#123;</span><br><span class="line">	buf      []<span class="keyword">int</span> <span class="comment">// 队列元素存储</span></span><br><span class="line">	dataqsiz <span class="keyword">uint</span>  <span class="comment">// circular 队列长度</span></span><br><span class="line">	qcount   <span class="keyword">uint</span>  <span class="comment">// 有多少元素在buf中 qcount = len(buf)</span></span><br><span class="line">	sendx    <span class="keyword">uint</span>  <span class="comment">// 可以理解为队尾指针，向队列写入数据</span></span><br><span class="line">	recvx    <span class="keyword">uint</span>  <span class="comment">// 可以理解为队头指针，从队列读取数据</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">makeQ</span><span class="params">(size <span class="keyword">int</span>)</span> *<span class="title">queue</span></span> &#123;</span><br><span class="line">	q := &amp;queue&#123;</span><br><span class="line">		dataqsiz: <span class="keyword">uint</span>(size),</span><br><span class="line">		buf:      <span class="literal">nil</span>,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	q.buf = <span class="built_in">make</span>([]<span class="keyword">int</span>, q.dataqsiz)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> q</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 向buf中写入数据</span></span><br><span class="line"><span class="comment">// 请看 chansend 函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *queue)</span> <span class="title">insert</span><span class="params">(ele <span class="keyword">int</span>)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="comment">// 检查队列是否有空间</span></span><br><span class="line">	<span class="keyword">if</span> c.dataqsiz &gt; <span class="number">0</span> &amp;&amp; c.qcount == c.dataqsiz &#123;</span><br><span class="line">		<span class="keyword">return</span> ErrQFull</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 存入数据</span></span><br><span class="line">	c.buf[c.sendx] = ele</span><br><span class="line">	c.sendx++                  <span class="comment">// 尾指针后移</span></span><br><span class="line">	<span class="keyword">if</span> c.sendx == c.dataqsiz &#123; <span class="comment">// 如果相等，说明队列写满了，sendx放到开始位置</span></span><br><span class="line">		c.sendx = <span class="number">0</span></span><br><span class="line">	&#125;</span><br><span class="line">	c.qcount++</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从buf中读取数据</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *queue)</span> <span class="title">read</span><span class="params">()</span> <span class="params">(<span class="keyword">int</span>, error)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 队列中没有数据了</span></span><br><span class="line">	<span class="keyword">if</span> c.dataqsiz &gt; <span class="number">0</span> &amp;&amp; c.qcount == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>, ErrQEmpty</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	ret := c.buf[c.recvx] <span class="comment">// 取出元素</span></span><br><span class="line">	c.buf[c.recvx] = <span class="number">0</span></span><br><span class="line">	c.recvx++</span><br><span class="line">	<span class="keyword">if</span> c.recvx == c.dataqsiz &#123; <span class="comment">// 如果相等，说明写到末尾了，recvx放到开始位置</span></span><br><span class="line">		c.recvx = <span class="number">0</span></span><br><span class="line">	&#125;</span><br><span class="line">	c.qcount--</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> ret, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码基本上就是 <code>channel</code> 的循环队列部分的实现。这个队列的实现与我们平常实现的循环队列稍微有些不一样。一般我们为了方便判空，会浪费一个buf的空间来方便判空，公式是： <code>(tail+1)%n=head</code> ；但是在 channel 这里的循环队列，由于有了一个循环队列元素的计数，确保了这个空间不会被浪费，并且同时也能够满足 O(1) 时间复杂度计算有缓冲 channel 元素个数。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>总结一下今天的主要信息。</p>
+<ol>
+<li>channel 中用到了两个数据结构：<strong>循环队列</strong> 和 <strong>双端链表</strong>；</li>
+<li><strong>循环队列</strong> 只有在有缓冲 channel 中才会使用，它主要是做为消息的缓冲、保证消息的有序性；</li>
+<li><strong>双端链表</strong> 是用来挂起阻塞的读、写 goroutine 的，在被唤醒时会按照入队顺序公平的进行通知；</li>
+<li>无缓冲的 channel 不会用到 <strong>循环队列</strong> 相关的结构，它必须读写 goroutine 都准备好后才能进行消息交换；</li>
+<li>做为缓冲消息的 <strong>循环队列</strong> 通过一个当前元素个数字段的标记，避免了浪费一个数据空间。</li>
+</ol>
+<p>下一章我们就尝试阅读一下 <code>channel</code> 的源码，想要尝试录制一个视频来讲这部分源码！</p>
+<p><strong>参考资料</strong></p>
+<ul>
+<li>[1] <a href="https://codeburst.io/diving-deep-into-the-golang-channels-549fd4ed21a8" target="_blank" rel="external">Diving Deep Into The Golang Channels.</a></li>
+<li>[2] <a href="https://speakerdeck.com/kavya719/understanding-channels" target="_blank" rel="external">Understanding Channels</a></li>
+<li>[3] <a href="https://www.ardanlabs.com/blog/2014/02/the-nature-of-channels-in-go.html" target="_blank" rel="external">The Nature Of Channels In Go</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <!-- 个人信息 -->
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p align="center" style="margin:0;padding:0;"><img src="https://dayutalk.cn/img/mp-qrcode.jpg"></p>
+        <p align="center" style="margin:0;padding:0;">个人公众号：<b>dayuTalk</b></p>
+        <p align="center" style="margin:0;padding:0;">联系邮箱：dayugog@gmail.com</p>
+        <p align="center" style="margin:0;padding:0;">GitHub：<a href="https://github.com/helei112g">https://github.com/helei112g</a></p>
+        <p align="center" style="margin:0;padding:0;"><img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"></p>
+        <p align="center" style="margin:0;padding:0;"><b>我写我的，你赏你的</b></p>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+        <p class="copyright text-muted">
+          友情链接
+          <a target="_blank" href="//tigerb.cn">Tigerb</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
