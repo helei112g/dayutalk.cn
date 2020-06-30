@@ -5,7 +5,7 @@
     
     <entry>
       <title><![CDATA[走进Golang之Channel的数据结构]]></title>
-      <url>http://dayutalk.cn/2020/06/26/%E8%B5%B0%E8%BF%9BGolang%E4%B9%8BChannel%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/</url>
+      <url>http://dayutalk.cn/2020/06/26/%E8%B5%B0%E8%BF%9BGolang%E4%B9%8BChannel%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
       <content type="html"><![CDATA[<p>挖坑容易，填坑难！假期来填一填坑。<br><a id="more"></a></p>
 <p>上篇文章讲了 <code>channel</code> 的基本使用，讲了一些使用时需要注意的事项，本文将重点介绍 <code>channel</code> 中的两个数据结构：<strong>循环队列</strong> 与 <strong>双端链表</strong> 。</p>
 <h1 id="channel-的需求描述"><a href="#channel-的需求描述" class="headerlink" title="channel 的需求描述"></a>channel 的需求描述</h1><p>为了理解这些数据结构解决了什么问题，我们先来做个简单的回顾，看看为什么需要这两个数据结构，他们解决了什么问题。我们知道 <strong>goroutine</strong> 是用户态的线程，不同的 <strong>goroutine</strong> 之间是有消息传递这个需求的。在原始的进程与线程（系统线程）编程中我们会采用管道的方式，而 <code>channel</code> 就是用户态线程传递消息的管道实现，并且是类型安全的。</p>
