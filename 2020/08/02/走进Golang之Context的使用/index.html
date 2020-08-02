@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="He Lei">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="走进Golang之Context的使用"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="大愚Talk｜与你把酒言诗"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://dayutalk.cnundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="大愚Talk｜与你把酒言诗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>大愚Talk｜与你把酒言诗</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-79844617-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">走进Golang之Context的使用</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/helei112g">
+                  
+                  GitHub
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://juejin.im/user/58c50c75570c35006d632e8e">
+                  
+                  掘金
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://segmentfault.com/u/helei112g">
+                  
+                  SegmentFault
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By He Lei</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2020-08-02</span>
+            <span class="time">18:38:29</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Golang/">Golang</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/Golang/">#Golang</a> <a class="tag" href="/tags/Context/">#Context</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>今天为大家带来 Context 的正确使用<br><a id="more"></a></p>
+<p>我们为什么需要 <code>Context</code> 的呢？我们来看看看一个 HTTP 请求的处理：</p>
+<p><img src="https://dayutalk.cn/img/20200802/00.jpg" alt="请求示意"></p>
+<p>例子大概意思是说，有一个获取订单详情的请求，会单独起一个 goroutine 去处理该请求。在该请求内部又有三个分支 goroutine 分别处理订单详情、推荐商品、物流信息；每个分支可能又需要单独调用DB、Redis等存储组件。那么面对这个场景我们需要哪些额外的事情呢？</p>
+<ol>
+<li>三个分支 goroutine 可能是对应的三个不同服务，我们想要携带一些基础信息过去，比如：LogID、UserID、IP等；</li>
+<li>每个分支我们需要设置过期时间，如果某个超时不影响整个流程；</li>
+<li>如果主 goroutine 发生错误，取消了请求，对应的三个分支应该也都取消，避免资源浪费；</li>
+</ol>
+<p>简单归纳就是传值、同步信号（取消、超时）。</p>
+<p>看到这里可能有人要叫了，完全可以用 channel 来搞啊！那么我们看看 channel 是否可以满足。想一个问题，如果是微服务架构，channel 怎么实现跨进程的边界呢？另外一个问题，就算不跨进程，如果嵌套很多个分支，想一想这个消息传递的复杂度。</p>
+<p>如果是你，要实现上面的这个需求，你会怎么做？</p>
+<h2 id="Context-出场"><a href="#Context-出场" class="headerlink" title="Context 出场"></a>Context 出场</h2><p>幸好，我们不用自己每次写代码都要去实现这个很基础的能力。Golang 为我们准备好了一切，就是 <code>context.Context</code> 这个包，这个包的源代码非常简单，源码部分本文会略过，下期单独一篇文章来讲，本篇我们重点谈正确的使用。</p>
+<p>Context 的结构非常简单，它是一个接口。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// Context 提供跨越API的截止时间获取，取消信号，以及请求范围值的功能。</span></span><br><span class="line"><span class="comment">// 它的这些方案在多个 goroutine 中使用是安全的</span></span><br><span class="line"><span class="keyword">type</span> Context <span class="keyword">interface</span> &#123;</span><br><span class="line">    <span class="comment">// 如果设置了截止时间，这个方法ok会是true，并返回设置的截止时间</span></span><br><span class="line">	Deadline() (deadline time.Time, ok <span class="keyword">bool</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果 Context 超时或者主动取消返回一个关闭的channel，如果返回的是nil，表示这个</span></span><br><span class="line">    <span class="comment">// context 永远不会关闭，比如：Background()</span></span><br><span class="line">	Done() &lt;-<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回发生的错误</span></span><br><span class="line">	Err() error</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 它的作用就是传值</span></span><br><span class="line">	Value(key <span class="keyword">interface</span>&#123;&#125;) <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>写到这里，我们打住想一想，如果你来实现这样一个能力的 package，你抽象的接口是否也是具备这样四个能力？</p>
+<ul>
+<li>获取截止时间</li>
+<li>获取信号</li>
+<li>获取信号产生的对应错误信息</li>
+<li>传值专用</li>
+</ul>
+<h2 id="net-http-中是怎么用-context的？"><a href="#net-http-中是怎么用-context的？" class="headerlink" title="net/http 中是怎么用 context的？"></a>net/http 中是怎么用 context的？</h2><p>在我们开始自己鼓捣前，我们先看看 net/http 这个包是怎么使用的。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    req, _ := http.NewRequest(<span class="string">"GET"</span>, <span class="string">"https://api.github.com/users/helei112g"</span>, <span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这里设置了超时时间</span></span><br><span class="line">	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*<span class="number">1</span>)</span><br><span class="line">	<span class="keyword">defer</span> cancel()</span><br><span class="line">	req = req.WithContext(ctx)</span><br><span class="line"></span><br><span class="line">	resp, err := http.DefaultClient.Do(req)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalln(<span class="string">"request Err"</span>, err.Error())</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> resp.Body.Close()</span><br><span class="line"></span><br><span class="line">	body, _ := ioutil.ReadAll(resp.Body)</span><br><span class="line">	fmt.Println(<span class="keyword">string</span>(body))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面这段程序就是请求 github 获取用户信息的接口，通过 context 包设置了请求超时时间是 1ms （<strong>肯定无法访问到</strong>）。执行时我们看到控制台做如下输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2020/xx/xx xx:xx:xx request Err Get https://api.github.com/users/helei112g: context deadline exceeded</span><br><span class="line">exit status 1</span><br></pre></td></tr></table></figure>
+<p>我们继续做实验，将上面的代码稍作修改。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    req, _ := http.NewRequest(<span class="string">"GET"</span>, <span class="string">"https://api.github.com/users/helei112g"</span>, <span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这里超时改成了 10s，怎么都够了吧</span></span><br><span class="line">    ctx, cancel := context.WithTimeout(context.Background(), time.Second*<span class="number">10</span>)</span><br><span class="line">    <span class="comment">// 但是这里移出了 defer 关键字</span></span><br><span class="line">	cancel()</span><br><span class="line">	req = req.WithContext(ctx)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 没有改动的部分，省略</span></span><br><span class="line">    ... ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>大家猜猜看能否获取到请求结果？肯定是不能的，因为 context 取消的信号，在 net/http 包内部通过 <code>ctx.Done()</code> 是能够拿到的，一旦获取到就会进行取消。上面的代码，控制台会输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2020/xx/xx xx:xx:xx request Err Get https://api.github.com/users/helei112g: context canceled</span><br><span class="line">exit status 1</span><br></pre></td></tr></table></figure>
+<p>注意两次控制台输出的错误信息时不一样的。</p>
+<ul>
+<li>context deadline exceeded 表示执行超时被取消了</li>
+<li>context canceled 表示主动取消</li>
+</ul>
+<h3 id="net-http-中-context-获取取消信号"><a href="#net-http-中-context-获取取消信号" class="headerlink" title="net/http 中 context 获取取消信号"></a>net/http 中 context 获取取消信号</h3><p>接下来，我们去看看 net/http 包内部是怎么扑捉信号的，我们只关注 context 的部分，其它的直接忽略，源码路径如下;</p>
+<blockquote>
+<p>net/http/transport.go (go 1.13.7)</p>
+</blockquote>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// req 就是我们上面传进来的 req，它有个 context 字段</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *Transport)</span> <span class="title">roundTrip</span><span class="params">(req *Request)</span> <span class="params">(*Response, error)</span></span> &#123;</span><br><span class="line">	t.nextProtoOnce.Do(t.onceSetNextProtoDefaults)</span><br><span class="line">	ctx := req.Context() <span class="comment">// 获取了 context</span></span><br><span class="line">	trace := httptrace.ContextClientTrace(ctx) <span class="comment">// 这里内部实际用到了 context.Value() 方法</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 各种处理，无关代码删除了</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 处理请求</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="comment">// 检查是否关闭了，如果关闭了就直接返回</span></span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">			req.closeBody()</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">nil</span>, ctx.Err()</span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 发送请求出去</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>来总结下上面这段代码，实际上关于 context 的精髓就在 for 循环中的 select，它通过 ctx.Done() 来获取信号，因为不管是自动超时，还是主动取消，ctx.Done() 都会收到一个关闭的 channel 的信号。</p>
+<p>这里隐藏了一个细节，那就是如果按照上面的逻辑只能处理到发起请求前的超时，但是如果请求已经被发出去了，等待这段时间的超时该如何控制呢？感兴趣的小伙伴可以去看源码的这里：</p>
+<blockquote>
+<p>net/http/transport.go:1234 (go 1.13.7)</p>
+</blockquote>
+<p>其实就是在内部等待返回的时候不断的检查 ctx.Done() 信号，如果发现了就立即返回。</p>
+<p>好了，官方的技巧我们已经学完了，现在轮到我们把开头的例子写个代码来实现下。</p>
+<h2 id="多个-goroutine-控制超时及传值"><a href="#多个-goroutine-控制超时及传值" class="headerlink" title="多个 goroutine 控制超时及传值"></a>多个 goroutine 控制超时及传值</h2><p>由于服务内部不方便模拟，我们简化成函数调用，假设图中所有的逻辑都可以并发调用。现在我们的要求是：</p>
+<ol>
+<li>整个函数的超时时间为1s；</li>
+<li>需要从最外层传递 LogID/UserID/IP 信息到其它函数；</li>
+<li>获取订单接口超时为 500ms，由于 DB/Redis 是其内部支持的，这里不进行模拟；</li>
+<li>获取推荐超时是 400ms；</li>
+<li>获取物流超时是 700ms。</li>
+</ol>
+<p>为了清晰，我这里所有接口都返回一个字符串，实际中会根据需要返回不同的结果；请求参数也都只使用了 context。代码如下：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> key <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	userIP = <span class="literal">iota</span></span><br><span class="line">	userID</span><br><span class="line">	logID</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Result <span class="keyword">struct</span> &#123;</span><br><span class="line">	order     <span class="keyword">string</span></span><br><span class="line">	logistics <span class="keyword">string</span></span><br><span class="line">	recommend <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// timeout: 1s</span></span><br><span class="line"><span class="comment">// 入口函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">api</span><span class="params">()</span> <span class="params">(result *Result, err error)</span></span> &#123;</span><br><span class="line">	ctx, cancel := context.WithTimeout(context.Background(), time.Second*<span class="number">1</span>)</span><br><span class="line">	<span class="keyword">defer</span> cancel()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 设置值</span></span><br><span class="line">	ctx = context.WithValue(ctx, userIP, <span class="string">"127.0.0.1"</span>)</span><br><span class="line">	ctx = context.WithValue(ctx, userID, <span class="number">666888</span>)</span><br><span class="line">	ctx = context.WithValue(ctx, logID, <span class="string">"123456"</span>)</span><br><span class="line"></span><br><span class="line">	result = &amp;Result&#123;&#125;</span><br><span class="line">	<span class="comment">// 业务逻辑处理放到协程中</span></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		result.order, err = getOrderDetail(ctx)</span><br><span class="line">	&#125;()</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		result.logistics, err = getLogisticsDetail(ctx)</span><br><span class="line">	&#125;()</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		result.recommend, err = getRecommend(ctx)</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">			<span class="keyword">return</span> result, ctx.Err() <span class="comment">// 取消或者超时，把现有已经拿到的结果返回</span></span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 有错误直接返回</span></span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> result, err</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 全部处理完成，直接返回</span></span><br><span class="line">		<span class="keyword">if</span> result.order != <span class="string">""</span> &amp;&amp; result.logistics != <span class="string">""</span> &amp;&amp; result.recommend != <span class="string">""</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> result, <span class="literal">nil</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// timeout: 500ms</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getOrderDetail</span><span class="params">(ctx context.Context)</span> <span class="params">(<span class="keyword">string</span>, error)</span></span> &#123;</span><br><span class="line">	ctx, cancel := context.WithTimeout(ctx, time.Millisecond*<span class="number">500</span>)</span><br><span class="line">	<span class="keyword">defer</span> cancel()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 模拟超时</span></span><br><span class="line">	time.Sleep(time.Millisecond * <span class="number">700</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 获取 user id</span></span><br><span class="line">	uip := ctx.Value(userIP).(<span class="keyword">string</span>)</span><br><span class="line">	fmt.Println(<span class="string">"userIP"</span>, uip)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> handleTimeout(ctx, <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"order"</span></span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// timeout: 700ms</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getLogisticsDetail</span><span class="params">(ctx context.Context)</span> <span class="params">(<span class="keyword">string</span>, error)</span></span> &#123;</span><br><span class="line">	ctx, cancel := context.WithTimeout(ctx, time.Millisecond*<span class="number">700</span>)</span><br><span class="line">	<span class="keyword">defer</span> cancel()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 获取 user id</span></span><br><span class="line">	uid := ctx.Value(userID).(<span class="keyword">int</span>)</span><br><span class="line">	fmt.Println(<span class="string">"userID"</span>, uid)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> handleTimeout(ctx, <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"logistics"</span></span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// timeout: 400ms</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getRecommend</span><span class="params">(ctx context.Context)</span> <span class="params">(<span class="keyword">string</span>, error)</span></span> &#123;</span><br><span class="line">	ctx, cancel := context.WithTimeout(ctx, time.Millisecond*<span class="number">400</span>)</span><br><span class="line">	<span class="keyword">defer</span> cancel()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 获取 log id</span></span><br><span class="line">	lid := ctx.Value(logID).(<span class="keyword">string</span>)</span><br><span class="line">	fmt.Println(<span class="string">"logID"</span>, lid)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> handleTimeout(ctx, <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"recommend"</span></span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 超时的统一处理代码</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleTimeout</span><span class="params">(ctx context.Context, f <span class="keyword">func</span>()</span> <span class="title">string</span>) <span class="params">(<span class="keyword">string</span>, error)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 请求之前先去检查下是否超时</span></span><br><span class="line">	<span class="keyword">select</span> &#123;</span><br><span class="line">	<span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">		<span class="keyword">return</span> <span class="string">""</span>, ctx.Err()</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	str := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="comment">// 业务逻辑</span></span><br><span class="line">		str &lt;- f()</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">select</span> &#123;</span><br><span class="line">	<span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">		<span class="keyword">return</span> <span class="string">""</span>, ctx.Err()</span><br><span class="line">	<span class="keyword">case</span> ret := &lt;-str:</span><br><span class="line">		<span class="keyword">return</span> ret, <span class="literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不知道你是否看明白了整个使用，我们这个例子看起来很复杂，实际上与我给你介绍的 net/http 包控制超时是一样的，只不过 net/http 的控制超时代码不需要我们写，而且我们这里一次性把三个调用的整合到了一起。</p>
+<p>还有一点说明一下，对于 <code>select</code>，如果没有写 <code>defalut</code> 分支，是不需要放在 <code>for</code> 循环中的，因为它本身就会阻塞（网络上有很多例子放在for循环中）。</p>
+<p>好了，今天就到此结束，随便推广一个B站视频，是关于秒杀系统设计的。</p>
+<iframe src="//player.bilibili.com/player.html?aid=498958873&bvid=BV1rK411J7zm&cid=216763275&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
+<p><strong>参考资料</strong></p>
+<ul>
+<li>[1] <a href="https://golang.org/pkg/context/" target="_blank" rel="external">Package context</a></li>
+<li>[2] <a href="https://blog.golang.org/context" target="_blank" rel="external">Go Concurrency Patterns: Context</a></li>
+</ul>
+<p><strong>下期预告</strong></p>
+<p>对于使用搞清楚了，下期会解密 context 包究竟是如何做到的，也就是俗称的源码阅读啦！</p>
+
+        </div>
+      </div>
+    </div>
+    <!-- 个人信息 -->
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p align="center" style="margin:0;padding:0;"><img src="https://dayutalk.cn/img/mp-qrcode.jpg"></p>
+        <p align="center" style="margin:0;padding:0;">个人公众号：<b>dayuTalk</b></p>
+        <p align="center" style="margin:0;padding:0;">联系邮箱：dayugog@gmail.com</p>
+        <p align="center" style="margin:0;padding:0;">GitHub：<a href="https://github.com/helei112g">https://github.com/helei112g</a></p>
+        <p align="center" style="margin:0;padding:0;"><img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"></p>
+        <p align="center" style="margin:0;padding:0;"><b>我写我的，你赏你的</b></p>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+        <p class="copyright text-muted">
+          友情链接
+          <a target="_blank" href="//tigerb.cn">Tigerb</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
