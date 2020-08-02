@@ -8,7 +8,7 @@
       <url>http://dayutalk.cn/2020/08/02/%E8%B5%B0%E8%BF%9BGolang%E4%B9%8BContext%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
       <content type="html"><![CDATA[<p>今天为大家带来 Context 的正确使用<br><a id="more"></a></p>
 <p>我们为什么需要 <code>Context</code> 的呢？我们来看看看一个 HTTP 请求的处理：</p>
-<p><img src="https://dayutalk.cn/img/20200802/00.jpg" alt="请求示意"></p>
+<p><img src="https://dayutalk.cn/img/20200802/00.jpeg" alt="请求示意"></p>
 <p>例子大概意思是说，有一个获取订单详情的请求，会单独起一个 goroutine 去处理该请求。在该请求内部又有三个分支 goroutine 分别处理订单详情、推荐商品、物流信息；每个分支可能又需要单独调用DB、Redis等存储组件。那么面对这个场景我们需要哪些额外的事情呢？</p>
 <ol>
 <li>三个分支 goroutine 可能是对应的三个不同服务，我们想要携带一些基础信息过去，比如：LogID、UserID、IP等；</li>
