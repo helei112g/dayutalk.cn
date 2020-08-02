@@ -77,13 +77,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[走进Golang之执行流程剖析]]></title>
-      <url>http://dayutalk.cn/2020/07/06/%E8%B5%B0%E8%BF%9BGolang%E4%B9%8B%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E5%89%96%E6%9E%90/</url>
-      <content type="html"><![CDATA[<p>文章摘要，作者太懒了，没写……<br><a id="more"></a></p>
-<div style="margin:0 auto;"><br>    <p align="center" style="margin:0px;"><img src="https://dayutalk.cn/img/mp-qrcode.jpg"></p><br>    <p align="center" style="margin:0px;">个人公众号：<b>dayuTalk</b></p><br>    <p align="center" style="margin:0px;">联系邮箱：dayugog@gmail.com</p><br>    <p align="center" style="margin:0px;">GitHub：<a href="https://github.com/helei112g" target="_blank" rel="external">https://github.com/helei112g</a></p><br>    <p align="center" style="margin:0px;"><img width="500" src="https://dayutalk.cn/img/pay-qr.jpeg"></p><br>    <p align="center" style="margin:0px;"><b>我写我的，你赏你的</b></p><br></div>]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[走进Golang之Channel的数据结构]]></title>
       <url>http://dayutalk.cn/2020/06/26/%E8%B5%B0%E8%BF%9BGolang%E4%B9%8BChannel%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
       <content type="html"><![CDATA[<p>挖坑容易，填坑难！假期来填一填坑。<br><a id="more"></a></p>
